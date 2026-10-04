@@ -5,13 +5,30 @@
 RTX 5090 한 대에서 Isaac Sim 6.0.1 / Isaac Lab 3.0으로 시뮬레이션하고, 자율탐사 정책은 ARiADNE(RA-L 2024)를
 출발점으로 **4족 회전 비용 + 3D 표면 커버리지** 보상으로 재학습한다. 다음 단계는 sim-to-real이다.
 
-| 보행 학습 (PPO, 4096마리 병렬) | ARiADNE 자율탐사 (1마리) | 16마리 독립 탐사 + 랜덤 리스폰 |
-|---|---|---|
-| ![](media/walk_0_ppo_4096_training.gif) | ![](media/explore_1_ariadne_single.gif) | ![](media/explore_2_parallel16_loop.gif) |
+### 보행 학습: Isaac Lab에서 PPO, 4096마리 병렬
+<img src="media/walk_0_ppo_4096_training.gif" width="100%">
 
-| 학습 초기: 못 걸음 | 50 iter: 이상하게 걸음 | 1500 iter: 잘 걸음 | VLP-16 스캔 |
-|---|---|---|---|
-| ![](media/walk_1_cannot_walk.gif) | ![](media/walk_2_weird.gif) | ![](media/walk_3_good.gif) | ![](media/explore_0_vlp16_lidar.gif) |
+### 학습 단계별 보행 (평지, 36마리 고정 시점)
+**① 학습 초기: 못 걸음**
+<img src="media/walk_1_cannot_walk.gif" width="100%">
+
+**② 50 iteration: 이상하게 걸음**
+<img src="media/walk_2_weird.gif" width="100%">
+
+**③ 1500 iteration: 잘 걸음**
+<img src="media/walk_3_good.gif" width="100%">
+
+**④ 학습이 끝난 정책으로 4096마리**
+<img src="media/walk_4_good_4096.gif" width="100%">
+
+### VLP-16 스캔 (Go2 등에 장착, 16채널 링)
+<img src="media/explore_0_vlp16_lidar.gif" width="100%">
+
+### ARiADNE 자율탐사 1마리 (왼쪽 시뮬, 오른쪽 실시간 2D 지도 + 그래프, 4배속)
+<img src="media/explore_1_ariadne_single.gif" width="100%">
+
+### 16마리 독립 탐사 + 끝나면 랜덤 리스폰 (오른쪽: 로봇별 개별 지도, 4배속)
+<img src="media/explore_2_parallel16_loop.gif" width="100%">
 
 원본 영상(mp4)은 [media/](media/)에 있다.
 
