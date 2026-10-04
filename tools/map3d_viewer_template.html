@@ -1,0 +1,306 @@
+<title>창고 3D 맵 커버리지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* Layout: one-screen instrument — narrow readout column beside a full-height 3D viewport; stacks on phones.
+   Single dark look on purpose: point clouds read best on a dark field. */
+:root {
+  color-scheme: dark;
+  --bg: #0d131a;        /* viewport field, blue-biased */
+  --panel: #121a23;
+  --line: #233040;
+  --fg: #e5ecf3;
+  --muted: #92a3b4;
+  --accent: #f2a541;    /* 3D coverage, the target quantity */
+  --blue: #7fa6d8;      /* 2D coverage */
+  --hit: #3f9c92;       /* GT surface scanned */
+  --miss: #ff5f5a;      /* GT surface missed */
+  --path: #f4f7fb;
+  --sans: "IBM Plex Sans KR", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font: 14px/1.5 var(--sans); }
+.app { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); height: 100%; }
+aside { background: var(--panel); border-right: 1px solid var(--line); overflow-y: auto; padding: 20px 18px 28px;
+        display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+main { position: relative; min-width: 0; min-height: 0; }
+#view { position: absolute; inset: 0; display: block; width: 100%; height: 100%; cursor: grab; }
+#view:active { cursor: grabbing; }
+.eyebrow { font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 4px 0 6px; font-size: 22px; font-weight: 600; text-wrap: balance; }
+h2 { margin: 0 0 8px; font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: .04em; }
+p { margin: 0; color: var(--muted); max-width: 62ch; }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stat { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; }
+.stat b { display: block; font: 500 26px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--muted); }
+.stat.d3 b { color: var(--accent); }
+.stat.d2 b { color: var(--blue); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.seg button { background: transparent; color: var(--muted); border: 0; padding: 8px 4px; font: 500 12px var(--sans); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--line); color: var(--fg); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+input[type="checkbox"] { accent-color: var(--accent); }
+.slider { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; }
+.slider input { width: 100%; accent-color: var(--accent); }
+.slider output { font: 12px var(--mono); color: var(--fg); min-width: 4.5ch; text-align: right; }
+.cams { display: flex; gap: 6px; }
+.cams button { flex: 1; background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 6px;
+               padding: 6px 4px; font: 12px var(--sans); cursor: pointer; }
+.cams button:hover { border-color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 12px; color: var(--muted); }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.ramp { width: 120px; height: 10px; border-radius: 2px;
+        background: linear-gradient(90deg, #440154, #3b528b, #21918c, #5ec962, #fde725); }
+.bands { display: flex; flex-direction: column; gap: 6px; }
+.band { display: grid; grid-template-columns: 92px 1fr 44px; align-items: center; gap: 8px; font-size: 12px; }
+.band .bar { height: 8px; border-radius: 2px; background: color-mix(in srgb, var(--miss) 28%, var(--panel)); overflow: hidden; }
+.band .bar i { display: block; height: 100%; background: var(--hit); border-radius: 2px 0 0 2px; }
+.band span:last-child { font-family: var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+.note { font-size: 12px; color: var(--muted); }
+svg text { font: 10px var(--mono); fill: var(--muted); }
+svg .lbl { font-size: 11px; font-weight: 500; }
+.hud { position: absolute; left: 12px; bottom: 12px; font: 11px var(--mono); color: var(--muted);
+       background: color-mix(in srgb, var(--bg) 80%, transparent); padding: 4px 8px; border-radius: 4px; pointer-events: none; }
+.err { position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; color: var(--muted); text-align: center; }
+@media (max-width: 760px) {
+  .app { grid-template-columns: minmax(0, 1fr); grid-template-rows: 62vh auto; height: auto; }
+  main { order: -1; height: 62vh; }
+  aside { border-right: 0; border-top: 1px solid var(--line); }
+}
+</style>
+
+<div class="app">
+  <aside>
+    <header>
+      <div class="eyebrow">3DOG · 창고 자율탐사 · VLP-16</div>
+      <h1>3D 맵 커버리지</h1>
+      <p id="sub"></p>
+    </header>
+
+    <div class="stats">
+      <div class="stat d3"><b id="c3"></b><span>3D 표면 커버리지</span></div>
+      <div class="stat d2"><b id="c2"></b><span>2D 지도 커버리지</span></div>
+    </div>
+
+    <section>
+      <h2>보기</h2>
+      <div class="seg" role="group" aria-label="보기 모드">
+        <button id="m-map" aria-pressed="true">스캔한 3D 맵</button>
+        <button id="m-gt" aria-pressed="false">정답 대비</button>
+        <button id="m-miss" aria-pressed="false">놓친 곳만</button>
+      </div>
+      <div class="legend" id="legend" style="margin-top:10px"></div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:10px">
+      <div class="row">
+        <label><input type="checkbox" id="ceil" checked> 천장 숨기기 (8.5 m 위)</label>
+        <label><input type="checkbox" id="path" checked> 로봇 경로</label>
+      </div>
+      <div class="slider">
+        <span class="note">높이 자르기</span>
+        <input type="range" id="cut" min="0.5" max="10" step="0.1" value="10" aria-label="이 높이 위는 숨김">
+        <output id="cutv">10.0 m</output>
+      </div>
+      <div class="cams">
+        <button id="cam-top">위에서</button>
+        <button id="cam-iso">비스듬히</button>
+        <button id="cam-side">옆에서</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>높이별 커버리지 (정답 표면 중 스캔된 비율)</h2>
+      <div class="bands" id="bands"></div>
+      <p class="note" style="margin-top:8px">천장이 절반만 잡히는 이유: VLP-16 수직 시야가 ±15°라서 로봇 바로 위쪽 천장은 보이지 않아요. 바닥 평면 기준 2D 지도는 거의 다 차도 3D 표면은 빈 곳이 남습니다.</p>
+    </section>
+
+    <section>
+      <h2>시간에 따른 커버리지</h2>
+      <svg id="chart" viewBox="0 0 300 170" width="100%" role="img" aria-label="2D, 3D 커버리지 시간 변화"></svg>
+    </section>
+
+    <p class="note" id="foot"></p>
+  </aside>
+  <main>
+    <canvas id="view" aria-label="3D 맵 뷰어. 드래그 회전, 휠 확대, 오른쪽 드래그 이동"></canvas>
+    <div class="hud" id="hud">드래그 회전 · 휠 확대 · 오른쪽 드래그 이동</div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const D = /*__DATA__*/null;
+const M = D.metrics;
+const pct = v => (100 * v).toFixed(1) + "%";
+const $ = id => document.getElementById(id);
+
+// ---- readouts ---------------------------------------------------------------------------------------
+const c2last = D.cov2d.length ? D.cov2d[D.cov2d.length - 1][1] : null;
+$("c3").textContent = pct(M.coverage_3d);
+$("c2").textContent = c2last == null ? "–" : pct(c2last);
+$("sub").textContent = `Go2가 ARiADNE로 창고를 ${M.duration_s.toFixed(0)}초 동안 탐사하며 쌓은 스캔 ${M.scans.toLocaleString()}개를 창고 메시 표면(정답)과 ${M.voxel_m} m 복셀로 비교했어요.`;
+$("foot").textContent = `정확도: 스캔 복셀 → 정답 표면 평균 ${(100 * M.c2c_mean_m).toFixed(1)} cm · 화면 표시는 ${D.grid} m 복셀로 묶음 (커버리지 수치는 ${M.voxel_m} m 기준)`;
+
+const bandsEl = $("bands");
+Object.entries(M.bands).reverse().forEach(([name, b]) => {
+  const row = document.createElement("div");
+  row.className = "band";
+  row.innerHTML = `<span>${name.replace("ceiling", "천장").replace("floor", "바닥")}</span>` +
+    `<span class="bar"><i style="width:${(100 * b.coverage).toFixed(1)}%"></i></span><span>${(100 * b.coverage).toFixed(0)}%</span>`;
+  row.title = `정답 복셀 ${b.gt_voxels.toLocaleString()}개 중 ${pct(b.coverage)} 스캔`;
+  bandsEl.appendChild(row);
+});
+
+// ---- chart -----------------------------------------------------------------------------------------
+(function chart() {
+  const svg = $("chart"), W = 300, H = 170, L = 34, R = 26, T = 10, B = 24;
+  const c3 = M.coverage_3d_curve, c2 = D.cov2d;
+  const tmax = Math.max(c3[c3.length - 1][0], c2.length ? c2[c2.length - 1][0] : 0);
+  const x = t => L + (W - L - R) * t / tmax, y = v => T + (H - T - B) * (1 - v);
+  const css = getComputedStyle(document.documentElement);
+  const col = n => css.getPropertyValue(n).trim();
+  let s = "";
+  for (const v of [0, .25, .5, .75, 1]) {
+    s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${col("--line")}" stroke-width="1"/>`;
+    s += `<text x="${L - 6}" y="${y(v) + 3}" text-anchor="end">${v * 100}%</text>`;
+  }
+  const step = tmax > 100 ? 25 : 10;
+  for (let t = 0; t <= tmax + 1e-6; t += step) s += `<text x="${x(t)}" y="${H - 8}" text-anchor="middle">${t}s</text>`;
+  const poly = (pts, c) => `<polyline fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round" points="${pts.map(p => x(p[0]).toFixed(1) + "," + y(p[1]).toFixed(1)).join(" ")}"/>`;
+  if (c2.length) s += poly(c2, col("--blue"));
+  s += poly(c3, col("--accent"));
+  const end = (pts, c, lbl, dy) => { const p = pts[pts.length - 1];
+    return `<circle cx="${x(p[0])}" cy="${y(p[1])}" r="3" fill="${c}" stroke="${col("--panel")}" stroke-width="2"/>` +
+      `<text class="lbl" x="${x(p[0]) + 6}" y="${y(p[1]) + dy}" style="fill:${col("--fg")}">${lbl}</text>`; };
+  if (c2.length) s += end(c2, col("--blue"), "2D", 4);
+  s += end(c3, col("--accent"), "3D", 4);
+  s += `<g id="hov" visibility="hidden"><line id="hl" y1="${T}" y2="${H - B}" stroke="${col("--muted")}" stroke-dasharray="2 3"/>` +
+       `<rect id="hb" rx="3" height="30" width="92" fill="${col("--bg")}" stroke="${col("--line")}"/><text id="ht1"></text><text id="ht2"></text></g>` +
+       `<rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" id="hit"/>`;
+  svg.innerHTML = s;
+  const at = (pts, t) => { let best = pts[0]; for (const p of pts) if (Math.abs(p[0] - t) < Math.abs(best[0] - t)) best = p; return best[1]; };
+  const hit = svg.querySelector("#hit"), hov = svg.querySelector("#hov");
+  hit.addEventListener("pointermove", e => {
+    const r = svg.getBoundingClientRect(), px = (e.clientX - r.left) * W / r.width;
+    const t = Math.max(0, Math.min(tmax, (px - L) / (W - L - R) * tmax));
+    const bx = Math.min(x(t) + 6, W - R - 92);
+    svg.querySelector("#hl").setAttribute("x1", x(t)); svg.querySelector("#hl").setAttribute("x2", x(t));
+    const hb = svg.querySelector("#hb"); hb.setAttribute("x", bx); hb.setAttribute("y", T + 2);
+    const t1 = svg.querySelector("#ht1"), t2 = svg.querySelector("#ht2");
+    t1.setAttribute("x", bx + 6); t1.setAttribute("y", T + 14); t2.setAttribute("x", bx + 6); t2.setAttribute("y", T + 26);
+    t1.textContent = `${t.toFixed(0)}s  3D ${pct(at(c3, t))}`;
+    t2.textContent = c2.length ? `     2D ${pct(at(c2, t))}` : "";
+    hov.setAttribute("visibility", "visible");
+  });
+  hit.addEventListener("pointerleave", () => hov.setAttribute("visibility", "hidden"));
+})();
+
+// ---- 3D view ---------------------------------------------------------------------------------------
+function dec(s, T) { const b = atob(s), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return new T(u.buffer); }
+const VIRIDIS = [[68, 1, 84], [59, 82, 139], [33, 145, 140], [94, 201, 98], [253, 231, 37]].map(c => c.map(v => v / 255));
+function ramp(t) { t = Math.min(1, Math.max(0, t)) * 4; const i = Math.min(3, Math.floor(t)), f = t - i, a = VIRIDIS[i], b = VIRIDIS[i + 1];
+  return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f]; }
+
+if (!window.THREE || !THREE.OrbitControls) {
+  document.querySelector("main").innerHTML = '<div class="err">3D 라이브러리를 불러오지 못했어요. 네트워크 연결을 확인하고 새로고침해 주세요.</div>';
+} else {
+  const g = D.grid, o = D.origin;
+  // world (x, y, z-up) -> three (x, z, -y), centred on the warehouse
+  let cx = 0, cy = 0;
+  const raw = { scanned: dec(D.scanned, Int16Array), hit: dec(D.gtHit, Int16Array), miss: dec(D.gtMiss, Int16Array) };
+  { const a = raw.hit; let lo = [1e9, 1e9], hi = [-1e9, -1e9];
+    for (let i = 0; i < a.length; i += 3) { lo[0] = Math.min(lo[0], a[i]); hi[0] = Math.max(hi[0], a[i]); lo[1] = Math.min(lo[1], a[i + 1]); hi[1] = Math.max(hi[1], a[i + 1]); }
+    cx = o[0] + (lo[0] + hi[0] + 1) / 2 * g; cy = o[1] + (lo[1] + hi[1] + 1) / 2 * g; }
+  const css = getComputedStyle(document.documentElement);
+  const rgb = n => { const c = new THREE.Color(css.getPropertyValue(n).trim()); return [c.r, c.g, c.b]; };
+
+  const canvas = $("view");
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+  renderer.setClearColor(new THREE.Color(css.getPropertyValue("--bg").trim()));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
+  const controls = new THREE.OrbitControls(camera, canvas);
+  controls.enableDamping = true; controls.dampingFactor = 0.12; controls.target.set(0, 3, 0);
+
+  const uniforms = { uSize: { value: g * 1.15 }, uScale: { value: 400 }, uMaxY: { value: 10 } };
+  function cloud(arr, colorOf, opacity) {
+    const n = arr.length / 3, pos = new Float32Array(n * 3), col = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      const wx = o[0] + (arr[3 * i] + .5) * g, wy = o[1] + (arr[3 * i + 1] + .5) * g, wz = o[2] + (arr[3 * i + 2] + .5) * g;
+      pos[3 * i] = wx - cx; pos[3 * i + 1] = wz; pos[3 * i + 2] = -(wy - cy);
+      const c = colorOf(wz); col[3 * i] = c[0]; col[3 * i + 1] = c[1]; col[3 * i + 2] = c[2];
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute("aColor", new THREE.BufferAttribute(col, 3));
+    const mat = new THREE.ShaderMaterial({
+      uniforms: { ...uniforms, uOpacity: { value: opacity } }, transparent: opacity < 1, depthWrite: opacity >= 1,
+      vertexShader: `uniform float uSize; uniform float uScale; attribute vec3 aColor; varying vec3 vColor; varying float vY;
+        void main() { vColor = aColor; vY = position.y; vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = max(1.0, uSize * uScale / -mv.z); gl_Position = projectionMatrix * mv; }`,
+      fragmentShader: `uniform float uMaxY; uniform float uOpacity; varying vec3 vColor; varying float vY;
+        void main() { if (vY > uMaxY) discard; gl_FragColor = vec4(vColor, uOpacity); }`,
+    });
+    const pts = new THREE.Points(geo, mat);
+    scene.add(pts);
+    return pts;
+  }
+  const hitC = rgb("--hit"), missC = rgb("--miss");
+  const layers = {
+    map: cloud(raw.scanned, z => ramp(z / 9), 1),
+    hit: cloud(raw.hit, () => hitC, 0.35),
+    miss: cloud(raw.miss, () => missC, 1),
+    ghost: cloud(raw.scanned, () => [0.62, 0.68, 0.75], 0.07),
+  };
+  for (const k of ["map", "hit", "miss", "ghost"]) layers[k].material.uniforms.uMaxY = uniforms.uMaxY;
+  for (const k of ["map", "hit", "miss", "ghost"]) layers[k].material.uniforms.uScale = uniforms.uScale;
+
+  const tr = dec(D.traj, Float32Array), tp = [];
+  for (let i = 0; i < tr.length; i += 3) tp.push(new THREE.Vector3(tr[i] - cx, 0.35, -(tr[i + 1] - cy)));
+  const path = new THREE.Line(new THREE.BufferGeometry().setFromPoints(tp),
+    new THREE.LineBasicMaterial({ color: new THREE.Color(css.getPropertyValue("--path").trim()) }));
+  scene.add(path);
+
+  const legends = {
+    map: `<span class="ramp"></span><span>0 m → 9 m 높이</span>`,
+    gt: `<span><i class="sw" style="background:var(--hit)"></i>스캔됨</span><span><i class="sw" style="background:var(--miss)"></i>놓침</span>`,
+    miss: `<span><i class="sw" style="background:var(--miss)"></i>놓친 정답 표면</span><span><i class="sw" style="background:#9eadbf;opacity:.6"></i>스캔한 맵 (흐리게)</span>`,
+  };
+  let mode = "map";
+  function setMode(m) {
+    mode = m;
+    layers.map.visible = m === "map"; layers.hit.visible = m === "gt"; layers.miss.visible = m !== "map"; layers.ghost.visible = m === "miss";
+    for (const [id, k] of [["m-map", "map"], ["m-gt", "gt"], ["m-miss", "miss"]]) $(id).setAttribute("aria-pressed", String(k === m));
+    $("legend").innerHTML = legends[m] + `<span><i class="sw" style="background:var(--path)"></i>로봇 경로</span>`;
+  }
+  $("m-map").onclick = () => setMode("map"); $("m-gt").onclick = () => setMode("gt"); $("m-miss").onclick = () => setMode("miss");
+  function setCut() {
+    const v = parseFloat($("cut").value);
+    $("cutv").textContent = v.toFixed(1) + " m";
+    uniforms.uMaxY.value = $("ceil").checked ? Math.min(v, 8.5) : v;
+  }
+  $("cut").oninput = setCut; $("ceil").onchange = setCut;
+  $("path").onchange = () => { path.visible = $("path").checked; };
+  const cams = { top: [0, 78, 0.01], iso: [-30, 34, 46], side: [-58, 10, 4] };
+  function setCam(k) { camera.position.set(...cams[k]); controls.target.set(0, k === "side" ? 4 : 2, 0); controls.update(); }
+  $("cam-top").onclick = () => setCam("top"); $("cam-iso").onclick = () => setCam("iso"); $("cam-side").onclick = () => setCam("side");
+
+  function resize() {
+    const r = canvas.parentElement.getBoundingClientRect();
+    renderer.setSize(r.width, r.height, false);
+    camera.aspect = r.width / Math.max(1, r.height); camera.updateProjectionMatrix();
+    uniforms.uScale.value = r.height * renderer.getPixelRatio() / 2;
+  }
+  new ResizeObserver(resize).observe(canvas.parentElement);
+  resize(); setMode("map"); setCut(); setCam("iso");
+  (function loop() { controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop); })();
+}
+</script>

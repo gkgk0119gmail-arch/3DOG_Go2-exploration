@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!-- Velodyne VLP-16 on a Go2 back mount.
+     Link frame = velodyne_base_link of anujjain-dev/unitree-go2-ros2 (go2_description/xacro/velodyne.xacro):
+     placed at xyz=(0.2, 0, 0.08) in the Go2 base frame; the scan origin ("velodyne") is +0.0377 m above it.
+     Meshes: ToyotaResearchInstitute/velodyne_simulator velodyne_description (STL; its .dae files are malformed XML). -->
+<robot name="vlp16_mount">
+  <material name="mount_grey"><color rgba="0.25 0.25 0.27 1"/></material>
+  <material name="vlp_body"><color rgba="0.75 0.76 0.78 1"/></material>
+  <material name="vlp_band"><color rgba="0.05 0.05 0.05 1"/></material>
+  <link name="vlp16_mount">
+    <inertial>
+      <origin xyz="0 0 0.03585"/>
+      <mass value="0.83"/>
+      <inertia ixx="0.000908059425" ixy="0" ixz="0" iyy="0.000908059425" iyz="0" izz="0.0011049624"/>
+    </inertial>
+    <!-- aluminium spacer filling the gap between the Go2 back (z=+0.057) and the VLP-16 base (z=+0.08) -->
+    <visual>
+      <origin xyz="0 0 -0.0115"/>
+      <geometry><box size="0.10 0.10 0.023"/></geometry>
+      <material name="mount_grey"/>
+    </visual>
+    <visual>
+      <geometry><mesh filename="../../third_party/velodyne_simulator/velodyne_description/meshes/VLP16_base_1.stl"/></geometry>
+      <material name="vlp_body"/>
+    </visual>
+    <visual>
+      <geometry><mesh filename="../../third_party/velodyne_simulator/velodyne_description/meshes/VLP16_base_2.stl"/></geometry>
+      <material name="vlp_body"/>
+    </visual>
+    <visual>
+      <geometry><mesh filename="../../third_party/velodyne_simulator/velodyne_description/meshes/VLP16_scan.stl"/></geometry>
+      <material name="vlp_band"/>
+    </visual>
+  </link>
+</robot>

@@ -1,0 +1,123 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.3"
+    }
+    doc = """Generated from Composed Stage of root layer /tmp/tmpthlk6pkw/vlp16_mount.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_vlp16_mount_zamea_8l/usdex_vlp16_mount/vlp16_mount.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_vlp16_mount_zamea_8l/temp_vlp16_mount/vlp16_mount.usd
+
+
+Generated from Composed Stage of root layer /home/dlab27/Desktop/3DOG/sim/assets/vlp16/usd/vlp16_mount.usd/vlp16_mount/payloads/base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Scope "Materials"
+{
+    def Material "mount_grey"
+    {
+        color3f inputs:diffuseColor = (0.05087609, 0.05087609, 0.059253525)
+        float inputs:metallic = 0
+        float inputs:opacity = 1
+        float inputs:roughness = 0.5
+        token inputs:wrapMode = "repeat"
+        token outputs:displacement (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:displacement.connect = </Materials/mount_grey/PreviewSurface.outputs:displacement>
+        token outputs:surface (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:surface.connect = </Materials/mount_grey/PreviewSurface.outputs:surface>
+        token outputs:volume (
+            displayGroup = "Outputs"
+        )
+
+        def Shader "PreviewSurface" (
+            apiSchemas = ["NodeDefAPI"]
+        )
+        {
+            token info:id = "UsdPreviewSurface"
+            prepend color3f inputs:diffuseColor.connect = </Materials/mount_grey.inputs:diffuseColor>
+            prepend float inputs:metallic.connect = </Materials/mount_grey.inputs:metallic>
+            prepend float inputs:opacity.connect = </Materials/mount_grey.inputs:opacity>
+            prepend float inputs:roughness.connect = </Materials/mount_grey.inputs:roughness>
+            token outputs:displacement
+            token outputs:surface
+        }
+    }
+
+    def Material "vlp_body"
+    {
+        color3f inputs:diffuseColor = (0.5225216, 0.5382356, 0.5704816)
+        float inputs:metallic = 0
+        float inputs:opacity = 1
+        float inputs:roughness = 0.5
+        token inputs:wrapMode = "repeat"
+        token outputs:displacement (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:displacement.connect = </Materials/vlp_body/PreviewSurface.outputs:displacement>
+        token outputs:surface (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:surface.connect = </Materials/vlp_body/PreviewSurface.outputs:surface>
+        token outputs:volume (
+            displayGroup = "Outputs"
+        )
+
+        def Shader "PreviewSurface" (
+            apiSchemas = ["NodeDefAPI"]
+        )
+        {
+            token info:id = "UsdPreviewSurface"
+            prepend color3f inputs:diffuseColor.connect = </Materials/vlp_body.inputs:diffuseColor>
+            prepend float inputs:metallic.connect = </Materials/vlp_body.inputs:metallic>
+            prepend float inputs:opacity.connect = </Materials/vlp_body.inputs:opacity>
+            prepend float inputs:roughness.connect = </Materials/vlp_body.inputs:roughness>
+            token outputs:displacement
+            token outputs:surface
+        }
+    }
+
+    def Material "vlp_band"
+    {
+        color3f inputs:diffuseColor = (0.0039359396, 0.0039359396, 0.0039359396)
+        float inputs:metallic = 0
+        float inputs:opacity = 1
+        float inputs:roughness = 0.5
+        token inputs:wrapMode = "repeat"
+        token outputs:displacement (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:displacement.connect = </Materials/vlp_band/PreviewSurface.outputs:displacement>
+        token outputs:surface (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:surface.connect = </Materials/vlp_band/PreviewSurface.outputs:surface>
+        token outputs:volume (
+            displayGroup = "Outputs"
+        )
+
+        def Shader "PreviewSurface" (
+            apiSchemas = ["NodeDefAPI"]
+        )
+        {
+            token info:id = "UsdPreviewSurface"
+            prepend color3f inputs:diffuseColor.connect = </Materials/vlp_band.inputs:diffuseColor>
+            prepend float inputs:metallic.connect = </Materials/vlp_band.inputs:metallic>
+            prepend float inputs:opacity.connect = </Materials/vlp_band.inputs:opacity>
+            prepend float inputs:roughness.connect = </Materials/vlp_band.inputs:roughness>
+            token outputs:displacement
+            token outputs:surface
+        }
+    }
+}
+

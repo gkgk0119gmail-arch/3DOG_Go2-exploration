@@ -1,0 +1,36 @@
+12 maps evaluated by every checkpoint (tilt 15.0 deg, world warehouse, node spacing 4.0 m, greedy)
+pretrained/ariadne_ral2024.pth
+  2D done 8% (explored 0.267) at 15 s, 3D then 0.055
+  end: 1558 s, 3D 0.271 (wall 0.231, ceiling 0.366)
+  turning 32224 deg = 466 s, distance 1092 m, 184 steps
+model/go2_turn_3d/checkpoint.pth
+  2D done 33% (explored 0.498) at 72 s, 3D then 0.128
+  end: 985 s, 3D 0.423 (wall 0.356, ceiling 0.546)
+  turning 17196 deg = 264 s, distance 721 m, 139 steps
+12 maps evaluated by every checkpoint (tilt 15.0 deg, world warehouse, node spacing 4.0 m, sampled)
+pretrained/ariadne_ral2024.pth
+  2D done 8% (explored 0.367) at 15 s, 3D then 0.055
+  end: 1438 s, 3D 0.344 (wall 0.290, ceiling 0.461)
+  turning 28499 deg = 419 s, distance 1018 m, 184 steps
+model/go2_turn_3d/checkpoint.pth
+  2D done 50% (explored 0.497) at 211 s, 3D then 0.271
+  end: 845 s, 3D 0.423 (wall 0.356, ceiling 0.547)
+  turning 14717 deg = 224 s, distance 621 m, 117 steps
+12 maps evaluated by every checkpoint (tilt 15.0 deg, world warehouse, node spacing 2.0 m, greedy)
+pretrained/ariadne_ral2024.pth
+  2D done 0% (explored 0.736) at nan s, 3D then nan
+  end: 1051 s, 3D 0.580 (wall 0.517, ceiling 0.638)
+  turning 27464 deg = 411 s, distance 640 m, 200 steps
+model/go2_turn_3d/checkpoint.pth
+  2D done 8% (explored 0.854) at 856 s, 3D then 0.724
+  end: 973 s, 3D 0.666 (wall 0.583, ceiling 0.760)
+  turning 17713 deg = 289 s, distance 684 m, 198 steps
+12 maps evaluated by every checkpoint (tilt 15.0 deg, world warehouse, node spacing 2.0 m, sampled)
+pretrained/ariadne_ral2024.pth
+  2D done 0% (explored 0.774) at nan s, 3D then nan
+  end: 985 s, 3D 0.619 (wall 0.544, ceiling 0.720)
+  turning 22992 deg = 356 s, distance 629 m, 200 steps
+model/go2_turn_3d/checkpoint.pth
+  2D done 0% (explored 0.867) at nan s, 3D then nan
+  end: 962 s, 3D 0.672 (wall 0.585, ceiling 0.779)
+  turning 12977 deg = 225 s, distance 737 m, 200 steps

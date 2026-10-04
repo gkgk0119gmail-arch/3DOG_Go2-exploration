@@ -1,0 +1,416 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.3"
+    }
+    doc = """Generated from Composed Stage of root layer /tmp/tmpi0qcj69m/go2_description.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_go2_merged_f5p598d6/usdex_go2_merged/go2_description.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_go2_merged_f5p598d6/temp_go2_merged/go2_merged.usd
+
+
+Generated from Composed Stage of root layer /home/dlab27/Desktop/3DOG/sim/assets/go2/usd/go2.usd/go2_merged/payloads/base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Scope "Instances"
+{
+    def Xform "base" (
+        prepend references = @./geometries.usd@</Geometries/base>
+    )
+    {
+        over "base" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/base/VisualMaterials/tn___003effect_YFjrW8vyi0ami2gfo2>
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/base/VisualMaterials/tn__001_y4Vil3lp4liY0YZ2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/base/VisualMaterials/tn__logo001_VBVoY8juU>
+            }
+
+            over "GeomSubset_003" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/base/VisualMaterials/tn__007_y4vkh4px4xVJoka0>
+            }
+
+            over "GeomSubset_004" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/base/VisualMaterials/tn__007_y4jsx2rux0noRvpQ>
+            }
+
+            over "GeomSubset_005" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/base/VisualMaterials/tn__003_y4bgs2YbKnsq0fix0>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "tn___003effect_YFjrW8vyi0ami2gfo2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn___003effect_YFjrW8vyi0ami2gfo2>
+            )
+            {
+            }
+
+            def Material "tn__001_y4Vil3lp4liY0YZ2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__001_y4Vil3lp4liY0YZ2>
+            )
+            {
+            }
+
+            def Material "tn__logo001_VBVoY8juU" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__logo001_VBVoY8juU>
+            )
+            {
+            }
+
+            def Material "tn__007_y4vkh4px4xVJoka0" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__007_y4vkh4px4xVJoka0>
+            )
+            {
+            }
+
+            def Material "tn__007_y4jsx2rux0noRvpQ" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__007_y4jsx2rux0noRvpQ>
+            )
+            {
+            }
+
+            def Material "tn__003_y4bgs2YbKnsq0fix0" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn___003effect_YFjrW8vyi0ami2gfo2>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "hip" (
+        prepend references = @./geometries.usd@</Geometries/hip>
+    )
+    {
+        over "hip" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/hip/VisualMaterials/tn__Materialeffect_WL>
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/hip/VisualMaterials/tn__001_1_x7VVg5gm6pmi0ox2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/hip/VisualMaterials/Material>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "tn__Materialeffect_WL" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__Materialeffect_WL>
+            )
+            {
+            }
+
+            def Material "tn__001_1_x7VVg5gm6pmi0ox2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__001_y4Vil3lp4liY0YZ2>
+            )
+            {
+            }
+
+            def Material "Material" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__Materialeffect_WL>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "thigh" (
+        prepend references = @./geometries.usd@</Geometries/thigh>
+    )
+    {
+        over "thigh" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/thigh/VisualMaterials/tn__Material_009effect_zQ>
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/thigh/VisualMaterials/tn__003_y4Vil3lp4liY0YZ2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/thigh/VisualMaterials/tn__Material009_XH>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "tn__Material_009effect_zQ" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__Materialeffect_WL>
+            )
+            {
+            }
+
+            def Material "tn__003_y4Vil3lp4liY0YZ2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__001_y4Vil3lp4liY0YZ2>
+            )
+            {
+            }
+
+            def Material "tn__Material009_XH" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__Materialeffect_WL>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "calf" (
+        prepend references = @./geometries.usd@</Geometries/calf>
+    )
+    {
+        over "calf" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/calf/VisualMaterials/tn___005effect_YFhjx9jeBzwc1xw4>
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/calf/VisualMaterials/tn__005_y4mjc4bzAnyJviZ0>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/calf/VisualMaterials/tn__005_y4Vil3lp4liY0YZ2>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "tn___005effect_YFhjx9jeBzwc1xw4" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__001_y4Vil3lp4liY0YZ2>
+            )
+            {
+            }
+
+            def Material "tn__005_y4mjc4bzAnyJviZ0" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__005_y4mjc4bzAnyJviZ0>
+            )
+            {
+            }
+
+            def Material "tn__005_y4Vil3lp4liY0YZ2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__001_y4Vil3lp4liY0YZ2>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "foot" (
+        prepend references = @./geometries.usd@</Geometries/foot>
+    )
+    {
+        over "foot" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/foot/VisualMaterials/tn__007_y4mjc4bzAnyJviZ0>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "tn__007_y4mjc4bzAnyJviZ0" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__005_y4mjc4bzAnyJviZ0>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "thigh_mirror" (
+        prepend references = @./geometries.usd@</Geometries/thigh_mirror>
+    )
+    {
+        over "thigh_mirror" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/thigh_mirror/VisualMaterials/tn__Material_011effect_zQ>
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/thigh_mirror/VisualMaterials/tn__012_y4Vil3lp4liY0YZ2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/thigh_mirror/VisualMaterials/tn__Material011_XH>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "tn__Material_011effect_zQ" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__Materialeffect_WL>
+            )
+            {
+            }
+
+            def Material "tn__012_y4Vil3lp4liY0YZ2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__001_y4Vil3lp4liY0YZ2>
+            )
+            {
+            }
+
+            def Material "tn__Material011_XH" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__Materialeffect_WL>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "calf_mirror" (
+        prepend references = @./geometries.usd@</Geometries/calf_mirror>
+    )
+    {
+        over "calf_mirror" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/calf_mirror/VisualMaterials/tn___007effect_YFhjx9jeBzwc1xw4>
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/calf_mirror/VisualMaterials/tn__006_y4mjc4bzAnyJviZ0>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/calf_mirror/VisualMaterials/tn__007_y4Vil3lp4liY0YZ2>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "tn___007effect_YFhjx9jeBzwc1xw4" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__001_y4Vil3lp4liY0YZ2>
+            )
+            {
+            }
+
+            def Material "tn__006_y4mjc4bzAnyJviZ0" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__005_y4mjc4bzAnyJviZ0>
+            )
+            {
+            }
+
+            def Material "tn__007_y4Vil3lp4liY0YZ2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/tn__001_y4Vil3lp4liY0YZ2>
+            )
+            {
+            }
+        }
+    }
+}
+

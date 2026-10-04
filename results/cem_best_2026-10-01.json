@@ -1,0 +1,37 @@
+{
+  "best_single": {
+    "score": 0.9760355932834608,
+    "generation": 2,
+    "params": {
+      "switch_heading": 0.6854099016457929,
+      "commit_reach": 1.6272621109003649,
+      "lookahead": 1.430431954224008,
+      "clearance": 0.6495760001169161,
+      "robot_radius": 0.3753084502979837,
+      "turn_threshold": 0.40057873127405774,
+      "stall_s": 4.88540205187064,
+      "THR_NEXT_WAYPOINT": 4.144160265243666
+    }
+  },
+  "generation": 9,
+  "mean": {
+    "switch_heading": 0.5724343990358931,
+    "commit_reach": 1.8231401131531788,
+    "lookahead": 1.3188172061189825,
+    "clearance": 0.6893038988653322,
+    "robot_radius": 0.37316554006977365,
+    "turn_threshold": 0.43714047805376643,
+    "stall_s": 5.3734973815194635,
+    "THR_NEXT_WAYPOINT": 4.366348476237979
+  },
+  "std_normalized": {
+    "switch_heading": 0.06189615956895504,
+    "commit_reach": 0.05,
+    "lookahead": 0.05,
+    "clearance": 0.05,
+    "robot_radius": 0.05,
+    "turn_threshold": 0.05,
+    "stall_s": 0.05,
+    "THR_NEXT_WAYPOINT": 0.05
+  }
+}

@@ -1,0 +1,26 @@
+#usda 1.0
+(
+    defaultPrim = "go2_description"
+    metersPerUnit = 1
+    upAxis = "Z"
+    doc = """Isaac Lab Go2 (unitree_ros URDF) + Velodyne VLP-16 on the back mount of
+    anujjain-dev/unitree-go2-ros2 (base_link -> velodyne_base_link xyz 0.2 0 0.08). Visual only; the
+    payload mass/CoM is applied through the env events."""
+)
+
+def Xform "go2_description" (
+    prepend references = @./go2_stock/https/omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/IsaacLab/Robots/Unitree/Go2/go2.usd@
+)
+{
+    over "base"
+    {
+        def Xform "vlp16_mount" (
+            prepend references = @./vlp16/vlp16_mount_visual.usda@
+        )
+        {
+            double3 xformOp:translate = (0.2, 0, 0.08)
+            float3 xformOp:rotateXYZ = (0, -15, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+        }
+    }
+}

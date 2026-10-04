@@ -1,0 +1,18 @@
+# run outputs (results worth keeping are copied to results/, media/, weights/)
+logs/
+logs_*.txt
+__pycache__/
+*.pyc
+
+# third-party code and NVIDIA / Unitree downloads (see README "출처")
+third_party/
+assets/go2_stock/
+assets/warehouse/
+
+# ariadne3d run outputs and upstream data
+ariadne3d/maps
+ariadne3d/model/
+ariadne3d/train/
+ariadne3d/gifs/
+ariadne3d/eval/
+ariadne3d/pretrained/
