@@ -28,7 +28,7 @@ MIN_UTILITY = 2  # ignore the utility if observable frontiers are less than this
 UPDATING_MAP_SIZE = 4 * SENSOR_RANGE + 4 * NODE_RESOLUTION  # nodes outside this range will not be affected by current measurements
 
 # training parameters
-MAX_EPISODE_STEP = 200  # 2D exploration (<= 128 in the original) + time to finish the 3D scan
+MAX_EPISODE_STEP = int(__import__('os').environ.get('ARIADNE_MAX_STEP', 200))  # 2D exploration (<= 128 in the original) + time to finish the 3D scan
 REPLAY_SIZE = 10000
 MINIMUM_BUFFER_SIZE = 2000
 BATCH_SIZE = 128

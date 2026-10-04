@@ -25,7 +25,11 @@ def _run(args):
 
     policy, *_ = load_pretrained(path)
     policy.eval()
-    if world == "warehouse":
+    if world == "proc":
+        from procwarehouse import ProcWarehouseEnv3D
+
+        w = Worker3D(0, policy, ep, greedy=greedy, tilt_deg=tilt, env_cls=ProcWarehouseEnv3D, record=False)
+    elif world == "warehouse":
         from warehouse_env import WarehouseEnv3D
 
         w = Worker3D(0, policy, ep, greedy=greedy, tilt_deg=tilt, env_cls=WarehouseEnv3D,
@@ -46,15 +50,21 @@ def main():
     ap.add_argument("--tilt", type=float, default=15.0)
     ap.add_argument("--workers", type=int, default=20)
     ap.add_argument("--out", default="eval")
-    ap.add_argument("--world", default="maps", choices=["maps", "warehouse"],
+    ap.add_argument("--world", default="maps", choices=["maps", "warehouse", "proc"],
                     help="maps: held-out training-style maps; warehouse: the Isaac warehouse, random starts")
     ap.add_argument("--node_res", type=float, default=None, help="graph node spacing [m] (training: 4)")
     ap.add_argument("--sample", action="store_true", help="sample actions (as in training) instead of argmax")
+    ap.add_argument("--node_pad", type=int, default=None)
+    ap.add_argument("--max_step", type=int, default=None)
     args = ap.parse_args()
     if args.node_res:
         os.environ["ARIADNE_NODE_RES"] = str(args.node_res)
         if args.node_res < 4:
             os.environ["ARIADNE_NODE_PAD"] = "500"  # warehouse at 2 m: <= ~360 nodes; attention cost ~ pad^2
+    if args.node_pad:
+        os.environ["ARIADNE_NODE_PAD"] = str(args.node_pad)
+    if args.max_step:
+        os.environ["ARIADNE_MAX_STEP"] = str(args.max_step)
     jobs = [(c, EVAL_START + i, args.tilt, args.world, not args.sample) for c in args.checkpoints for i in range(args.n)]
     res = {c: {} for c in args.checkpoints}
     with ProcessPoolExecutor(args.workers, mp_context=mp.get_context("spawn")) as ex:

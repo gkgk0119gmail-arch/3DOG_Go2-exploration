@@ -62,7 +62,12 @@ def run_job(weights, episode):
     from worker3d import Worker3D
 
     _net.load_state_dict(weights)
-    w = Worker3D(0, _net, episode)
+    if os.environ.get("ARIADNE_WORLD") == "proc":
+        from procwarehouse import ProcWarehouseEnv3D
+
+        w = Worker3D(0, _net, episode, env_cls=ProcWarehouseEnv3D)
+    else:
+        w = Worker3D(0, _net, episode)
     w.run_episode()
     return pack(w.episode_buffer), w.perf_metrics, episode
 
@@ -89,12 +94,13 @@ class Replay:
     def sample(self, n, device):
         idx = random.sample(range(len(self)), n)
         out = []
+        bits = torch.arange(7, -1, -1, device=device, dtype=torch.uint8)
         for s in self.slots:
             kind, shape, _ = s[idx[0]]
-            a = np.stack([s[i][2] for i in idx], 0)
-            if kind == "b":
-                a = np.unpackbits(a, axis=-1, count=shape[-1]).astype(bool)
-            out.append(torch.from_numpy(a).to(device))
+            a = torch.from_numpy(np.stack([s[i][2] for i in idx], 0)).to(device, non_blocking=True)
+            if kind == "b":  # unpack the bit-packed masks on the GPU (np.unpackbits of ~100 MB per batch was the bottleneck)
+                a = ((a[..., None] >> bits) & 1).flatten(-2)[..., : shape[-1]].bool()
+            out.append(a)
         return out
 
 
@@ -109,7 +115,18 @@ def main():
     ap.add_argument("--q_warmup", type=int, default=Q_WARMUP)
     ap.add_argument("--min_buffer", type=int, default=MINIMUM_BUFFER_SIZE)
     ap.add_argument("--name", default=None, help="run name (default FOLDER_NAME): model/<name>, train/<name>")
+    ap.add_argument("--init", default=None, help="warm-start checkpoint (default: PRETRAINED)")
+    ap.add_argument("--world", default="maps", choices=["maps", "proc"], help="training worlds (proc: procwarehouse.py)")
+    ap.add_argument("--node_res", type=float, default=None)
+    ap.add_argument("--node_pad", type=int, default=None)
+    ap.add_argument("--max_step", type=int, default=None)
+    ap.add_argument("--batch", type=int, default=BATCH_SIZE, help="SAC batch (attention memory ~ batch x pad^2)")
     args = ap.parse_args()
+    # worker processes read these at import (spawned after this point)
+    os.environ["ARIADNE_WORLD"] = args.world
+    for k, v in (("ARIADNE_NODE_RES", args.node_res), ("ARIADNE_NODE_PAD", args.node_pad), ("ARIADNE_MAX_STEP", args.max_step)):
+        if v is not None:
+            os.environ[k] = str(v)
     global model_path, train_path
     if args.name:
         model_path, train_path = f"model/{args.name}", f"train/{args.name}"
@@ -117,7 +134,7 @@ def main():
     os.makedirs(train_path, exist_ok=True)
     device = torch.device("cuda")
     ck_path = os.path.join(model_path, "checkpoint.pth")
-    policy, q1, q2, log_alpha, ck = load_pretrained(ck_path if args.resume else PRETRAINED, device)
+    policy, q1, q2, log_alpha, ck = load_pretrained(ck_path if args.resume else args.init or PRETRAINED, device)
     log_alpha.requires_grad = True
     tq1, tq2 = QNet(NODE_INPUT_DIM + 1, EMBEDDING_DIM).to(device), QNet(NODE_INPUT_DIM + 1, EMBEDDING_DIM).to(device)
     tq1.load_state_dict(q1.state_dict())
@@ -163,6 +180,7 @@ def main():
     try:
         while episode < args.episodes:
             done, jobs = wait(jobs, return_when=FIRST_COMPLETED)
+            new_steps = 0
             for fut in done:
                 try:
                     packed, metrics, ep = fut.result()
@@ -171,6 +189,7 @@ def main():
                     continue
                 episode += 1
                 replay.add(packed)
+                new_steps += int(metrics.get("steps", 60))
                 log.writerow([ep, updates, round(time.time() - t_start)] + [metrics.get(m, np.nan) for m in METRICS])
                 for m in METRICS:
                     window[m].append(metrics.get(m, np.nan))
@@ -181,8 +200,8 @@ def main():
                 next_ep += 1
 
             if len(replay) >= args.min_buffer:
-                for _ in range(8 * len(done)):
-                    b = replay.sample(BATCH_SIZE, device)
+                for _ in range(max(8 * len(done), int(round(new_steps / 7.5)))):
+                    b = replay.sample(args.batch, device)
                     obs, act, rew, dn, nobs = b[0:6], b[6].long(), b[7].float(), b[8].float(), b[9:15]
                     cobs, cnobs = b[15:21], b[21:27]
                     with torch.no_grad():

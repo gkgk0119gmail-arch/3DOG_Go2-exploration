@@ -17,7 +17,7 @@ CELL = 0.4
 
 def generate(seed, cell=CELL):
     rng = np.random.default_rng(seed)
-    W, L = rng.uniform(24, 48), rng.uniform(36, 72)  # building [m]
+    W, L = rng.uniform(22, 40), rng.uniform(32, 60)  # building [m] (the Isaac warehouse is ~32 x 54 m)
     nx, ny = int(W / cell) + 2, int(L / cell) + 2
     H = float(rng.uniform(6.0, 11.0))
     height = np.zeros((ny, nx), np.float32)
