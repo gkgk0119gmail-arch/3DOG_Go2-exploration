@@ -36,6 +36,7 @@ class Env3D(Env):
         self.steps = 0
         self.belief3d.observe(self.robot_cell.astype(float), self.heading)
         self.last_gain = 0.0
+        self.cov_hist = [(0.0, self.belief3d.coverage())]
 
     def make_scene(self, rng):
         return Scene25D(self.ground_truth, seed=int(rng.integers(1 << 31)))
@@ -65,6 +66,7 @@ class Env3D(Env):
         self.turn_time += t_turn
         self.time_s += t_step
         self.steps += 1
+        self.cov_hist.append((self.time_s, self.belief3d.coverage()))
 
         # 2D: original ARiADNE update (sensing at the waypoint) and frontier reward
         self.update_robot_location(np.asarray(next_waypoint))
@@ -94,4 +96,6 @@ class Env3D(Env):
         return {"coverage_3d": self.belief3d.coverage(), "wall_cov": parts["wall"], "ceiling_cov": parts["ceiling"],
                 "time_s": self.time_s, "turn_total_rad": self.turn_total, "turn_time_s": self.turn_time,
                 "steps": self.steps, "done_2d": float(self.done_2d),
-                "time_2d_s": getattr(self, "time_2d", np.nan), "cov3d_at_2d": getattr(self, "cov3d_at_2d", np.nan)}
+                "time_2d_s": getattr(self, "time_2d", np.nan), "cov3d_at_2d": getattr(self, "cov3d_at_2d", np.nan),
+                # 3D coverage after a fixed time budget (frozen once the episode ended): independent of the stop rule
+                **{f"cov3d_at_{T}s": float(np.interp(T, *np.array(self.cov_hist).T)) for T in (150, 300, 450, 600)}}

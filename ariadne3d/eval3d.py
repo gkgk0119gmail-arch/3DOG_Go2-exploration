@@ -13,7 +13,8 @@ import numpy as np
 import torch
 
 EVAL_START = 5600
-KEYS = ["explored_rate", "done_2d", "time_2d_s", "cov3d_at_2d", "time_s", "coverage_3d", "wall_cov", "ceiling_cov",
+KEYS = ["explored_rate", "done_2d", "time_2d_s", "cov3d_at_2d", "cov3d_at_150s", "cov3d_at_300s", "cov3d_at_450s",
+        "cov3d_at_600s", "time_s", "coverage_3d", "wall_cov", "ceiling_cov",
         "turn_total_rad", "turn_time_s", "travel_dist", "steps"]
 
 
@@ -29,6 +30,10 @@ def _run(args):
         from procwarehouse import ProcWarehouseEnv3D
 
         w = Worker3D(0, policy, ep, greedy=greedy, tilt_deg=tilt, env_cls=ProcWarehouseEnv3D, record=False)
+    elif world == "bim":
+        from bim_env import BimEnv3D
+
+        w = Worker3D(0, policy, ep, greedy=greedy, tilt_deg=tilt, env_cls=BimEnv3D, record=False)
     elif world == "warehouse":
         from warehouse_env import WarehouseEnv3D
 
@@ -50,8 +55,9 @@ def main():
     ap.add_argument("--tilt", type=float, default=15.0)
     ap.add_argument("--workers", type=int, default=20)
     ap.add_argument("--out", default="eval")
-    ap.add_argument("--world", default="maps", choices=["maps", "warehouse", "proc"],
-                    help="maps: held-out training-style maps; warehouse: the Isaac warehouse, random starts")
+    ap.add_argument("--world", default="maps", choices=["maps", "warehouse", "proc", "bim"],
+                    help="maps: held-out training-style maps; warehouse: the Isaac warehouse, random starts; "
+                         "bim: BIM storeys in $ARIADNE_BIM_DIR (tools/bim_to_25d.py)")
     ap.add_argument("--node_res", type=float, default=None, help="graph node spacing [m] (training: 4)")
     ap.add_argument("--sample", action="store_true", help="sample actions (as in training) instead of argmax")
     ap.add_argument("--node_pad", type=int, default=None)
@@ -84,7 +90,7 @@ def main():
         print(f"  2D done {s['done_2d']:.0%} (explored {s['explored_rate']:.3f}) at {s['time_2d_s']:.0f} s, 3D then {s['cov3d_at_2d']:.3f}")
         print(f"  end: {s['time_s']:.0f} s, 3D {s['coverage_3d']:.3f} (wall {s['wall_cov']:.3f}, ceiling {s['ceiling_cov']:.3f})")
         print(f"  turning {s['turn_total_deg']:.0f} deg = {s['turn_time_s']:.0f} s, distance {s['travel_dist']:.0f} m, {s['steps']:.0f} steps")
-    tag = f"{args.world}_tilt{args.tilt:g}" + (f"_res{args.node_res:g}" if args.node_res else "") + ("_sample" if args.sample else "")
+    tag = os.environ.get("ARIADNE_UTIL3D", "view") + f"_{args.world}_tilt{args.tilt:g}" + (f"_res{args.node_res:g}" if args.node_res else "") + ("_sample" if args.sample else "")
     with open(os.path.join(args.out, f"eval_{tag}.json"), "w") as f:
         json.dump({"summary": summary, "per_map": {c: {str(k): v for k, v in r.items()} for c, r in res.items()}}, f, indent=1)
 

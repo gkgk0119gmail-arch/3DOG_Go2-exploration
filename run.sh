@@ -6,6 +6,7 @@
 #   walk-live     4096마리 PPO 보행 학습을 처음부터 GUI로 (발표 영상용, logs/rsl_rl/go2_walk_live에 따로 저장)
 #   walk-stage S [overview|close]   학습 단계 재생, 4096마리 학습 장면: S = bad(iter 0) | weird(iter 50) | good(iter 1499) | <iter>
 #   demo          창고 + VLP-16 + 고정 웨이포인트 순환 (GUI)
+#   bim-demo      BIM 건물(기본 치과 의원, tools/ifc_to_isaac.py) + VLP-16 + 웨이포인트 순환 (GUI)
 #   explore       ARiADNE 자율탐사 1마리 (GUI, 오른쪽 "ARiADNE Map" 탭)
 #   loop          16마리 ARiADNE 자율탐사 무한 반복: 끝난 로봇은 지도 3초 보여주고 랜덤 리스폰 (GUI)
 #   parallel      16마리 독립 탐사, 기본값 vs CEM 파라미터 비교 (GUI, "Parallel Exploration" 탭)
@@ -33,6 +34,7 @@ case "$cmd" in
                 --num_envs 4096 --viz kit --checkpoint $PWD/logs/rsl_rl/go2_factory_walk/2026-09-30_23-09-18/model_$it.pt "$@" ;;
   walk-train) exec $PY scripts/rl.py train --task Go2-Factory-Walk --num_envs 4096 "$@" ;;
   demo)       exec $PY scripts/rl.py play --task Go2-Warehouse-Demo-Play --num_envs 1 --viz kit --real-time "$@" ;;
+  bim-demo)   exec $PY scripts/rl.py play --task Go2-Bim-Demo-Play --num_envs 1 --viz kit --real-time "$@" ;;
   explore)    exec $PY scripts/rl.py play --task Go2-Warehouse-Explore-Play --num_envs 1 --viz kit --real-time "$@" ;;
   loop)       GO2_CAM=${GO2_CAM:-overview} GO2_PAR_MODE=loop GO2_PAR_PARAMS=$CEM \
                 exec $PY scripts/rl.py play --task Go2-Warehouse-Parallel-Play --num_envs 16 --viz kit "$@" ;;

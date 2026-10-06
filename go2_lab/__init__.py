@@ -17,6 +17,8 @@ _TASKS = {
     "Go2-Warehouse-Explore-Play": ("factory:Go2WarehouseExploreEnvCfg", "Go2FactoryWalkPPORunnerCfg"),
     # N independent clones in the same warehouse + reward-driven parameter search (play only)
     "Go2-Warehouse-Parallel-Play": ("factory:Go2WarehouseParallelEnvCfg", "Go2FactoryWalkPPORunnerCfg"),
+    # warehouse demo in a BIM building (tools/ifc_to_isaac.py; GO2_BIM picks the scene, default dental clinic)
+    "Go2-Bim-Demo-Play": ("bim:Go2BimDemoEnvCfg", "Go2FactoryWalkPPORunnerCfg"),
     # our own URDF->USD conversion -- joints currently unstable in training
     "Go2-URDF-Blind-Rough": ("Go2BlindRoughEnvCfg", "Go2BlindRoughPPORunnerCfg"),
     "Go2-URDF-Blind-Rough-Play": ("Go2BlindRoughEnvCfg_PLAY", "Go2BlindRoughPPORunnerCfg"),

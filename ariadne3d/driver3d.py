@@ -31,7 +31,7 @@ from parameter import (BATCH_SIZE, EMBEDDING_DIM, GAMMA, K_SIZE, LR, MINIMUM_BUF
 Q_WARMUP = 1500  # critic-only SAC updates before the policy is updated
 EVAL_EPISODE_START = 5600  # episodes (= maps) >= this are kept for evaluation (eval3d.py)
 METRICS = ["travel_dist", "explored_rate", "success_rate", "episode_reward", "coverage_3d", "wall_cov", "ceiling_cov",
-           "time_s", "turn_total_rad", "turn_time_s", "steps"]
+           "time_s", "turn_total_rad", "turn_time_s", "steps", "guide_frac"]
 
 # ---- worker side ------------------------------------------------------------------------------------
 _net = None
@@ -66,6 +66,10 @@ def run_job(weights, episode):
         from procwarehouse import ProcWarehouseEnv3D
 
         w = Worker3D(0, _net, episode, env_cls=ProcWarehouseEnv3D)
+    elif os.environ.get("ARIADNE_WORLD") == "bim":
+        from bim_env import BimEnv3D
+
+        w = Worker3D(0, _net, episode, env_cls=BimEnv3D)
     else:
         w = Worker3D(0, _net, episode)
     w.run_episode()
@@ -116,17 +120,31 @@ def main():
     ap.add_argument("--min_buffer", type=int, default=MINIMUM_BUFFER_SIZE)
     ap.add_argument("--name", default=None, help="run name (default FOLDER_NAME): model/<name>, train/<name>")
     ap.add_argument("--init", default=None, help="warm-start checkpoint (default: PRETRAINED)")
-    ap.add_argument("--world", default="maps", choices=["maps", "proc"], help="training worlds (proc: procwarehouse.py)")
+    ap.add_argument("--world", default="maps", choices=["maps", "proc", "bim"],
+                    help="training worlds (proc: procwarehouse.py, bim: $ARIADNE_BIM_DIR from tools/bim_to_25d.py)")
     ap.add_argument("--node_res", type=float, default=None)
     ap.add_argument("--node_pad", type=int, default=None)
     ap.add_argument("--max_step", type=int, default=None)
     ap.add_argument("--batch", type=int, default=BATCH_SIZE, help="SAC batch (attention memory ~ batch x pad^2)")
+    ap.add_argument("--w_guide", type=float, default=None,
+                    help="weight of the BIM-plan guide reward (bim_env.py; default 1 for --world bim, else 0)")
+    ap.add_argument("--guide_only", action="store_true", help="guide reward replaces the frontier / time / 3D terms")
     args = ap.parse_args()
+    if args.w_guide is None:
+        args.w_guide = 1.0 if args.world == "bim" else 0.0
+    if args.w_guide > 0 and args.world != "bim":
+        ap.error("--w_guide needs --world bim (the plan is computed from the BIM ground truth)")
+    os.environ["ARIADNE_W_GUIDE"] = str(args.w_guide)
+    os.environ["ARIADNE_GUIDE_ONLY"] = "1" if args.guide_only else "0"
     # worker processes read these at import (spawned after this point)
     os.environ["ARIADNE_WORLD"] = args.world
     for k, v in (("ARIADNE_NODE_RES", args.node_res), ("ARIADNE_NODE_PAD", args.node_pad), ("ARIADNE_MAX_STEP", args.max_step)):
         if v is not None:
             os.environ[k] = str(v)
+    if args.w_guide > 0:  # BIM-plan visibility to disk once; the workers memory-map it (bim_env.py)
+        from bim_env import precompute_visibility
+
+        precompute_visibility()
     global model_path, train_path
     if args.name:
         model_path, train_path = f"model/{args.name}", f"train/{args.name}"

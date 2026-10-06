@@ -68,3 +68,8 @@ U3D_NORM = 1500.0  # 3D utility feature scale
 UTIL3D = __import__('os').environ.get('ARIADNE_UTIL3D', 'view')  # 'view': ViewGain sweep per node (v2) | 'grid': annulus (v1)
 U3D_NORM_VIEW = 200.0  # view gain feature scale [unseen elements hit by one sweep]
 U3D_DONE_VIEW = 15.0  # 3D scan finished when no node's sweep would hit more unseen elements than this
+
+# --- 3DOG step 2: follow the BIM-based scan plan (bim_env.py, bim_expert.py; --world bim only) ---------------
+W_GUIDE = float(__import__('os').environ.get('ARIADNE_W_GUIDE', 0.0))  # weight of the guide term (driver3d --w_guide; 0 = off, eval)
+GUIDE_ONLY = __import__('os').environ.get('ARIADNE_GUIDE_ONLY', '0') == '1'  # 1: guide term replaces the frontier / time / 3D terms (HEADER)
+GUIDE_REACH = 0.75  # [x NODE_RESOLUTION] a plan point counts as passed when the robot comes this close in line of sight
