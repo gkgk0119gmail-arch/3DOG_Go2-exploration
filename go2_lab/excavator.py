@@ -15,7 +15,8 @@ from isaaclab.utils import configclass
 
 from .factory import SIM_DIR, Go2WarehouseDemoEnvCfg
 
-MACHINE_PREFIX = os.environ.get("GO2_MACHINE", str(SIM_DIR / "assets" / "excavator" / "ix35e"))
+# absolute: the scene USD resolves its texture paths relative to its own location
+MACHINE_PREFIX = os.path.abspath(os.environ.get("GO2_MACHINE", str(SIM_DIR / "assets" / "excavator" / "ix35e")))
 
 
 @configclass
@@ -69,3 +70,20 @@ class Go2ExcavatorPostureDemoEnvCfg(Go2ExcavatorDemoEnvCfg):
         self.commands.base_posture = ScriptedPostureCommandCfg(resampling_time_range=(1.0e6, 1.0e6))
         self.observations.policy.base_posture = ObsTerm(func=mdp.generated_commands,
                                                         params={"command_name": "base_posture"})
+
+
+@configclass
+class Go2MachineScanEnvCfg(Go2ExcavatorPostureDemoEnvCfg):
+    """Scan any converted machine (GO2_MACHINE) with gain-driven postures at every stop (adaptive_scan.py);
+    GO2_SCAN_MODE=adaptive | level | fixed for the baselines on the same loop."""
+
+    def __post_init__(self):
+        super().__post_init__()
+        from .adaptive_scan import AdaptiveScanCommandCfg
+
+        old = self.commands.base_velocity
+        self.commands.base_velocity = AdaptiveScanCommandCfg(
+            asset_name=old.asset_name, resampling_time_range=old.resampling_time_range, heading_command=False,
+            rel_standing_envs=0.0, rel_heading_envs=0.0, ranges=old.ranges, debug_vis=old.debug_vis,
+            waypoints=old.waypoints, scan_mask=[True] * len(old.waypoints), scan_postures=old.scan_postures,
+            hold_s=float(os.environ.get("GO2_SCAN_HOLD", "1.5")), settle_s=0.8, gt_npz=MACHINE_PREFIX + "_gt.npz")
