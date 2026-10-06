@@ -5,7 +5,8 @@ import torch
 
 from agent3d import Agent3D, GroundTruthNodeManager3D
 from env3d import Env3D
-from parameter import MAX_EPISODE_STEP
+from lidar3d import ViewGain
+from parameter import MAX_EPISODE_STEP, U3D_DONE, U3D_DONE_VIEW, UTIL3D
 from worker import Worker
 
 
@@ -24,8 +25,28 @@ class Worker3D(Worker):
                                                                   device=self.device, plot=False)
         self.episode_buffer = [[] for _ in range(27)]
         self.perf_metrics = dict()
+        self.view = ViewGain(self.env.belief3d) if UTIL3D == "view" else None
 
     def _observe(self):
+        if self.view is not None:
+            return self._observe_view()
+        return self._observe_grid()
+
+    def _observe_view(self):
+        e = self.env
+        origin, loc = (e.belief_origin_x, e.belief_origin_y), e.robot_location
+        fn_b = lambda c: self.view.node_gain(c, loc, origin, "belief", e.robot_belief)  # noqa: E731
+        self.robot.set_3d(e.heading, node_u_fn=fn_b)
+        obs = self.robot.get_observation()
+        gt_obs = None
+        if self.record:
+            fn_t = lambda c: self.view.node_gain(c, loc, origin, "truth")  # noqa: E731
+            gt_obs = self.ground_truth_node_manager.get_ground_truth_observation_3d(loc, e.heading, None, None, fn_t)
+        u = fn_b(self.robot.node_coords)  # cached: free
+        # done threshold in the units of this utility (Env3D.check_done compares with U3D_DONE)
+        return obs, gt_obs, float(u.max()) * U3D_DONE / U3D_DONE_VIEW if len(u) else 0.0
+
+    def _observe_grid(self):
         b3 = self.env.belief3d
         u_belief = b3.belief_utility(self.env.robot_belief)
         self.robot.set_3d(self.env.heading, u_belief, b3)

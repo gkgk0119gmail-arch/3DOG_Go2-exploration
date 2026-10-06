@@ -65,3 +65,6 @@ STALL_AREA = 2.0  # [m^2] a step that adds less 3D area than this counts as a st
 STALL_STEPS = 4  # stalls in a row that end the episode
 U3D_DONE = 40.0  # 3D utility (unseen elements in view) below which the 3D scan counts as finished
 U3D_NORM = 1500.0  # 3D utility feature scale
+UTIL3D = __import__('os').environ.get('ARIADNE_UTIL3D', 'view')  # 'view': ViewGain sweep per node (v2) | 'grid': annulus (v1)
+U3D_NORM_VIEW = 200.0  # view gain feature scale [unseen elements hit by one sweep]
+U3D_DONE_VIEW = 15.0  # 3D scan finished when no node's sweep would hit more unseen elements than this

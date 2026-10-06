@@ -11,21 +11,24 @@ import torch
 
 from agent import Agent
 from ground_truth_node_manager import GroundTruthNodeManager
-from parameter import NODE_PADDING_SIZE, U3D_NORM
+from parameter import NODE_PADDING_SIZE, U3D_NORM, U3D_NORM_VIEW
 
 
 def wrap(a):
     return (a + np.pi) % (2 * np.pi) - np.pi
 
 
-def extra_features(coords, location, heading, util_grid, belief3d, map_info):
+def extra_features(coords, location, heading, util_grid, belief3d, map_info, node_u_fn=None):
     d = coords - np.asarray(location)[None, :]
     bearing = np.arctan2(d[:, 1], d[:, 0])
     hc = np.abs(wrap(bearing - heading)) / np.pi
     hc[np.linalg.norm(d, axis=1) < 1e-6] = 0.0
-    cells = np.stack([(coords[:, 0] - map_info.map_origin_x) / map_info.cell_size,
-                      (coords[:, 1] - map_info.map_origin_y) / map_info.cell_size], 1)
-    u = belief3d.sample(util_grid, cells) / U3D_NORM
+    if node_u_fn is not None:  # v2: unseen elements one sweep from the node would hit
+        u = node_u_fn(coords) / U3D_NORM_VIEW
+    else:  # v1: annulus utility grid
+        cells = np.stack([(coords[:, 0] - map_info.map_origin_x) / map_info.cell_size,
+                          (coords[:, 1] - map_info.map_origin_y) / map_info.cell_size], 1)
+        u = belief3d.sample(util_grid, cells) / U3D_NORM
     f = np.stack([hc, np.minimum(u, 4.0)], 1).astype(np.float32)
     return torch.nn.functional.pad(torch.from_numpy(f), (0, 0, 0, NODE_PADDING_SIZE - len(f))).unsqueeze(0)
 
@@ -34,21 +37,23 @@ class Agent3D(Agent):
     heading = 0.0
     util_grid = None
     belief3d = None
+    node_u_fn = None
 
-    def set_3d(self, heading, util_grid, belief3d):
-        self.heading, self.util_grid, self.belief3d = heading, util_grid, belief3d
+    def set_3d(self, heading, util_grid=None, belief3d=None, node_u_fn=None):
+        self.heading, self.util_grid, self.belief3d, self.node_u_fn = heading, util_grid, belief3d, node_u_fn
 
     def get_observation(self):
         obs = super().get_observation()
-        f = extra_features(self.node_coords, self.location, self.heading, self.util_grid, self.belief3d, self.map_info)
+        f = extra_features(self.node_coords, self.location, self.heading, self.util_grid, self.belief3d, self.map_info,
+                           self.node_u_fn)
         obs[0] = torch.cat([obs[0], f.to(obs[0].device)], dim=-1)
         return obs
 
 
 class GroundTruthNodeManager3D(GroundTruthNodeManager):
-    def get_ground_truth_observation_3d(self, robot_location, heading, util_grid, belief3d):
+    def get_ground_truth_observation_3d(self, robot_location, heading, util_grid, belief3d, node_u_fn=None):
         obs = self.get_ground_truth_observation(robot_location)
         f = extra_features(self.ground_truth_node_coords, robot_location, heading, util_grid, belief3d,
-                           self.ground_truth_map_info)
+                           self.ground_truth_map_info, node_u_fn)
         obs[0] = torch.cat([obs[0], f.to(obs[0].device)], dim=-1)
         return obs

@@ -226,3 +226,95 @@ class Belief3D:
         cx = np.clip((np.asarray(cell_xy)[:, 0] // self.pool).astype(int), 0, grid.shape[1] - 1)
         cy = np.clip((np.asarray(cell_xy)[:, 1] // self.pool).astype(int), 0, grid.shape[0] - 1)
         return grid[cy, cx]
+
+
+class ViewGain:
+    """3D utility v2: unseen surface a sweep from the node would actually hit (line of sight + VLP-16 geometry).
+
+    One coarse sweep per node (az_res_deg, 16 beams, ray step = one cell, up to max_range), facing ``heading``
+    (the direction the robot would arrive from). Unique unseen wall bins / ceiling cells hit are counted per node.
+    belief: the robot's 2D map + 3D belief (unknown 2D cells are opaque, obstacles as tall as known, else ceiling)
+    truth : the true scene and the true unseen elements (critic)
+    Values are cached per node and refreshed for nodes within ``update_radius`` of the robot.
+    """
+
+    def __init__(self, belief3d, az_res_deg=3.0, max_range=20.0, update_radius=20.0, chunk=48):
+        self.b3 = belief3d
+        s = belief3d.sensor
+        self.cell, self.zs, self.tilt = s.cell, s.zs, s.tilt
+        self.az = np.deg2rad(np.arange(0.0, 360.0, az_res_deg))
+        self.el = s.el
+        self.r = np.arange(1, int(max_range / s.cell) + 1) * s.cell
+        self.dx = np.cos(self.az)[:, None] * self.r[None, :] / s.cell
+        self.dy = np.sin(self.az)[:, None] * self.r[None, :] / s.cell
+        self.update_radius, self.chunk = update_radius, chunk
+        self.cache = {"belief": {}, "truth": {}}
+
+    def _belief_world(self, belief_map):
+        b3 = self.b3
+        H = b3.scene.H if b3.ceiling_known else H_MAX
+        free = belief_map == FREE
+        occ = belief_map == OCCUPIED
+        idx = np.arange(NB)
+        hs = np.where(b3.wall == 1, idx, -1).max(axis=2)  # highest seen surface bin
+        top_known = ((b3.wall == 2) & (idx > hs[..., None])).any(axis=2) & (hs >= 0)
+        height = np.where(free, 0.0, H).astype(np.float32)  # unknown 2D cells: opaque
+        height[occ & top_known] = (hs[occ & top_known] + 1) * DZ
+        edge = occ & binary_dilation(free, FOUR)
+        nb_h = (np.ceil(height / DZ)).astype(int)
+        unk_wall = (b3.wall == 0) & edge[..., None] & (idx[None, None, :] < nb_h[..., None])
+        unk_ceil = free & ~b3.ceil
+        return height, H, unk_wall, unk_ceil
+
+    def _truth_world(self):
+        sc, b3 = self.b3.scene, self.b3
+        return sc.height, sc.H, sc.wall_true & (b3.wall != 1), sc.ceil_true & ~b3.ceil
+
+    def _gain(self, world, cells, headings):
+        height, H, unk_wall, unk_ceil = world
+        ny, nx = height.shape
+        out = np.zeros(len(cells))
+        for c0 in range(0, len(cells), self.chunk):
+            cxy, hd = cells[c0:c0 + self.chunk], headings[c0:c0 + self.chunk]
+            K = len(cxy)
+            ix = np.rint(cxy[:, 0, None, None] + self.dx[None]).astype(np.int64)
+            iy = np.rint(cxy[:, 1, None, None] + self.dy[None]).astype(np.int64)
+            inside = (ix >= 0) & (ix < nx) & (iy >= 0) & (iy < ny)
+            ixc, iyc = np.clip(ix, 0, nx - 1), np.clip(iy, 0, ny - 1)
+            hgt = np.where(inside, height[iyc, ixc], H)  # [K, A, S]
+            e = self.el[None, :, None] + self.tilt * np.cos(self.az[None, None, :] - hd[:, None, None])  # [K, B, A]
+            zb = self.zs + np.tan(e)[..., None] * self.r  # [K, B, A, S]
+            event = (zb < hgt[:, None]) | (zb > H)
+            hit = event.any(-1)
+            first = np.argmax(event, -1)
+            k, b, a = np.nonzero(hit)
+            s = first[k, b, a]
+            z = zb[k, b, a, s]
+            cx, cy = ixc[k, a, s], iyc[k, a, s]
+            wall = (z >= 0) & (z <= H) & (hgt[k, a, s] > 0)
+            bins = np.clip((z / DZ).astype(np.int64), 0, NB - 1)
+            w_ok = wall & unk_wall[cy, cx, bins]
+            c_ok = (z > H) & unk_ceil[cy, cx]
+            keys = np.concatenate([((k[w_ok] * ny + cy[w_ok]) * nx + cx[w_ok]) * (NB + 1) + bins[w_ok],
+                                   ((k[c_ok] * ny + cy[c_ok]) * nx + cx[c_ok]) * (NB + 1) + NB])
+            if len(keys):
+                u = np.unique(keys)
+                out[c0:c0 + K] = np.bincount(u // ((NB + 1) * ny * nx), minlength=K)
+        return out
+
+    def node_gain(self, coords, robot_xy, map_origin, kind="belief", belief_map=None):
+        """coords [N, 2] metres -> unseen elements a sweep from each node would hit (cached, refreshed nearby)."""
+        cache = self.cache[kind]
+        coords = np.asarray(coords, dtype=np.float64)
+        keys = [(round(c[0], 1), round(c[1], 1)) for c in coords]
+        near = np.linalg.norm(coords - np.asarray(robot_xy)[None], axis=1) <= self.update_radius
+        todo = [i for i, k in enumerate(keys) if near[i] or k not in cache]
+        if todo:
+            world = self._belief_world(belief_map) if kind == "belief" else self._truth_world()
+            c = coords[todo]
+            cells = np.stack([(c[:, 0] - map_origin[0]) / self.cell, (c[:, 1] - map_origin[1]) / self.cell], 1)
+            d = c - np.asarray(robot_xy)[None]
+            headings = np.arctan2(d[:, 1], d[:, 0])  # arriving from the robot's side
+            for i, g in zip(todo, self._gain(world, cells, headings)):
+                cache[keys[i]] = g
+        return np.array([cache[k] for k in keys])
