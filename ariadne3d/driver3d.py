@@ -129,6 +129,8 @@ def main():
     ap.add_argument("--w_guide", type=float, default=None,
                     help="weight of the BIM-plan guide reward (bim_env.py; default 1 for --world bim, else 0)")
     ap.add_argument("--guide_only", action="store_true", help="guide reward replaces the frontier / time / 3D terms")
+    ap.add_argument("--recycle", type=int, default=50,
+                    help="restart each worker process after this many episodes (worker memory creeps up ~8 MB/episode)")
     args = ap.parse_args()
     if args.w_guide is None:
         args.w_guide = 1.0 if args.world == "bim" else 0.0
@@ -187,7 +189,8 @@ def main():
     def weights():
         return {k: v.detach().cpu() for k, v in policy.state_dict().items()}
 
-    ex = ProcessPoolExecutor(args.workers, mp_context=mp.get_context("spawn"), initializer=_init_worker)
+    ex = ProcessPoolExecutor(args.workers, mp_context=mp.get_context("spawn"), initializer=_init_worker,
+                             max_tasks_per_child=args.recycle or None)
     w = weights()
     jobs = set()
     next_ep = episode + 1
@@ -213,7 +216,8 @@ def main():
                     window[m].append(metrics.get(m, np.nan))
             csv_f.flush()
             w = weights()
-            while len(jobs) < args.workers and next_ep < EVAL_EPISODE_START:
+            # held-out episodes only exist for the 'maps' world (bim: maps_test is a separate folder)
+            while len(jobs) < args.workers and (args.world != "maps" or next_ep < EVAL_EPISODE_START):
                 jobs.add(ex.submit(run_job, w, next_ep))
                 next_ep += 1
 
