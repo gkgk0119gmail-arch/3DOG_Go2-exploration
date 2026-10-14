@@ -120,11 +120,14 @@ class Session:
         far = th > self.cfg.perception.discover_range
         self.world.insert_scan(env, o, R, self.dirs, th, torch.where(far, torch.full_like(labels, -1), labels),
                                m.free_ray_stride, m.no_return_free_range)
-        if self.world.fine is not None:  # the planner's own record of object surface it has hit (no GT)
-            own = (labels >= 0) & ~far & (th <= m.object_range)
-            if own.any():
-                pts_o = o[:, None, :] + (R @ self.dirs.T).transpose(1, 2) * th[..., None]
-                self.world.mark_fine(env[:, None].expand_as(th)[own], pts_o[own])
+        # the planner's own record of object surface it has hit closely (no GT): fine grid (priors), coarse counts
+        own = (labels >= 0) & ~far & (th <= m.object_range)
+        if own.any():
+            pts_o = o[:, None, :] + (R @ self.dirs.T).transpose(1, 2) * th[..., None]
+            e_o = env[:, None].expand_as(th)[own]
+            self.world.mark_close(e_o, pts_o[own])
+            if self.world.fine is not None:
+                self.world.mark_fine(e_o, pts_o[own])
         labels = torch.where(th <= m.object_range, cov, torch.full_like(cov, -1))
         hit = labels >= 0
         if hit.any():

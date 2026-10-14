@@ -24,6 +24,8 @@ class WorldModel:
         m = cfg.metrics
         self.vg = VoxelGrid(scene_meta["bounds"], scene_meta["z_range"], m.scene_voxel, n_envs, device)
         self.labels = torch.full((n_envs, *self.vg.shape), -1, dtype=torch.int16, device=device)
+        # object-labelled returns within d_max per voxel: "scanned closely", for the VLM tint (stage 5)
+        self.close_hits = torch.zeros((n_envs, *self.vg.shape), dtype=torch.int16, device=device)
         self.n_obj = n_obj or len(scene_meta["objects"])  # GT ids, or perception hypotheses
         v = self.vg.voxel
         band = cfg.planner.nav.obstacle_band
@@ -45,13 +47,25 @@ class WorldModel:
         self.vg.reset(env_ids)
         if env_ids is None:
             self.labels.fill_(-1)
+            self.close_hits.zero_()
         else:
             self.labels[env_ids] = -1
+            self.close_hits[env_ids] = 0
         if self.fine is not None:
             if env_ids is None:
                 self.fine.zero_()
             else:
                 self.fine[env_ids] = False
+
+    def mark_close(self, env: torch.Tensor, points: torch.Tensor):
+        """Count object-labelled returns within d_max per coarse voxel."""
+        if len(points) == 0:
+            return
+        ijk, ok = self.voxel_index(points)
+        e, ijk = env[ok], ijk[ok]
+        self.close_hits.index_put_((e, ijk[:, 0], ijk[:, 1], ijk[:, 2]),
+                                   torch.ones(len(e), dtype=torch.int16, device=self.device), accumulate=True)
+        self.close_hits.clamp_(max=10000)
 
     def mark_fine(self, env: torch.Tensor, points: torch.Tensor):
         """Mark the fine voxels of object-labelled returns ``points`` [N, 3] of environments ``env`` [N]."""
@@ -133,6 +147,8 @@ class WorldModel:
             lo, hi = c.min(0).values - v / 2, c.max(0).values + v / 2
             if min_footprint > 0 and float((hi[:2] - lo[:2]).min()) < min_footprint:
                 continue
+            sel_idx = idx[ids == o]
+            hits = self.close_hits[e][sel_idx[:, 0], sel_idx[:, 1], sel_idx[:, 2]]
             out[o] = {"centroid": ((lo + hi) / 2).cpu().numpy(), "lo": lo.cpu().numpy(), "hi": hi.cpu().numpy(),
-                      "voxels": c, "count": int(len(c))}
+                      "voxels": c, "count": int(len(c)), "close_hits": hits}
         return out

@@ -139,6 +139,8 @@ planner:
                                  # object is closed
     min_confidence: 0.5          # verdicts below this fall back to the geometric default
     done_green_fraction: 0.5     # POSE guardrail on the model's green-fraction estimate: keep <= 1 and done
+    tint_min_hits: 20            # green = object voxels with >= this many labelled returns within d_max (not just
+                                 # mapped: a single far return maps a 0.2 m voxel and made every machine look done)
     max_keep: 3                  # POSE: candidates retained per verdict <= 3
     max_photos: 3                # POSE: up to three images per consult (plus the map crop)
     bev_px: 384

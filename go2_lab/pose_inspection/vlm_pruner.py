@@ -29,8 +29,8 @@ especially the top. Sensor: 360 deg LiDAR, vertical FOV +/-{vfov:.0f} deg, mount
 can tilt up to {tilt:.0f} deg. Object: {cls}, mapped height {h_map:.1f} m, footprint {fx:.1f} x {fy:.1f} m. \
 Sectors around the object (0..{ns_1}): {sectors} (0 unseen, 1 seen, 255 unreachable). \
 Previous verdicts: {prev}. Consult #{n}.
-IMG 1: top-down map crop around the object (green = mapped object voxels, numbered circles = candidates, \
-blue = robot). {photo_note}
+IMG 1: top-down map crop around the object (green = object parts scanned closely, grey-green = mapped from \
+afar only, numbered circles = candidates, blue = robot). {photo_note}
 Candidates:
 {table}
 Task: keep <= {max_keep} candidates (at most one per sector) that would scan surfaces not yet green; prune only \
@@ -147,7 +147,8 @@ class VlmPruner:
             h_map=float(m["hi"][2]), fx=float(ext[0]), fy=float(ext[1]), ns_1=ns - 1, sectors=sectors,
             prev="; ".join(s.history[-3:]) or "none", n=s.n_consults + 1,
             photo_note=(f"IMG 2..{photos + 1}: robot camera photos of the object from sectors "
-                        f"{[f[0] for f in self._photo_meta]}; green tint = already scanned." if photos else
+                        f"{[f[0] for f in self._photo_meta]}; green tint = parts already scanned closely, untinted parts of the "
+                        f"machine still need scanning." if photos else
                         "No photos yet."), table="\n".join(table), max_keep=self.v.max_keep)
         s.request = self.client.submit(images, text, t, meta={"env": self.e, "obj": int(o), "id2sector": id2sector,
                                                               "consult": s.n_consults + 1})
@@ -206,11 +207,12 @@ class VlmPruner:
             seg = img[r, lo - ix0:hi - ix0]
             seg[row == FREE2D] = 255
             seg[row == OCC2D] = 0
-        vox = m["voxels"].cpu().numpy()
-        px = ((vox[:, 0] - x0) / cell).astype(int)
-        py = ((vox[:, 1] - y0) / cell).astype(int)
-        ok = (px >= 0) & (px < n) & (py >= 0) & (py < n)
-        img[py[ok], px[ok]] = (40, 200, 60)
+        for vox, col in ((m["voxels"], (150, 170, 150)), (self._scanned(m), (40, 200, 60))):
+            vox = vox.cpu().numpy()
+            px = ((vox[:, 0] - x0) / cell).astype(int)
+            py = ((vox[:, 1] - y0) / cell).astype(int)
+            ok = (px >= 0) & (px < n) & (py >= 0) & (py < n)
+            img[py[ok], px[ok]] = col
         im = Image.fromarray(img[::-1]).resize((self.v.bev_px, self.v.bev_px), Image.NEAREST)
         dr = ImageDraw.Draw(im)
         s = self.v.bev_px / n
@@ -234,7 +236,7 @@ class VlmPruner:
         its projected size, hidden ones skipped by the depth image)."""
         rgb = f["rgb"].astype(np.float32).copy()
         H, W = rgb.shape[:2]
-        vox = m["voxels"].to(f["R_wc"].device)
+        vox = self._scanned(m).to(f["R_wc"].device)
         pc = vox @ f["R_wc"].T + f["t_wc"]
         z = pc[:, 2]
         ok = z > 0.2
@@ -253,6 +255,10 @@ class VlmPruner:
             mask[max(0, vi - h):vi + h + 1, max(0, ui - h):ui + h + 1] = True
         rgb[mask] = 0.45 * rgb[mask] + 0.55 * np.array([40, 220, 60])
         return Image.fromarray(rgb.clip(0, 255).astype(np.uint8))
+
+    def _scanned(self, m):
+        """Object voxels scanned closely (>= tint_min_hits labelled returns within d_max): the green tint."""
+        return m["voxels"][m["close_hits"] >= self.v.tint_min_hits]
 
     def summary(self) -> dict:
         return dict(self.stats)
