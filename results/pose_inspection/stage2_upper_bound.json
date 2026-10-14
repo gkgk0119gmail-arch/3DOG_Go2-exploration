@@ -1,0 +1,178 @@
+{
+ "A_warehouse": {
+  "tilt0": {
+   "tilt_deg": 0.0,
+   "positions": 5596,
+   "postures": 15,
+   "reachable_area_m2": 1395.2700415822867,
+   "co_ub_posture": 0.9320897459983826,
+   "co_ub_level": 0.5803466439247131,
+   "co_ub_posture_n26": 0.9996083378791809,
+   "co_ub_level_n26": 0.678172767162323,
+   "per_object": {
+    "forklift_0": {
+     "posture": 0.9275909662246704,
+     "level": 0.5754976272583008
+    },
+    "forklift_1": {
+     "posture": 0.9316855669021606,
+     "level": 0.5801579356193542
+    },
+    "forklift_2": {
+     "posture": 0.9328536987304688,
+     "level": 0.5834189653396606
+    },
+    "forklift_3": {
+     "posture": 0.9291095733642578,
+     "level": 0.5763698816299438
+    },
+    "forklift_4": {
+     "posture": 0.9331504702568054,
+     "level": 0.5803908109664917
+    },
+    "forklift_5": {
+     "posture": 0.9305270314216614,
+     "level": 0.5770020484924316
+    },
+    "forklift_6": {
+     "posture": 0.9397053718566895,
+     "level": 0.5895854830741882
+    }
+   },
+   "observable_volume_fraction": 0.9938474761681513,
+   "observable_file": "observable_tilt0.npz",
+   "seconds": 10.0
+  },
+  "tilt15": {
+   "tilt_deg": 15.0,
+   "positions": 5596,
+   "postures": 15,
+   "reachable_area_m2": 1395.2700415822867,
+   "co_ub_posture": 0.9337544441223145,
+   "co_ub_level": 0.8226106762886047,
+   "co_ub_posture_n26": 0.9995104074478149,
+   "co_ub_level_n26": 0.9574030637741089,
+   "per_object": {
+    "forklift_0": {
+     "posture": 0.9272477626800537,
+     "level": 0.8164035677909851
+    },
+    "forklift_1": {
+     "posture": 0.9323721528053284,
+     "level": 0.8235496282577515
+    },
+    "forklift_2": {
+     "posture": 0.9373072981834412,
+     "level": 0.8259677886962891
+    },
+    "forklift_3": {
+     "posture": 0.931506872177124,
+     "level": 0.8102739453315735
+    },
+    "forklift_4": {
+     "posture": 0.9365786910057068,
+     "level": 0.8193349242210388
+    },
+    "forklift_5": {
+     "posture": 0.9325804114341736,
+     "level": 0.8018480539321899
+    },
+    "forklift_6": {
+     "posture": 0.9386776089668274,
+     "level": 0.8609112501144409
+    }
+   },
+   "observable_volume_fraction": 0.9938802937959056,
+   "observable_file": "observable_tilt15.npz",
+   "seconds": 9.5
+  }
+ },
+ "B_construction": {
+  "tilt0": {
+   "tilt_deg": 0.0,
+   "positions": 2974,
+   "postures": 15,
+   "reachable_area_m2": 756.910022557676,
+   "co_ub_posture": 0.8071215748786926,
+   "co_ub_level": 0.6289681196212769,
+   "co_ub_posture_n26": 0.9623269438743591,
+   "co_ub_level_n26": 0.803373396396637,
+   "per_object": {
+    "excavator_a": {
+     "posture": 0.9468908309936523,
+     "level": 0.7467307448387146
+    },
+    "excavator_b": {
+     "posture": 0.9484179615974426,
+     "level": 0.7436851859092712
+    },
+    "dump_truck": {
+     "posture": 0.7505097389221191,
+     "level": 0.582144021987915
+    },
+    "container": {
+     "posture": 0.6082698702812195,
+     "level": 0.467899888753891
+    },
+    "gravel_pile": {
+     "posture": 0.6861538290977478,
+     "level": 0.6861538290977478
+    },
+    "brick_pallets": {
+     "posture": 0.7180706262588501,
+     "level": 0.657608687877655
+    },
+    "pipe_bundle": {
+     "posture": 0.7531741857528687,
+     "level": 0.6201117038726807
+    }
+   },
+   "observable_volume_fraction": 0.9917561904761905,
+   "observable_file": "observable_tilt0.npz",
+   "seconds": 5.3
+  },
+  "tilt15": {
+   "tilt_deg": 15.0,
+   "positions": 2974,
+   "postures": 15,
+   "reachable_area_m2": 756.910022557676,
+   "co_ub_posture": 0.8054004907608032,
+   "co_ub_level": 0.7628700733184814,
+   "co_ub_posture_n26": 0.9622887372970581,
+   "co_ub_level_n26": 0.9522680640220642,
+   "per_object": {
+    "excavator_a": {
+     "posture": 0.9458233118057251,
+     "level": 0.8887109756469727
+    },
+    "excavator_b": {
+     "posture": 0.945227324962616,
+     "level": 0.8928476572036743
+    },
+    "dump_truck": {
+     "posture": 0.7489537596702576,
+     "level": 0.7113423943519592
+    },
+    "container": {
+     "posture": 0.6082698702812195,
+     "level": 0.6082698702812195
+    },
+    "gravel_pile": {
+     "posture": 0.6861538290977478,
+     "level": 0.6861538290977478
+    },
+    "brick_pallets": {
+     "posture": 0.7177309989929199,
+     "level": 0.717391312122345
+    },
+    "pipe_bundle": {
+     "posture": 0.7653631567955017,
+     "level": 0.629761278629303
+    }
+   },
+   "observable_volume_fraction": 0.9917396825396826,
+   "observable_file": "observable_tilt15.npz",
+   "seconds": 5.1
+  }
+ }
+}

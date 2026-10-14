@@ -1,0 +1,45 @@
+# POSE-inspection pipeline: shared parameters (robot, sensor, metrics, planner, experiment).
+# Scene files (scene_*.yaml) are separate; an experiment config names one scene and overrides what it changes.
+
+robot:
+  base_height: 0.30              # Go2 standing base height [m] (posture-walk reward target)
+  radius: 0.37                   # footprint radius for clearance checks [m] (exploration CEM value)
+  # posture limits the posture-walk policy was trained on: pitch +-0.45 rad, roll +-0.30 rad (go2_lab/posture.py)
+  pitch_limit_deg: 25.0
+  roll_limit_deg: 17.0
+
+lidar:
+  # Velodyne VLP-16 (go2_lab/factory.py): 16 rings over +-15 deg, 360 deg, 0.2 deg @ 10 Hz
+  channels: 16
+  vfov_deg: [-15.0, 15.0]
+  az_res_deg: 0.2
+  rate_hz: 10.0
+  max_range: 100.0
+  mount_pos: [0.2, 0.0, 0.08]    # base_link -> sensor base plate
+  scan_height: 0.0377            # plate -> scan origin
+  mount_tilt_deg: 15.0           # nose-up mount tilt (ablation: 0)
+
+metrics:
+  surface_voxel: 0.1             # Co: object-surface voxel size, must match the scene build
+  object_range: 6.0              # POSE d_max: returns farther than this are not registered to an object [m]
+  scene_voxel: 0.2               # Cs: free / occupied / unknown voxel map
+  free_ray_stride: 2             # Cs: every n-th azimuth column marks free space (speed)
+  no_return_free_range: 30.0     # Cs: a ray without a return frees space up to this range [m]
+  log_period_s: 1.0              # coverage curve sample period
+
+termination:
+  cs_threshold: 0.90             # on Cs normalised by the observable volume (see upper_bound)
+  window_s: 30.0
+  min_gain: 0.001                # Cs must grow less than 0.1 points over the window
+  time_limit_s: 1200.0
+
+upper_bound:
+  grid_step: 0.5                 # candidate robot positions [m] (reachable, clear cells)
+  yaws_deg: [0.0, 45.0, 90.0, 135.0, 180.0, 225.0, 270.0, 315.0]
+  az_res_deg: 0.4                # ray density for the sweep
+  # posture grid swept for the bound; the level-only bound is reported too
+  pitch_deg: [-25.0, -12.5, 0.0, 12.5, 25.0]
+  roll_deg: [-15.0, 0.0, 15.0]
+  volume_grid_step: 2.0          # positions used for the observable-volume sweep (expensive)
+  volume_az_res_deg: 2.0
+  batch_poses: 512
