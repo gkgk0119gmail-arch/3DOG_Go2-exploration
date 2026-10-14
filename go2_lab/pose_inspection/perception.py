@@ -189,8 +189,11 @@ class ClassToInstance:
             b = self.boxes[k]
             b["lo"] = np.minimum(b["lo"], pts[sel].min(0))
             b["hi"] = np.maximum(b["hi"], pts[sel].max(0))
-            b["votes"] += np.bincount(cls[sel], minlength=self.nc)
+            # one vote per frame, split over the classes seen in it: close-ups (thousands of returns, where the
+            # tracks of an excavator read as "tracked dump truck") no longer outvote every distant view
+            b["votes"] += np.bincount(cls[sel], minlength=self.nc) / sel.sum()
             b["cls"] = int(np.argmax(b["votes"]))
+            b["frames"] = b.get("frames", 0) + 1
         return inst
 
 
@@ -297,7 +300,7 @@ class Gsam2Perception:
         out = {"frames": self.n_frames, "wall_s": round(self.wall_s, 1),
                "hypotheses": [[{"cls": self.classes[b["cls"]] if b["cls"] >= 0 else None,
                                 "center": ((b["lo"] + b["hi"]) / 2).round(2).tolist(),
-                                "votes": b["votes"].astype(int).tolist()} for b in a.boxes] for a in self.assoc]}
+                                "votes": b["votes"].round(2).tolist()} for b in a.boxes] for a in self.assoc]}
         for c, (tp, fp, fn) in self.stats.items():
             b, cl, oc = self.fp_on[c]
             out[c] = {"precision": tp / max(1, tp + fp), "recall": tp / max(1, tp + fn), "tp": tp, "fp": fp, "fn": fn,

@@ -76,6 +76,7 @@ perception:
     assoc_radius: 1.5            # class voxels join an object hypothesis within this distance of its box [m]
     max_extent: {forklift: 4.5, excavator: 6.0, dump_truck: 8.5}   # hypothesis footprint diagonal cap [m]
     class_box_threshold: {dump_truck: 0.40}                        # per-class detection threshold
+    min_footprint: 0.8           # a hypothesis whose footprint is thinner than this is not a machine (fences) [m]
     max_objects: 40
   cameras:                       # ring of pinhole cameras on the base (stage 4)
     n: 4

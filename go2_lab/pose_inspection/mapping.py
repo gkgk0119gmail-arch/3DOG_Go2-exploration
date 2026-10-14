@@ -117,8 +117,9 @@ class WorldModel:
         return out
 
     # ---------------------------------------------------------------------------------------------------------------
-    def object_models(self, e: int, min_voxels: int) -> dict[int, dict]:
-        """Objects with at least ``min_voxels`` labelled voxels: centroid, box (lo, hi), voxel centres."""
+    def object_models(self, e: int, min_voxels: int, min_footprint: float = 0.0) -> dict[int, dict]:
+        """Objects with at least ``min_voxels`` labelled voxels and a footprint whose short side is at least
+        ``min_footprint`` (drops fence-like perception hypotheses): centroid, box (lo, hi), voxel centres."""
         lab = self.labels[e]
         idx = torch.nonzero(lab >= 0)
         if len(idx) == 0:
@@ -130,6 +131,8 @@ class WorldModel:
         for o in torch.nonzero(cnt >= min_voxels).flatten().tolist():
             c = (idx[ids == o].float() + 0.5) * v + self.lo
             lo, hi = c.min(0).values - v / 2, c.max(0).values + v / 2
+            if min_footprint > 0 and float((hi[:2] - lo[:2]).min()) < min_footprint:
+                continue
             out[o] = {"centroid": ((lo + hi) / 2).cpu().numpy(), "lo": lo.cpu().numpy(), "hi": hi.cpu().numpy(),
                       "voxels": c, "count": int(len(c))}
         return out
