@@ -155,6 +155,7 @@ priors:                          # stage 6: region where unseen parts are expect
   dilate: 0.2
   # template / cad: the gain counts predicted-surface fine voxels not hit yet ("missing surface") instead of
   # unknown coarse voxels in the inflated box (POSE)
+  use_center: true               # sample the sector viewpoints around the prior's object centre (else the mapped box)
   fine_voxel: 0.1
   shell: 0.25                    # template surface shell half-thickness (absorbs the template's size error) [m]
   min_surface_z: 0.15            # no predicted surface at the ground

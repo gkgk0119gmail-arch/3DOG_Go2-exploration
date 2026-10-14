@@ -85,7 +85,8 @@ class Session:
 
             self.prior = CadPrior(d, self.scorer, len(scene_meta["objects"]))
         if self.prior is not None:
-            region_fn, center_fn = self.prior.region, self.prior.center
+            region_fn = self.prior.region
+            center_fn = self.prior.center if cfg.priors.use_center else None
         self.agents = [InspectionAgent(e, self.world, self.scorer, cfg, scene_meta, region_fn=region_fn,
                                        pruner=pruner_factory(e) if pruner_factory else None, center_fn=center_fn)
                        for e in range(self.E)]
