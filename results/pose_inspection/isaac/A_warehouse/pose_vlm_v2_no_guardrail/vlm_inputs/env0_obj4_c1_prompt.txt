@@ -1,0 +1,9 @@
+Select inspection viewpoints for one object so a ground robot's range sensor can 3D-scan all of it, especially the top. Sensor: 360 deg LiDAR, vertical FOV +/-15 deg, mounted 15 deg nose-up; the body can tilt up to 25 deg. Object: forklift, mapped height 1.4 m, footprint 1.2 x 1.6 m. Sectors around the object (0..7): [255, 255, 0, 0, 255, 0, 0, 0] (0 unseen, 1 seen, 255 unreachable). Previous verdicts: none. Consult #1.
+IMG 1: top-down map crop around the object (green = mapped object voxels, numbered circles = candidates, blue = robot). No photos yet.
+Candidates:
+#1 sec 2, 3 m, top@level 2.1 m, top@-25deg 4.7 m, visibility 241, posture gain 428 vs level 428
+#2 sec 3, 4 m, top@level 2.7 m, top@-25deg 6.1 m, visibility 57, posture gain 225 vs level 202
+#3 sec 5, 3 m, top@level 2.1 m, top@-25deg 4.7 m, visibility 287, posture gain 626 vs level 626
+#4 sec 6, 3 m, top@level 2.1 m, top@-25deg 4.7 m, visibility 261, posture gain 650 vs level 650
+#5 sec 7, 3 m, top@level 2.1 m, top@-25deg 4.7 m, visibility 243, posture gain 558 vs level 558
+Task: keep <= 3 candidates (at most one per sector) that would scan surfaces not yet green; prune only sectors whose side of the object is fully green; if more than half of the object is green, keep at most one candidate and set done to true. Reply with JSON only: {"keep": [candidate numbers], "confidence": 0-1, "reason": "one sentence", "done": true/false}

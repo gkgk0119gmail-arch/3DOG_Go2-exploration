@@ -1,0 +1,1370 @@
+[
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.31,
+  "tokens_in": 841,
+  "tokens_out": 51,
+  "error": null,
+  "reply": "{\"keep\": [7], \"confidence\": 0.95, \"reason\": \"Sector 7 has the highest visibility and scans the least-covered side of the excavator, ensuring top coverage while minimizing redundant scans.\", \"done\": false}",
+  "env": 0,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 1.32,
+  "tokens_in": 849,
+  "tokens_out": 48,
+  "error": null,
+  "reply": "{\"keep\": [5], \"confidence\": 0.95, \"reason\": \"Sector 5 has the highest visibility and scans the most ungreen surfaces, especially the top of the dump truck.\", \"done\": false}",
+  "env": 0,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.73,
+  "tokens_in": 843,
+  "tokens_out": 68,
+  "error": null,
+  "reply": "{\"keep\": [5, 6, 7], \"confidence\": 0.95, \"reason\": \"Sectors 5, 6, and 7 show the most unscanned object surfaces with high visibility and posture gain, and none of the object's sides is fully green.\", \"done\": false}",
+  "env": 1,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 1.97,
+  "tokens_in": 844,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.95, \"reason\": \"These sectors cover the top and sides of the dump truck with high visibility and posture gain, while sectors 4-7 are fully green and should be pruned.\", \"done\": false}",
+  "env": 1,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 1.77,
+  "tokens_in": 846,
+  "tokens_out": 52,
+  "error": null,
+  "reply": "{\"keep\": [7], \"confidence\": 0.95, \"reason\": \"Sector 7 offers the best visibility and posture gain while scanning unscanned areas, and more than half the object is already green.\", \"done\": true}",
+  "env": 2,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.7,
+  "tokens_in": 838,
+  "tokens_out": 67,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 7], \"confidence\": 0.95, \"reason\": \"These viewpoints cover unscanned top and side surfaces with high visibility and posture gain, while sectors 3-6 are partially unscanned and sector 7 is fully green.\", \"done\": false}",
+  "env": 2,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.02,
+  "tokens_in": 847,
+  "tokens_out": 61,
+  "error": null,
+  "reply": "{\"keep\": [4, 6, 7], \"confidence\": 0.9, \"reason\": \"These candidates cover unscanned top and side surfaces, avoiding fully green sectors, and ensure comprehensive 3D scanning with the LiDAR's constraints.\", \"done\": false}",
+  "env": 2,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 1.89,
+  "tokens_in": 846,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"keep\": [5, 6, 7], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned areas of the excavator's sides and top, with high visibility scores and posture gains, while avoiding fully green sectors.\", \"done\": false}",
+  "env": 3,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.54,
+  "tokens_in": 849,
+  "tokens_out": 69,
+  "error": null,
+  "reply": "{\"keep\": [1, 4, 5], \"confidence\": 0.9, \"reason\": \"These candidates cover unseen top and side surfaces with high visibility and posture gain, while sectors 0, 3, 4, 5, 6, 7 are not fully green.\", \"done\": false}",
+  "env": 3,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 1.9,
+  "tokens_in": 841,
+  "tokens_out": 63,
+  "error": null,
+  "reply": "{\"keep\": [3, 5, 7], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned areas of the excavator, especially the top and sides, while avoiding fully green sectors and staying within the 3-candidate limit.\", \"done\": false}",
+  "env": 4,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 1.74,
+  "tokens_in": 847,
+  "tokens_out": 47,
+  "error": null,
+  "reply": "{\"keep\": [5], \"confidence\": 0.95, \"reason\": \"Sector 5 has the highest visibility and scans the least green area, ensuring top coverage while avoiding redundant scans.\", \"done\": false}",
+  "env": 4,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.32,
+  "tokens_in": 847,
+  "tokens_out": 67,
+  "error": null,
+  "reply": "{\"keep\": [6], \"confidence\": 0.95, \"reason\": \"Candidate #6 in sector 5 offers the highest posture gain and best visibility to scan the ungreen rear side of the dump truck, especially its top, while other sectors are either fully green or less optimal.\", \"done\": false}",
+  "env": 5,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 1.36,
+  "tokens_in": 838,
+  "tokens_out": 48,
+  "error": null,
+  "reply": "{\"keep\": [2, 5, 7], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned areas and avoid fully green sides, maximizing new surface coverage.\", \"done\": false}",
+  "env": 5,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 4.0,
+  "latency_s": 2.93,
+  "tokens_in": 838,
+  "tokens_out": 76,
+  "error": null,
+  "reply": "{\"keep\": [4, 5, 6], \"confidence\": 0.95, \"reason\": \"These sectors cover unscanned areas of the excavator's sides and top, with high visibility scores and posture gains, while sectors 0,1,2,3,7 are either fully green or have low gain.\", \"done\": false}",
+  "env": 0,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 10.06,
+  "latency_s": 1.62,
+  "tokens_in": 848,
+  "tokens_out": 54,
+  "error": null,
+  "reply": "{\"keep\": [6, 7], \"confidence\": 0.8, \"reason\": \"Sectors 6 and 7 show highest visibility and posture gain, scanning ungreen areas on the excavator's sides and top.\", \"done\": false}",
+  "env": 1,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 13.64,
+  "latency_s": 2.19,
+  "tokens_in": 1213,
+  "tokens_out": 63,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"These sectors scan unscanned top surfaces with high visibility and posture gain, while sectors 5 and 6 are fully green and sector 7 has low gain.\", \"done\": false}",
+  "env": 5,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 14.1,
+  "latency_s": 2.07,
+  "tokens_in": 815,
+  "tokens_out": 65,
+  "error": null,
+  "reply": "{\"keep\": [2, 4, 6], \"confidence\": 0.9, \"reason\": \"These candidates cover unscanned top surfaces with high visibility and posture gain, while sectors 0, 3, 5, 7 are fully green or low-value.\", \"done\": false}",
+  "env": 3,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 21.52,
+  "latency_s": 3.79,
+  "tokens_in": 845,
+  "tokens_out": 58,
+  "error": null,
+  "reply": "{\"keep\": [5, 6, 7], \"confidence\": 0.95, \"reason\": \"These sectors cover unscanned top surfaces and sides with partial green coverage, maximizing new data while respecting the 3-candidate limit.\", \"done\": false}",
+  "env": 4,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 29.44,
+  "latency_s": 3.48,
+  "tokens_in": 840,
+  "tokens_out": 51,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned top surfaces and avoid fully green sides, maximizing new coverage with minimal candidates.\", \"done\": false}",
+  "env": 5,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 25.56,
+  "latency_s": 4.04,
+  "tokens_in": 1353,
+  "tokens_out": 54,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.95, \"reason\": \"These candidates cover unseen sectors with high visibility and posture gain, ensuring top surfaces are scanned while avoiding redundant green areas.\", \"done\": false}",
+  "env": 4,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 6,
+   "6": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 32.26,
+  "latency_s": 3.09,
+  "tokens_in": 1205,
+  "tokens_out": 48,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 7], \"confidence\": 0.9, \"reason\": \"These sectors scan unscanned top surfaces and avoid fully green sides, maximizing new coverage.\", \"done\": false}",
+  "env": 0,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 43.04,
+  "latency_s": 3.16,
+  "tokens_in": 1297,
+  "tokens_out": 49,
+  "error": null,
+  "reply": "{\"keep\": [1, 3, 4], \"confidence\": 0.9, \"reason\": \"These candidates cover unseen sectors and provide high posture gain for scanning the top surfaces not yet mapped.\", \"done\": false}",
+  "env": 1,
+  "obj": 2,
+  "id2sector": {
+   "1": 3,
+   "2": 4,
+   "3": 5,
+   "4": 6,
+   "5": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 50.0,
+  "latency_s": 1.88,
+  "tokens_in": 1289,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"keep\": [1, 3, 5], \"confidence\": 0.9, \"reason\": \"These candidates cover unseen sectors and high-visibility areas to scan the top and sides of the dump truck, especially where the object is not yet green.\", \"done\": false}",
+  "env": 3,
+  "obj": 2,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6,
+   "5": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 51.12,
+  "latency_s": 1.84,
+  "tokens_in": 1207,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"keep\": [1, 3], \"confidence\": 0.85, \"reason\": \"Candidate #1 and #3 provide the best coverage of unscanned top surfaces with high visibility and posture gain, while sector 7 is not fully green.\", \"done\": false}",
+  "env": 5,
+  "obj": 2,
+  "id2sector": {
+   "1": 3,
+   "2": 4,
+   "3": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 75.1,
+  "latency_s": 1.98,
+  "tokens_in": 1207,
+  "tokens_out": 53,
+  "error": null,
+  "reply": "{\"keep\": [1, 2], \"confidence\": 0.8, \"reason\": \"Candidates #1 and #2 are in sectors with visible unscanned areas and provide good posture gain for scanning the top surfaces.\", \"done\": false}",
+  "env": 0,
+  "obj": 2,
+  "id2sector": {
+   "1": 2,
+   "2": 3,
+   "3": 6
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 81.86,
+  "latency_s": 2.46,
+  "tokens_in": 1120,
+  "tokens_out": 66,
+  "error": null,
+  "reply": "{\"keep\": [1], \"confidence\": 0.95, \"reason\": \"Candidate #1 in sector 4 is the only viable option as it targets the top surface of the dump truck, which is not yet fully scanned, and no other sector has significant unscanned areas.\", \"done\": false}",
+  "env": 5,
+  "obj": 2,
+  "id2sector": {
+   "1": 4
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 84.36,
+  "latency_s": 2.37,
+  "tokens_in": 1160,
+  "tokens_out": 71,
+  "error": null,
+  "reply": "{\"keep\": [1], \"confidence\": 0.9, \"reason\": \"Candidate #1 in sector 4 is the only viable option as it can scan the top of the dump truck, which is not yet fully green, while sectors 3, 5, and 6 are already scanned or blocked.\", \"done\": false}",
+  "env": 1,
+  "obj": 2,
+  "id2sector": {
+   "1": 4,
+   "2": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 87.3,
+  "latency_s": 2.45,
+  "tokens_in": 1157,
+  "tokens_out": 58,
+  "error": null,
+  "reply": "{\"keep\": [2], \"confidence\": 0.9, \"reason\": \"Candidate #2 in sector 6 offers the highest visibility and posture gain, and sector 6 is not fully green, making it the optimal choice to scan unseen surfaces.\", \"done\": false}",
+  "env": 3,
+  "obj": 2,
+  "id2sector": {
+   "1": 2,
+   "2": 6
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 90.98,
+  "latency_s": 2.46,
+  "tokens_in": 1292,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"keep\": [1, 5], \"confidence\": 0.8, \"reason\": \"Candidates #1 and #5 are optimal as they scan unseen top surfaces with high visibility and posture gain, while #4 is pruned due to low gain and #3 is unreachable.\", \"done\": false}",
+  "env": 2,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 4,
+   "5": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 95.74,
+  "latency_s": 1.7,
+  "tokens_in": 1117,
+  "tokens_out": 49,
+  "error": null,
+  "reply": "{\"keep\": [6], \"confidence\": 0.95, \"reason\": \"Sector 6 is the only one with significant unscanned top surfaces, and the object is not yet fully green.\", \"done\": false}",
+  "env": 0,
+  "obj": 2,
+  "id2sector": {
+   "1": 6
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 96.92,
+  "latency_s": 2.57,
+  "tokens_in": 1119,
+  "tokens_out": 68,
+  "error": null,
+  "reply": "{\"keep\": [1], \"confidence\": 0.9, \"reason\": \"Candidate #1 in sector 2 is the only viable option as it can scan the top surfaces not yet mapped, while sectors 6, 5, and 7 are either fully scanned or have no viable candidates.\", \"done\": false}",
+  "env": 3,
+  "obj": 2,
+  "id2sector": {
+   "1": 2
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 98.56,
+  "latency_s": 1.81,
+  "tokens_in": 1285,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 5], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned areas of the excavator, especially the top, while avoiding fully green sectors and respecting the 3-candidate limit.\", \"done\": false}",
+  "env": 4,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 100.42,
+  "latency_s": 2.47,
+  "tokens_in": 1115,
+  "tokens_out": 68,
+  "error": null,
+  "reply": "{\"keep\": [1], \"confidence\": 0.95, \"reason\": \"Candidate #1 in sector 6 is the only viable option to scan the top of the dump truck, as other sectors are either fully scanned or unreachable, and the object's top surface is not yet fully mapped.\", \"done\": true}",
+  "env": 0,
+  "obj": 2,
+  "id2sector": {
+   "1": 6
+  },
+  "consult": 5
+ },
+ {
+  "t_sim": 102.08,
+  "latency_s": 1.9,
+  "tokens_in": 1120,
+  "tokens_out": 49,
+  "error": null,
+  "reply": "{\"keep\": [1], \"confidence\": 0.95, \"reason\": \"Sector 7 is the only one with significant unscanned top surfaces, and the object is not yet fully green.\", \"done\": false}",
+  "env": 1,
+  "obj": 2,
+  "id2sector": {
+   "1": 7
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 117.34,
+  "latency_s": 2.03,
+  "tokens_in": 1202,
+  "tokens_out": 58,
+  "error": null,
+  "reply": "{\"keep\": [1, 3], \"confidence\": 0.8, \"reason\": \"Candidates #1 and #3 provide the best coverage of unscanned top surfaces, especially with #3's higher elevation reaching the truck's peak height.\", \"done\": false}",
+  "env": 2,
+  "obj": 2,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 4
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 126.36,
+  "latency_s": 1.99,
+  "tokens_in": 836,
+  "tokens_out": 57,
+  "error": null,
+  "reply": "{\"keep\": [4, 6, 7], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned top surfaces and sides with partial green coverage, maximizing new data while respecting the 3-candidate limit.\", \"done\": false}",
+  "env": 1,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 127.32,
+  "latency_s": 2.04,
+  "tokens_in": 822,
+  "tokens_out": 51,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned top surfaces with high visibility and posture gain, while avoiding fully green sectors.\", \"done\": false}",
+  "env": 2,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 127.44,
+  "latency_s": 1.58,
+  "tokens_in": 824,
+  "tokens_out": 48,
+  "error": null,
+  "reply": "{\"keep\": [4], \"confidence\": 0.9, \"reason\": \"Sector 4 offers the highest visibility and posture gain, and its side is not fully green, ensuring new surface coverage.\", \"done\": false}",
+  "env": 0,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 125.36,
+  "latency_s": 2.17,
+  "tokens_in": 1155,
+  "tokens_out": 55,
+  "error": null,
+  "reply": "{\"keep\": [1, 2], \"confidence\": 0.9, \"reason\": \"Candidates #1 and #2 are in sectors with visible unscanned surfaces and provide good top coverage for the excavator's upper body.\", \"done\": false}",
+  "env": 4,
+  "obj": 0,
+  "id2sector": {
+   "1": 2,
+   "2": 3
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 131.78,
+  "latency_s": 2.08,
+  "tokens_in": 822,
+  "tokens_out": 53,
+  "error": null,
+  "reply": "{\"keep\": [4, 6, 7], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned top surfaces and critical side areas with high visibility scores, while avoiding fully green sectors.\", \"done\": false}",
+  "env": 4,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 132.0,
+  "latency_s": 1.71,
+  "tokens_in": 828,
+  "tokens_out": 57,
+  "error": null,
+  "reply": "{\"keep\": [4, 6, 7], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned top surfaces and sides with partial green coverage, maximizing new data while respecting the 3-candidate limit.\", \"done\": false}",
+  "env": 3,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 137.44,
+  "latency_s": 1.83,
+  "tokens_in": 836,
+  "tokens_out": 52,
+  "error": null,
+  "reply": "{\"keep\": [4], \"confidence\": 0.9, \"reason\": \"Sector 4 offers the highest visibility and scans the most ungreen top surfaces, while other sectors either have full green coverage or lower visibility.\", \"done\": false}",
+  "env": 0,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 138.38,
+  "latency_s": 2.23,
+  "tokens_in": 1048,
+  "tokens_out": 69,
+  "error": null,
+  "reply": "{\"keep\": [4, 5, 6], \"confidence\": 0.9, \"reason\": \"Sectors 4, 5, and 6 show unscanned surfaces with high visibility scores and are not fully green, while sector 6 is already scanned and should be pruned.\", \"done\": false}",
+  "env": 1,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 139.72,
+  "latency_s": 2.39,
+  "tokens_in": 1337,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"keep\": [2, 4, 6], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned areas of the excavator, especially the top, while avoiding fully green sectors and respecting the 3-candidate limit.\", \"done\": false}",
+  "env": 5,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 140.6,
+  "latency_s": 2.07,
+  "tokens_in": 1002,
+  "tokens_out": 65,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.95, \"reason\": \"These sectors scan unscanned top surfaces with high visibility and posture gain, while sectors 4,5,6,7 are either fully green or have low gain.\", \"done\": false}",
+  "env": 3,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 145.8,
+  "latency_s": 2.22,
+  "tokens_in": 1119,
+  "tokens_out": 56,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"These candidates cover unscanned sides and top of the dump truck, with sector 2 being the most critical for top coverage.\", \"done\": false}",
+  "env": 2,
+  "obj": 2,
+  "id2sector": {
+   "1": 2
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 154.92,
+  "latency_s": 2.48,
+  "tokens_in": 1348,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"keep\": [1, 6], \"confidence\": 0.8, \"reason\": \"Candidate #1 and #6 are the only ones that can scan unscanned top surfaces with high visibility and posture gain, while sectors 0 and 7 are not fully green.\", \"done\": false}",
+  "env": 4,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 6,
+   "6": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 157.9,
+  "latency_s": 2.53,
+  "tokens_in": 1038,
+  "tokens_out": 70,
+  "error": null,
+  "reply": "{\"keep\": [4, 6, 7], \"confidence\": 0.9, \"reason\": \"These sectors scan unscanned top surfaces with high visibility and posture gain, while sectors 0, 1, 2, 3, 5 are either fully green or have low gain.\", \"done\": false}",
+  "env": 5,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 155.44,
+  "latency_s": 2.21,
+  "tokens_in": 1390,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 7], \"confidence\": 0.9, \"reason\": \"These sectors cover unseen or partially scanned areas of the excavator, especially the top, while avoiding fully green sectors and respecting the one-per-sector limit.\", \"done\": false}",
+  "env": 0,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 4,
+   "5": 5,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 164.76,
+  "latency_s": 1.84,
+  "tokens_in": 1249,
+  "tokens_out": 53,
+  "error": null,
+  "reply": "{\"keep\": [2], \"confidence\": 0.9, \"reason\": \"Sector 2 has the highest visibility and scans the most unscanned top surfaces, while sectors 3 and 4 are already mostly green.\", \"done\": false}",
+  "env": 1,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 169.7,
+  "latency_s": 2.34,
+  "tokens_in": 1249,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"These viewpoints cover unscanned sides of the excavator, with #1 and #3 targeting the rear and #2 the side, ensuring top coverage without redundant scans.\", \"done\": false}",
+  "env": 3,
+  "obj": 1,
+  "id2sector": {
+   "1": 3,
+   "2": 4,
+   "3": 6,
+   "4": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 180.5,
+  "latency_s": 2.46,
+  "tokens_in": 1209,
+  "tokens_out": 68,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"All three candidates are in unseen sectors (0, 2, 7) and their scans would cover unscanned top surfaces, as the object's top is not yet fully green.\", \"done\": false}",
+  "env": 1,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 2,
+   "3": 7
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 182.66,
+  "latency_s": 1.96,
+  "tokens_in": 1202,
+  "tokens_out": 55,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"All three candidates are in sectors with visible unscanned surfaces and provide good coverage of the excavator's top and sides.\", \"done\": false}",
+  "env": 5,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 2,
+   "3": 5
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 198.86,
+  "latency_s": 2.01,
+  "tokens_in": 1259,
+  "tokens_out": 53,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned areas of the excavator's top and sides, and less than half is green.\", \"done\": false}",
+  "env": 0,
+  "obj": 1,
+  "id2sector": {
+   "1": 2,
+   "2": 4,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 202.38,
+  "latency_s": 2.98,
+  "tokens_in": 1296,
+  "tokens_out": 73,
+  "error": null,
+  "reply": "{\"keep\": [1, 3, 5], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned areas of the excavator's top and sides, with sector 5 offering the best visibility to the rear top, while sectors 1 and 3 cover front and side tops respectively.\", \"done\": false}",
+  "env": 2,
+  "obj": 1,
+  "id2sector": {
+   "1": 3,
+   "2": 4,
+   "3": 5,
+   "4": 6,
+   "5": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 204.9,
+  "latency_s": 2.25,
+  "tokens_in": 1296,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 5], \"confidence\": 0.9, \"reason\": \"These sectors cover unseen or partially scanned areas of the excavator, especially the top, while avoiding fully green sectors and respecting the one-per-sector limit.\", \"done\": false}",
+  "env": 4,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 4,
+   "5": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 206.74,
+  "latency_s": 2.16,
+  "tokens_in": 1124,
+  "tokens_out": 62,
+  "error": null,
+  "reply": "{\"keep\": [1], \"confidence\": 0.9, \"reason\": \"Candidate #1 in sector 7 is the only one that can scan the top of the excavator, which is not yet fully mapped, and no other sector has significant unmapped areas.\", \"done\": false}",
+  "env": 3,
+  "obj": 1,
+  "id2sector": {
+   "1": 7
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 234.64,
+  "latency_s": 2.38,
+  "tokens_in": 1171,
+  "tokens_out": 55,
+  "error": null,
+  "reply": "{\"keep\": [1, 2], \"confidence\": 0.9, \"reason\": \"Candidates #1 and #2 are in sectors with visible unscanned surfaces and provide good coverage of the excavator's top and sides.\", \"done\": false}",
+  "env": 4,
+  "obj": 1,
+  "id2sector": {
+   "1": 2,
+   "2": 4
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 237.76,
+  "latency_s": 2.22,
+  "tokens_in": 1171,
+  "tokens_out": 54,
+  "error": null,
+  "reply": "{\"keep\": [1, 2], \"confidence\": 0.9, \"reason\": \"Candidates #1 and #2 are in sectors with visible unscanned areas and provide good coverage of the excavator's top surfaces.\", \"done\": false}",
+  "env": 2,
+  "obj": 1,
+  "id2sector": {
+   "1": 4,
+   "2": 6
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 239.22,
+  "latency_s": 2.56,
+  "tokens_in": 1118,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"keep\": [1], \"confidence\": 0.9, \"reason\": \"Candidate #1 in sector 6 is the only viable option as it targets the top of the excavator, which is not yet fully scanned, and no other sector has significant unscanned areas.\", \"done\": false}",
+  "env": 0,
+  "obj": 1,
+  "id2sector": {
+   "1": 6
+  },
+  "consult": 5
+ },
+ {
+  "t_sim": 249.72,
+  "latency_s": 2.4,
+  "tokens_in": 1394,
+  "tokens_out": 55,
+  "error": null,
+  "reply": "{\"keep\": [4, 5, 6], \"confidence\": 0.9, \"reason\": \"These sectors scan the least green areas, including the top and sides, with high visibility scores and posture gains indicating better coverage.\", \"done\": false}",
+  "env": 1,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 251.96,
+  "latency_s": 2.66,
+  "tokens_in": 822,
+  "tokens_out": 63,
+  "error": null,
+  "reply": "{\"keep\": [4, 7], \"confidence\": 0.8, \"reason\": \"Sector 4 and 7 offer highest visibility and scan ungreen top surfaces, while sectors 0, 3, 5, 6 are fully green or low gain.\", \"done\": false}",
+  "env": 0,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 256.34,
+  "latency_s": 1.88,
+  "tokens_in": 1047,
+  "tokens_out": 50,
+  "error": null,
+  "reply": "{\"keep\": [4, 6, 7], \"confidence\": 0.9, \"reason\": \"These sectors offer the highest visibility and scan new surfaces not yet green, while avoiding fully scanned sides.\", \"done\": false}",
+  "env": 3,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 279.54,
+  "latency_s": 2.4,
+  "tokens_in": 1265,
+  "tokens_out": 59,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 4], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned areas of the excavator, especially the top, while avoiding fully green sectors and respecting the one-per-sector limit.\", \"done\": false}",
+  "env": 1,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 7
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 282.56,
+  "latency_s": 2.55,
+  "tokens_in": 1307,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"keep\": [1, 3, 5], \"confidence\": 0.9, \"reason\": \"These candidates cover unseen sectors and provide the best visibility to scan the top and sides of the dump truck, especially where the object is not yet green.\", \"done\": false}",
+  "env": 4,
+  "obj": 2,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 6,
+   "5": 7
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 283.46,
+  "latency_s": 2.43,
+  "tokens_in": 1296,
+  "tokens_out": 59,
+  "error": null,
+  "reply": "{\"keep\": [3], \"confidence\": 0.9, \"reason\": \"Sector 2 (candidate #3) offers the highest visibility and scans an ungreen side of the excavator, while other sectors are either fully green or have lower visibility.\", \"done\": false}",
+  "env": 5,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 4,
+   "5": 7
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 287.26,
+  "latency_s": 2.7,
+  "tokens_in": 1312,
+  "tokens_out": 63,
+  "error": null,
+  "reply": "{\"keep\": [4], \"confidence\": 0.9, \"reason\": \"Sector 4 is the only one with significant unscanned surfaces (visibility 5369) and is not fully green, while other sectors are either fully green or have lower visibility.\", \"done\": false}",
+  "env": 3,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 4,
+   "5": 7
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 295.48,
+  "latency_s": 2.36,
+  "tokens_in": 1259,
+  "tokens_out": 55,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned areas of the excavator's top and sides, and less than half the object is green.\", \"done\": false}",
+  "env": 5,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 4,
+   "4": 7
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 297.08,
+  "latency_s": 2.35,
+  "tokens_in": 1259,
+  "tokens_out": 55,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"These sectors cover the top and sides of the excavator with visible unscanned areas, and less than half is green.\", \"done\": false}",
+  "env": 3,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 7
+  },
+  "consult": 5
+ },
+ {
+  "t_sim": 308.52,
+  "latency_s": 2.7,
+  "tokens_in": 1124,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"keep\": [1], \"confidence\": 0.9, \"reason\": \"Candidate #1 in sector 2 is the only viable option as it targets the top of the excavator, which is not yet fully scanned, and no other sector has significant unscanned areas.\", \"done\": false}",
+  "env": 1,
+  "obj": 0,
+  "id2sector": {
+   "1": 2
+  },
+  "consult": 5
+ },
+ {
+  "t_sim": 315.04,
+  "latency_s": 2.62,
+  "tokens_in": 1170,
+  "tokens_out": 53,
+  "error": null,
+  "reply": "{\"keep\": [1, 2], \"confidence\": 0.9, \"reason\": \"Candidates #1 and #2 are in sectors with unscanned surfaces and provide good visibility to the top of the dump truck.\", \"done\": false}",
+  "env": 4,
+  "obj": 2,
+  "id2sector": {
+   "1": 2,
+   "2": 6
+  },
+  "consult": 5
+ },
+ {
+  "t_sim": 321.96,
+  "latency_s": 2.65,
+  "tokens_in": 1344,
+  "tokens_out": 59,
+  "error": null,
+  "reply": "{\"keep\": [1, 4, 5], \"confidence\": 0.9, \"reason\": \"These sectors cover unscanned areas of the excavator's top and sides, with sector 5 offering the highest visibility to ensure comprehensive coverage.\", \"done\": false}",
+  "env": 0,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 4,
+   "5": 5,
+   "6": 7
+  },
+  "consult": 4
+ },
+ {
+  "t_sim": 327.84,
+  "latency_s": 2.88,
+  "tokens_in": 1118,
+  "tokens_out": 62,
+  "error": null,
+  "reply": "{\"keep\": [1], \"confidence\": 0.9, \"reason\": \"Candidate #1 in sector 7 is the only viable option to scan the top of the excavator, which is not yet fully mapped, and no other sector has significant unmapped areas.\", \"done\": false}",
+  "env": 3,
+  "obj": 0,
+  "id2sector": {
+   "1": 7
+  },
+  "consult": 6
+ },
+ {
+  "t_sim": 330.92,
+  "latency_s": 2.85,
+  "tokens_in": 1118,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"keep\": [1], \"confidence\": 0.9, \"reason\": \"Candidate #1 in sector 7 is the only viable option as it can scan the top of the excavator, which is not yet fully mapped, and no other sector has significant unmapped areas.\", \"done\": false}",
+  "env": 5,
+  "obj": 0,
+  "id2sector": {
+   "1": 7
+  },
+  "consult": 5
+ },
+ {
+  "t_sim": 355.88,
+  "latency_s": 2.57,
+  "tokens_in": 1209,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"All three candidates are in sectors with visible unscanned portions of the excavator, and since less than half is green, multiple candidates are needed to ensure full coverage.\", \"done\": false}",
+  "env": 0,
+  "obj": 0,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 7
+  },
+  "consult": 5
+ }
+]
