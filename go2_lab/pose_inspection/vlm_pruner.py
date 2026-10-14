@@ -39,6 +39,14 @@ candidate and set done to true. Reply with JSON only: {{"green_fraction": <0-1, 
 the object's surface is already green>, "keep": [candidate numbers], "confidence": 0-1, "reason": "one sentence", \
 "done": true/false}}"""
 
+# v5: the coverage state comes from the map (the 8B model answered green_fraction 0.8 before anything was scanned);
+# the model only chooses which sectors still need a view
+PROMPT_MEASURED = PROMPT.split("Task:")[0] + """Measured from the map: {measured:.0%} of the object's mapped voxels \
+are already scanned closely (green).
+Task: keep <= {max_keep} candidates (at most one per sector) that would scan surfaces not yet green; prune sectors \
+whose side of the object is already green. Reply with JSON only: {{"keep": [candidate numbers], "confidence": 0-1, \
+"reason": "one sentence"}}"""
+
 
 class ObjectSession:
     def __init__(self):
@@ -84,8 +92,13 @@ class VlmPruner:
                 id2sec = r.meta.get("id2sector", {})
                 keep = {id2sec[str(k)] for k in keep_ids if str(k) in id2sec} if isinstance(keep_ids, list) else set()
                 ok = conf >= self.v.min_confidence
-                # POSE guardrail, enforced on the model's own estimate: mostly green -> at most one more view, done
-                gf = r.parsed.get("green_fraction")
+                # POSE guardrail: mostly green -> at most one more view, done. v4 enforced it on the model's own
+                # estimate; "measured" uses the closely scanned fraction of the mapped voxels and done only then
+                if self.v.get("green_source", "model") == "measured":
+                    gf = self.measured_green(m)
+                    r.parsed["done"] = False
+                else:
+                    gf = r.parsed.get("green_fraction")
                 if isinstance(gf, (int, float)) and gf >= self.v.done_green_fraction:
                     ordered = [id2sec[str(k)] for k in keep_ids if str(k) in id2sec] if isinstance(keep_ids, list) else []
                     keep = set(ordered[:1])
@@ -141,7 +154,9 @@ class VlmPruner:
                 sectors.append(255)
         ext = m["hi"] - m["lo"]
         photos = len(images) - 1
-        text = PROMPT.format(
+        measured = self.v.get("green_source", "model") == "measured"
+        text = (PROMPT_MEASURED if measured else PROMPT).format(
+            measured=self.measured_green(m),
             vfov=li.vfov_deg[1], mount=li.mount_tilt_deg, tilt=self.cfg.robot.pitch_limit_deg,
             cls=str(self.class_fn(o)).replace("_", " "),
             h_map=float(m["hi"][2]), fx=float(ext[0]), fy=float(ext[1]), ns_1=ns - 1, sectors=sectors,
@@ -255,6 +270,10 @@ class VlmPruner:
             mask[max(0, vi - h):vi + h + 1, max(0, ui - h):ui + h + 1] = True
         rgb[mask] = 0.45 * rgb[mask] + 0.55 * np.array([40, 220, 60])
         return Image.fromarray(rgb.clip(0, 255).astype(np.uint8))
+
+    def measured_green(self, m) -> float:
+        """Fraction of the object's mapped voxels that are scanned closely (the green tint)."""
+        return float(len(self._scanned(m))) / max(1, int(m["count"]))
 
     def _scanned(self, m):
         """Object voxels scanned closely (>= tint_min_hits labelled returns within d_max): the green tint."""

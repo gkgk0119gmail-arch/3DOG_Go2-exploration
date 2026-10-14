@@ -145,7 +145,10 @@ planner:
     ttl_s: 120.0                 # POSE T_ttl: a verdict expires after this; when all kept sectors are visited the
                                  # object is closed
     min_confidence: 0.5          # verdicts below this fall back to the geometric default
-    done_green_fraction: 0.5     # POSE guardrail on the model's green-fraction estimate: keep <= 1 and done
+    done_green_fraction: 0.5     # POSE guardrail: green fraction >= this -> keep <= 1 and done
+    # green fraction for the guardrail: "model" (the VLM's own estimate, v2-v4) or "measured" (closely scanned share
+    # of the mapped voxels, given to the VLM in the prompt; done only from it). Qwen3-VL-8B said 0.8 at t = 0.
+    green_source: measured
     tint_min_hits: 20            # green = object voxels with >= this many labelled returns within d_max (not just
                                  # mapped: a single far return maps a 0.2 m voxel and made every machine look done)
     max_keep: 3                  # POSE: candidates retained per verdict <= 3
