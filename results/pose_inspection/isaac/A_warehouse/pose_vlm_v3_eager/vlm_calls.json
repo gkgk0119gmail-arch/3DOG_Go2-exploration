@@ -1,0 +1,1237 @@
+[
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.05,
+  "tokens_in": 864,
+  "tokens_out": 65,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [4, 6, 7], \"confidence\": 0.9, \"reason\": \"Most of the object is already scanned (green), so only a few key sectors are needed to cover remaining top and side areas.\", \"done\": true}",
+  "env": 0,
+  "obj": 6,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.53,
+  "tokens_in": 864,
+  "tokens_out": 70,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [1, 3, 7], \"confidence\": 0.9, \"reason\": \"These viewpoints cover the top and sides of the forklift, with sector 7 offering the best coverage of the rear, while avoiding fully green sectors.\", \"done\": false}",
+  "env": 1,
+  "obj": 6,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.26,
+  "tokens_in": 865,
+  "tokens_out": 61,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [1, 4, 7], \"confidence\": 0.8, \"reason\": \"These viewpoints cover the top and sides with partial green coverage, maximizing new scan areas while avoiding fully green sectors.\", \"done\": false}",
+  "env": 2,
+  "obj": 6,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.7,
+  "tokens_in": 864,
+  "tokens_out": 65,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [7], \"confidence\": 0.9, \"reason\": \"Sector 7 offers the best visibility and posture gain while scanning ungreen top surfaces, and more than half the object is green so only one candidate is kept.\", \"done\": true}",
+  "env": 4,
+  "obj": 6,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 2.64,
+  "tokens_in": 862,
+  "tokens_out": 67,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1, 7], \"confidence\": 0.9, \"reason\": \"Most of the object is already scanned (green), so only two key sectors (1 and 7) are needed to cover remaining top and side areas.\", \"done\": true}",
+  "env": 5,
+  "obj": 6,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 0.0,
+  "latency_s": 3.16,
+  "tokens_in": 852,
+  "tokens_out": 81,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"The object's top and sides are mostly scanned (80% green), so only 3 key sectors (1,2,3) are kept to cover remaining unscanned areas, especially the top.\", \"done\": true}",
+  "env": 3,
+  "obj": 6,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 6.02,
+  "latency_s": 2.37,
+  "tokens_in": 845,
+  "tokens_out": 66,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 3, 8], \"confidence\": 0.9, \"reason\": \"Sectors 2, 3, and 8 offer the best visibility to unscanned top surfaces while avoiding fully green sectors.\", \"done\": false}",
+  "env": 1,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 10.06,
+  "latency_s": 2.61,
+  "tokens_in": 610,
+  "tokens_out": 63,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Sector 1 offers the best coverage of unscanned top surfaces with high visibility and posture gain, while most of the object is already mapped.\", \"done\": true}",
+  "env": 1,
+  "obj": 0,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 12.08,
+  "latency_s": 2.53,
+  "tokens_in": 656,
+  "tokens_out": 72,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [1, 2, 4], \"confidence\": 0.9, \"reason\": \"The object's top surface is not yet fully mapped, and candidates 1, 2, and 4 provide optimal coverage from different angles to ensure complete scanning.\", \"done\": false}",
+  "env": 5,
+  "obj": 2,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 12.08,
+  "latency_s": 2.02,
+  "tokens_in": 656,
+  "tokens_out": 55,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.9, \"reason\": \"Most of the object is already mapped, so only candidate #1 is kept to scan the remaining top surfaces.\", \"done\": true}",
+  "env": 5,
+  "obj": 5,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 14.1,
+  "latency_s": 2.11,
+  "tokens_in": 842,
+  "tokens_out": 72,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 7], \"confidence\": 0.9, \"reason\": \"Most of the object is already scanned (green), so only two key viewpoints (sectors 1 and 6) are needed to cover remaining unseen areas, especially the top.\", \"done\": true}",
+  "env": 1,
+  "obj": 3,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 14.1,
+  "latency_s": 3.04,
+  "tokens_in": 698,
+  "tokens_out": 86,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 3], \"confidence\": 0.9, \"reason\": \"Sectors 2 and 3 offer the best visibility to scan the top and sides of the forklift, which are not yet fully mapped, while sectors 0, 5, and 6 are either unreachable or have low visibility gain.\", \"done\": false}",
+  "env": 3,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 14.1,
+  "latency_s": 1.55,
+  "tokens_in": 693,
+  "tokens_out": 82,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [1, 2, 5], \"confidence\": 0.9, \"reason\": \"Candidates 1, 2, and 5 offer the best coverage of unscanned top surfaces with high visibility and posture gain, while sectors 3 and 4 are fully green and should be pruned.\", \"done\": false}",
+  "env": 4,
+  "obj": 5,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 4,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 16.12,
+  "latency_s": 2.55,
+  "tokens_in": 747,
+  "tokens_out": 72,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [1, 2, 4], \"confidence\": 0.9, \"reason\": \"The object's top and sides are partially unscanned, and candidates 1, 2, and 4 provide optimal coverage from different angles without redundant views.\", \"done\": false}",
+  "env": 0,
+  "obj": 5,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 5,
+   "5": 6,
+   "6": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 16.12,
+  "latency_s": 2.16,
+  "tokens_in": 657,
+  "tokens_out": 66,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Sector 2 offers the best visibility and posture gain to scan the top and unseen sides of the forklift, while most of the object is already mapped.\", \"done\": true}",
+  "env": 1,
+  "obj": 1,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 16.12,
+  "latency_s": 1.1,
+  "tokens_in": 835,
+  "tokens_out": 59,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 7], \"confidence\": 0.9, \"reason\": \"Sectors 2 and 7 offer high visibility and cover unscanned top surfaces while avoiding fully green sectors.\", \"done\": false}",
+  "env": 2,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 16.12,
+  "latency_s": 2.35,
+  "tokens_in": 797,
+  "tokens_out": 89,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 3, 4], \"confidence\": 0.95, \"reason\": \"Sectors 2, 3, and 4 offer optimal coverage of unscanned top surfaces with high visibility and posture gain, while sectors 0, 5, 6, and 7 are either fully green or less effective.\", \"done\": false}",
+  "env": 3,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 16.12,
+  "latency_s": 2.41,
+  "tokens_in": 612,
+  "tokens_out": 63,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Sector 1 offers the best coverage of unscanned top surfaces with high posture gain and visibility, while most of the object is already mapped.\", \"done\": true}",
+  "env": 4,
+  "obj": 0,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 16.12,
+  "latency_s": 1.59,
+  "tokens_in": 788,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [2, 3, 7], \"confidence\": 0.9, \"reason\": \"Sectors 2, 3, and 7 have high visibility and scan ungreen areas while avoiding fully green sectors.\", \"done\": false}",
+  "env": 5,
+  "obj": 3,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 18.14,
+  "latency_s": 1.84,
+  "tokens_in": 746,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1, 2, 5], \"confidence\": 0.9, \"reason\": \"Most of the object is already scanned (green), so only critical unscanned areas near top and sides are prioritized.\", \"done\": true}",
+  "env": 0,
+  "obj": 2,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 4,
+   "5": 5,
+   "6": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 18.14,
+  "latency_s": 2.04,
+  "tokens_in": 757,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [2, 4, 6], \"confidence\": 0.9, \"reason\": \"These viewpoints cover the top and sides of the forklift, including areas not yet scanned, while avoiding fully green sectors.\", \"done\": false}",
+  "env": 1,
+  "obj": 5,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 18.14,
+  "latency_s": 1.9,
+  "tokens_in": 697,
+  "tokens_out": 65,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Sector 2 offers the best unobstructed view of the top and sides of the forklift, while most of the object is already scanned.\", \"done\": true}",
+  "env": 4,
+  "obj": 3,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 18.14,
+  "latency_s": 1.77,
+  "tokens_in": 709,
+  "tokens_out": 65,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1, 4], \"confidence\": 0.9, \"reason\": \"Most of the object is already mapped, but top surfaces in sectors 1 and 4 remain unscanned and are critical for complete coverage.\", \"done\": true}",
+  "env": 5,
+  "obj": 0,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 4,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 18.14,
+  "latency_s": 2.12,
+  "tokens_in": 653,
+  "tokens_out": 66,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Sector 2 offers the best visibility and posture gain to scan the top and unseen sides of the forklift, while most of the object is already mapped.\", \"done\": true}",
+  "env": 5,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 5
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 20.16,
+  "latency_s": 1.94,
+  "tokens_in": 655,
+  "tokens_out": 66,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Only candidate #1 in sector 1 can access the top of the forklift which is not yet scanned, while most of the object is already green.\", \"done\": true}",
+  "env": 2,
+  "obj": 0,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 20.8,
+  "latency_s": 1.46,
+  "tokens_in": 654,
+  "tokens_out": 67,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Only candidate #1 in sector 0 can access the top of the forklift, which is not yet scanned, while other sectors are fully green or blocked.\", \"done\": true}",
+  "env": 4,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 5
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 20.8,
+  "latency_s": 2.25,
+  "tokens_in": 806,
+  "tokens_out": 73,
+  "error": null,
+  "reply": "{\n  \"green_fraction\": 0.8,\n  \"keep\": [2, 3, 7],\n  \"confidence\": 0.9,\n  \"reason\": \"Sectors 2, 3, and 7 offer the best coverage of unscanned top surfaces while avoiding fully green sectors.\",\n  \"done\": false\n}",
+  "env": 4,
+  "obj": 2,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 22.18,
+  "latency_s": 1.92,
+  "tokens_in": 646,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.9, \"reason\": \"Sector 2 offers the best unscanned top coverage with high visibility and posture gain, while most of the object is already mapped.\", \"done\": true}",
+  "env": 0,
+  "obj": 4,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 22.18,
+  "latency_s": 1.57,
+  "tokens_in": 842,
+  "tokens_out": 68,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 3, 6], \"confidence\": 0.9, \"reason\": \"Most of the object is already scanned (green), so only a few key sectors with high visibility and posture gain are needed to cover remaining surfaces.\", \"done\": true}",
+  "env": 3,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 24.2,
+  "latency_s": 1.67,
+  "tokens_in": 843,
+  "tokens_out": 75,
+  "error": null,
+  "reply": "{\n  \"green_fraction\": 0.8,\n  \"keep\": [2, 7],\n  \"confidence\": 0.9,\n  \"reason\": \"Sectors 2 and 7 offer the best visibility to scan remaining top surfaces with the robot's tilted sensor, while most of the object is already mapped.\",\n  \"done\": true\n}",
+  "env": 2,
+  "obj": 3,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 26.22,
+  "latency_s": 1.5,
+  "tokens_in": 656,
+  "tokens_out": 58,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Most of the forklift is already mapped, so only candidate #1 is needed to scan the remaining top surfaces.\", \"done\": true}",
+  "env": 2,
+  "obj": 1,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 28.24,
+  "latency_s": 1.36,
+  "tokens_in": 803,
+  "tokens_out": 55,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [2, 4, 6], \"confidence\": 0.9, \"reason\": \"These viewpoints cover unscanned top and side areas while avoiding fully green sectors.\", \"done\": false}",
+  "env": 2,
+  "obj": 5,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 28.88,
+  "latency_s": 2.15,
+  "tokens_in": 651,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1, 2], \"confidence\": 0.9, \"reason\": \"Only sectors 1 and 2 have significant unscanned top surfaces, while most of the object is already mapped.\", \"done\": false}",
+  "env": 4,
+  "obj": 4,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 29.84,
+  "latency_s": 1.7,
+  "tokens_in": 802,
+  "tokens_out": 66,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 3, 5], \"confidence\": 0.9, \"reason\": \"Sectors 2, 3, and 5 offer the best coverage of unscanned top surfaces while avoiding fully green sectors.\", \"done\": true}",
+  "env": 1,
+  "obj": 4,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 30.26,
+  "latency_s": 1.52,
+  "tokens_in": 755,
+  "tokens_out": 55,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [1, 3, 5], \"confidence\": 0.9, \"reason\": \"These viewpoints cover unscanned top and side areas while avoiding fully green sectors.\", \"done\": false}",
+  "env": 3,
+  "obj": 3,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 4,
+   "5": 5,
+   "6": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 34.26,
+  "latency_s": 1.27,
+  "tokens_in": 656,
+  "tokens_out": 62,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Only candidate #1 can access the top of the forklift which is not yet scanned, while other sectors are fully green or blocked.\", \"done\": true}",
+  "env": 0,
+  "obj": 0,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 34.26,
+  "latency_s": 1.86,
+  "tokens_in": 560,
+  "tokens_out": 56,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Most of the object is already mapped, so only candidate #1 is kept to scan the remaining top surfaces.\", \"done\": true}",
+  "env": 0,
+  "obj": 1,
+  "id2sector": {
+   "1": 1,
+   "2": 2
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 34.26,
+  "latency_s": 2.18,
+  "tokens_in": 654,
+  "tokens_out": 72,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1, 2], \"confidence\": 0.95, \"reason\": \"Candidates #1 and #2 offer the best coverage of unscanned top surfaces with high visibility and posture gain, while #3 and #4 are redundant or less effective.\", \"done\": false}",
+  "env": 0,
+  "obj": 3,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 34.26,
+  "latency_s": 2.58,
+  "tokens_in": 752,
+  "tokens_out": 74,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [1, 4, 5], \"confidence\": 0.9, \"reason\": \"The object's top is not yet fully scanned, and candidates 1, 4, and 5 provide optimal coverage from different angles to ensure complete 3D scanning.\", \"done\": false}",
+  "env": 3,
+  "obj": 4,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 5,
+   "5": 6,
+   "6": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 34.48,
+  "latency_s": 2.32,
+  "tokens_in": 848,
+  "tokens_out": 96,
+  "error": null,
+  "reply": "{\n  \"green_fraction\": 0.8,\n  \"keep\": [2, 3, 7],\n  \"confidence\": 0.9,\n  \"reason\": \"Sectors 2, 3, and 7 offer the best visibility to scan remaining non-green top and side surfaces, while sectors 0, 4, 5, 6, and 8 are either fully green or less optimal.\",\n  \"done\": false\n}",
+  "env": 5,
+  "obj": 4,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 4,
+   "6": 5,
+   "7": 6,
+   "8": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 41.68,
+  "latency_s": 1.57,
+  "tokens_in": 755,
+  "tokens_out": 59,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Only candidate #2 scans ungreen top surfaces with high visibility and posture gain, while most of the object is already green.\", \"done\": true}",
+  "env": 2,
+  "obj": 4,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 5,
+   "5": 6,
+   "6": 7
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 42.26,
+  "latency_s": 2.31,
+  "tokens_in": 756,
+  "tokens_out": 86,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.5, \"keep\": [1, 2, 3], \"confidence\": 0.9, \"reason\": \"Sectors 0,1,2 have visible unscanned top surfaces and are not fully green, while sectors 5 and 6 are partially green but not fully, and sector 3 is also partially green but not fully.\", \"done\": false}",
+  "env": 3,
+  "obj": 5,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 6
+  },
+  "consult": 1
+ },
+ {
+  "t_sim": 131.06,
+  "latency_s": 1.47,
+  "tokens_in": 698,
+  "tokens_out": 66,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [3], \"confidence\": 0.95, \"reason\": \"Sector 3 is the only one with significant unseen surface (visibility 622) and high posture gain, while most of the object is already scanned.\", \"done\": true}",
+  "env": 1,
+  "obj": 2,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 135.06,
+  "latency_s": 1.19,
+  "tokens_in": 668,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Sector 2 offers the best unscanned coverage with high visibility and posture gain, while most of the object is already mapped.\", \"done\": true}",
+  "env": 1,
+  "obj": 0,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 4,
+   "4": 5
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 137.2,
+  "latency_s": 1.72,
+  "tokens_in": 707,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 4], \"confidence\": 0.9, \"reason\": \"Most of the object is already scanned (80% green), so only two candidates are kept to cover remaining top and side areas efficiently.\", \"done\": true}",
+  "env": 5,
+  "obj": 2,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 139.08,
+  "latency_s": 1.23,
+  "tokens_in": 661,
+  "tokens_out": 59,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Sector 2 offers the best visibility and posture gain to scan remaining top surfaces, while most of the object is already mapped.\", \"done\": true}",
+  "env": 3,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 5
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 140.38,
+  "latency_s": 1.94,
+  "tokens_in": 707,
+  "tokens_out": 66,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 5], \"confidence\": 0.9, \"reason\": \"Most of the object is already mapped, so only two high-visibility candidates from sectors 2 and 6 are needed to cover remaining top surfaces.\", \"done\": true}",
+  "env": 4,
+  "obj": 5,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 141.06,
+  "latency_s": 1.49,
+  "tokens_in": 1207,
+  "tokens_out": 68,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [5, 6], \"confidence\": 0.95, \"reason\": \"Most of the object is already scanned (green), so only two high-visibility candidates from sectors 5 and 6 are kept to cover remaining surfaces.\", \"done\": true}",
+  "env": 1,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 141.08,
+  "latency_s": 1.85,
+  "tokens_in": 909,
+  "tokens_out": 61,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [3], \"confidence\": 0.95, \"reason\": \"Sector 3 is the only one with significant unscanned top surface and sufficient visibility, while most of the object is already green.\", \"done\": true}",
+  "env": 3,
+  "obj": 2,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 141.26,
+  "latency_s": 2.03,
+  "tokens_in": 759,
+  "tokens_out": 63,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [5], \"confidence\": 0.95, \"reason\": \"Most of the object is already scanned (green), so only candidate #5 is kept to cover remaining unscanned areas, especially the top.\", \"done\": true}",
+  "env": 0,
+  "obj": 5,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 4,
+   "5": 5,
+   "6": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 141.86,
+  "latency_s": 1.21,
+  "tokens_in": 696,
+  "tokens_out": 61,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.9, \"reason\": \"Sector 2 is the only viable candidate that can scan ungreen top surfaces with sufficient visibility, while most of the object is already mapped.\", \"done\": true}",
+  "env": 2,
+  "obj": 2,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 142.38,
+  "latency_s": 1.83,
+  "tokens_in": 973,
+  "tokens_out": 66,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"The object is mostly scanned (80% green), so only one candidate is kept to avoid redundancy, and it's in the only sector not fully green.\", \"done\": true}",
+  "env": 4,
+  "obj": 0,
+  "id2sector": {
+   "1": 2,
+   "2": 5
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 143.2,
+  "latency_s": 1.59,
+  "tokens_in": 671,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Sector 2 offers the best unscanned coverage with high visibility and posture gain, while most of the object is already mapped.\", \"done\": true}",
+  "env": 5,
+  "obj": 0,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 5
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 143.2,
+  "latency_s": 2.01,
+  "tokens_in": 1210,
+  "tokens_out": 72,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 5], \"confidence\": 0.9, \"reason\": \"Most of the forklift is already scanned (green), so only two high-visibility candidates from sectors 1 and 5 are kept to cover remaining unscanned areas.\", \"done\": true}",
+  "env": 5,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 145.86,
+  "latency_s": 1.53,
+  "tokens_in": 619,
+  "tokens_out": 57,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Most of the object is already scanned (green), so only candidate #1 is kept to cover remaining top surfaces.\", \"done\": true}",
+  "env": 2,
+  "obj": 0,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 147.08,
+  "latency_s": 1.79,
+  "tokens_in": 1197,
+  "tokens_out": 81,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 3, 5], \"confidence\": 0.95, \"reason\": \"The object is mostly scanned (80% green), so only one candidate can be kept, but candidates 2, 3, and 5 offer the best unscanned coverage and posture gain.\", \"done\": true}",
+  "env": 3,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 147.26,
+  "latency_s": 1.66,
+  "tokens_in": 710,
+  "tokens_out": 57,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Most of the forklift is already mapped, so only candidate #2 is kept to scan remaining unseen areas.\", \"done\": true}",
+  "env": 0,
+  "obj": 4,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 149.86,
+  "latency_s": 1.91,
+  "tokens_in": 1206,
+  "tokens_out": 73,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2, 5], \"confidence\": 0.95, \"reason\": \"Most of the forklift is already scanned (green), so only two high-visibility candidates from sectors 1 and 5 are kept to cover remaining unscanned areas.\", \"done\": true}",
+  "env": 2,
+  "obj": 1,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 3,
+   "5": 5,
+   "6": 6,
+   "7": 7
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 154.38,
+  "latency_s": 1.96,
+  "tokens_in": 1111,
+  "tokens_out": 69,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Most of the forklift is already scanned (green), so only one candidate is kept to avoid redundancy, and it offers the best posture gain for unscanned areas.\", \"done\": true}",
+  "env": 4,
+  "obj": 4,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 157.26,
+  "latency_s": 1.62,
+  "tokens_in": 1016,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Sector 2 offers the best unscanned coverage with high visibility and posture gain, while most of the object is already green.\", \"done\": true}",
+  "env": 0,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 2,
+   "3": 5
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 159.08,
+  "latency_s": 1.79,
+  "tokens_in": 1255,
+  "tokens_out": 67,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"The object is mostly scanned (80% green), so only one candidate is kept to avoid redundancy, and it's the best for unscanned top surfaces.\", \"done\": true}",
+  "env": 3,
+  "obj": 4,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 5,
+   "4": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 159.26,
+  "latency_s": 1.44,
+  "tokens_in": 1305,
+  "tokens_out": 60,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [2], \"confidence\": 0.95, \"reason\": \"Sector 2 offers the best unscanned coverage with high visibility and posture gain, while most of the object is already green.\", \"done\": true}",
+  "env": 0,
+  "obj": 3,
+  "id2sector": {
+   "1": 0,
+   "2": 1,
+   "3": 2,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 171.08,
+  "latency_s": 1.78,
+  "tokens_in": 1112,
+  "tokens_out": 58,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Most of the object is already scanned (green), so only candidate #1 is kept to scan the remaining top surfaces.\", \"done\": true}",
+  "env": 3,
+  "obj": 5,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 2
+ },
+ {
+  "t_sim": 261.8,
+  "latency_s": 2.0,
+  "tokens_in": 1216,
+  "tokens_out": 64,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Sector 0 is the only viable candidate as sectors 2 and 5 are fully green, and the object's top surface is not yet scanned.\", \"done\": true}",
+  "env": 3,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 2,
+   "3": 5
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 262.58,
+  "latency_s": 2.09,
+  "tokens_in": 716,
+  "tokens_out": 58,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [4], \"confidence\": 0.9, \"reason\": \"Most of the object is already scanned (green), so only candidate #4 is kept to cover remaining unscanned areas.\", \"done\": true}",
+  "env": 4,
+  "obj": 5,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 279.72,
+  "latency_s": 2.01,
+  "tokens_in": 1023,
+  "tokens_out": 75,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [1], \"confidence\": 0.95, \"reason\": \"Sector 0 is the only viable candidate to scan the top of the forklift, as other sectors are either fully green or unreachable, and over 80% of the object is already scanned.\", \"done\": true}",
+  "env": 0,
+  "obj": 0,
+  "id2sector": {
+   "1": 0,
+   "2": 2,
+   "3": 5
+  },
+  "consult": 3
+ },
+ {
+  "t_sim": 293.94,
+  "latency_s": 2.36,
+  "tokens_in": 1117,
+  "tokens_out": 67,
+  "error": null,
+  "reply": "{\"green_fraction\": 0.8, \"keep\": [3], \"confidence\": 0.9, \"reason\": \"Sector 3 is the only one with low visibility and high posture gain, indicating it can scan unscanned top surfaces, while most of the object is already green.\", \"done\": true}",
+  "env": 3,
+  "obj": 5,
+  "id2sector": {
+   "1": 1,
+   "2": 2,
+   "3": 3,
+   "4": 5,
+   "5": 6
+  },
+  "consult": 3
+ }
+]

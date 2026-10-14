@@ -107,7 +107,14 @@ def main():
             yaw = float(rob.data.heading_w.torch[0])
             ex, ey, ez = args.video_eye
             c, s_ = np.cos(yaw), np.sin(yaw)
-            eye = torch.tensor([[p[0] + c * ex - s_ * ey, p[1] + s_ * ex + c * ey, ez]], device=p.device)
+            # first offset (behind / beside / ahead of the robot) whose spot is clear of GT obstacles, so the camera
+            # never ends up inside a machine
+            px, py = float(p[0]), float(p[1])
+            for ox, oy in ((ex, ey), (ex, -ey), (-ey, ex), (-ey, -ex), (-ex, ey), (-ex, -ey)):
+                cx, cy = px + c * ox - s_ * oy, py + s_ * ox + c * oy
+                if term.nav_gt.clearance(np.array([cx, cy]))[0] >= 0.6:
+                    break
+            eye = torch.tensor([[cx, cy, ez]], device=p.device)
             look = torch.tensor([[p[0], p[1], 0.7]], device=p.device)
             cam.set_world_poses_from_view(eye.float(), look.float())
         if term.t - last >= 60.0:
