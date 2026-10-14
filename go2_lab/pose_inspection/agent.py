@@ -118,7 +118,8 @@ class InspectionAgent:
             else:
                 g0 = float(self.sc.gains(self.e, [(c[0], c[1], c[2], 0.0, 0.0)], region)[0])
                 tgt.gain, tgt.gain0 = g0, g0
-            if sp.prune == "geometric" and tgt.gain < sp.prune_min_gain:
+            thr = sp.prune_min_gain_fine if isinstance(region, dict) else sp.prune_min_gain
+            if sp.prune == "geometric" and tgt.gain < thr:
                 continue
             out.append(tgt)
         if self.pruner is not None:

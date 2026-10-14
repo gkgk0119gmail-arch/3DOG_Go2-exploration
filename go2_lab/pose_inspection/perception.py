@@ -46,13 +46,17 @@ class GroundedSam2:
         dets = [[] for _ in images]
         groups = {c: p for c, p in self.cfg.prompts.items() if classes is None or c in classes}
         queries = [groups] if self.cfg.get("query", "joint") == "joint" else [{c: p} for c, p in groups.items()]
+        bs = int(self.cfg.get("det_batch", 8))
         for q in queries:
             text = " . ".join(ph for phs in q.values() for ph in phs) + " ."
-            inp = self.det_proc(images=pil, text=[text] * len(pil), return_tensors="pt").to(self.dev)
-            out = self.det(**inp)
-            res = self.det_proc.post_process_grounded_object_detection(
-                out, inp.input_ids, threshold=self.cfg.box_threshold, text_threshold=self.cfg.text_threshold,
-                target_sizes=[im.shape[:2] for im in images])
+            res = []
+            for s in range(0, len(pil), bs):  # chunks: 24 images at once need > 6 GB on top of Isaac
+                inp = self.det_proc(images=pil[s:s + bs], text=[text] * len(pil[s:s + bs]),
+                                    return_tensors="pt").to(self.dev)
+                out = self.det(**inp)
+                res += self.det_proc.post_process_grounded_object_detection(
+                    out, inp.input_ids, threshold=self.cfg.box_threshold, text_threshold=self.cfg.text_threshold,
+                    target_sizes=[im.shape[:2] for im in images[s:s + bs]])
             for k, r in enumerate(res):
                 labels = r.get("text_labels", r.get("labels"))
                 for score, box, lab in zip(r["scores"].tolist(), r["boxes"].tolist(), labels):

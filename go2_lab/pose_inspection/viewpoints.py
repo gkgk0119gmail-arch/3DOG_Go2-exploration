@@ -81,6 +81,39 @@ def _gain_kernel(origins: wp.array(dtype=wp.vec3), rots: wp.array(dtype=wp.mat33
                 scratch[p * nb + q] = wp.uint8(1)
 
 
+@wp.kernel
+def _fine_gain_kernel(origins: wp.array(dtype=wp.vec3), rots: wp.array(dtype=wp.mat33), local: wp.array(dtype=wp.vec3),
+                      n_dirs: int, rho: float, grid: wp.array(dtype=wp.int32), base: int, lo: wp.vec3, voxel: float,
+                      nx: int, ny: int, nz: int, missing: wp.array(dtype=wp.uint8), f0: wp.vec3i, fs: wp.vec3i,
+                      fvox: float, scratch: wp.array(dtype=wp.uint8)):
+    """Mark missing predicted-surface fine voxels reached by each pose's rays; a ray ends in the first occupied
+    coarse voxel, after testing the fine voxel it entered there (the surface it would hit)."""
+    tid = wp.tid()
+    p = tid // n_dirs
+    o = origins[p]
+    d = rots[p] * local[tid % n_dirs]
+    step = fvox * 0.5
+    n = int(rho / step)
+    nb = fs[0] * fs[1] * fs[2]
+    for k in range(1, n):
+        x = o + d * (float(k) * step)
+        i = int(wp.floor((x[0] - lo[0]) / voxel))
+        j = int(wp.floor((x[1] - lo[1]) / voxel))
+        m = int(wp.floor((x[2] - lo[2]) / voxel))
+        if i < 0 or i >= nx or j < 0 or j >= ny or m < 0 or m >= nz:
+            break
+        g = grid[base + (i * ny + j) * nz + m]
+        li = int(wp.floor((x[0] - lo[0]) / fvox)) - f0[0]
+        lj = int(wp.floor((x[1] - lo[1]) / fvox)) - f0[1]
+        lm = int(wp.floor((x[2] - lo[2]) / fvox)) - f0[2]
+        if li >= 0 and li < fs[0] and lj >= 0 and lj < fs[1] and lm >= 0 and lm < fs[2]:
+            q = (li * fs[1] + lj) * fs[2] + lm
+            if missing[q] != wp.uint8(0):
+                scratch[p * nb + q] = wp.uint8(1)
+        if g == 2:
+            break
+
+
 def sample_candidates(centroid, n_sectors: int, standoffs) -> np.ndarray:
     """[n_sectors * len(standoffs), 4] rows (x, y, yaw facing the object, sector)."""
     out = []
@@ -141,8 +174,26 @@ class ViewpointScorer:
         size = np.maximum(b1 - b0, 1)
         return b0, size, torch.ones(int(np.prod(size)), dtype=torch.uint8, device=self.dev)
 
+    def fine_missing(self, e: int, region: dict) -> torch.Tensor:
+        """Predicted-surface fine voxels not hit yet and not inside known-free coarse voxels (uint8, flat)."""
+        w = self.w
+        f0, fs = region["f0"], region["fs"]
+        sl = tuple(slice(int(a), int(a + b)) for a, b in zip(f0, fs))
+        seen = w.fine[e][sl]
+        idx = torch.stack(torch.meshgrid(*[torch.arange(int(a), int(a + b), device=self.dev) for a, b in zip(f0, fs)],
+                                         indexing="ij"), -1)
+        c = ((idx.float() + 0.5) * w.fine_voxel / w.vg.voxel).long()
+        shape = torch.tensor(w.vg.shape, device=self.dev)
+        c = torch.minimum(c, shape - 1)
+        free = w.vg.grid[e][c[..., 0], c[..., 1], c[..., 2]] == 1
+        return (region["mask"].view(*map(int, fs)) & ~seen & ~free).reshape(-1).to(torch.uint8)
+
     def gains(self, e: int, poses: list[tuple], region) -> np.ndarray:
-        """G for each pose (x, y, yaw, pitch, roll) over ``region`` = (b0, size, mask[uint8])."""
+        """G for each pose (x, y, yaw, pitch, roll) over ``region``: (b0, size, mask[uint8]) on the coarse map
+        (POSE: unknown voxels), or a dict {"f0", "fs", "mask"} of predicted surface on the fine grid (missing
+        surface, stage-6 priors)."""
+        if isinstance(region, dict):
+            return self._fine_gains(e, poses, region)
         b0, size, mask = region
         rho = self.cfg.planner.posture.rho_max
         o, R = zip(*(self.sensor_origin(p[:2], p[2], p[3], p[4]) for p in poses))
@@ -158,6 +209,24 @@ class ViewpointScorer:
                           wp.vec3(*map(float, self.w.vg.lo)), self.w.vg.voxel, nx, ny, nz,
                           wp.from_torch(mask), wp.vec3i(*map(int, b0)), wp.vec3i(*map(int, size)),
                           wp.from_torch(scratch)])
+        return scratch.view(len(poses), nb).sum(1).cpu().numpy()
+
+    def _fine_gains(self, e: int, poses, region) -> np.ndarray:
+        missing = self.fine_missing(e, region)
+        rho = self.cfg.planner.posture.rho_max
+        o, R = zip(*(self.sensor_origin(p[:2], p[2], p[3], p[4]) for p in poses))
+        o, R = torch.stack(o), torch.stack(R)
+        nb = int(np.prod(region["fs"]))
+        scratch = torch.zeros(len(poses) * nb, dtype=torch.uint8, device=self.dev)
+        nx, ny, nz = self.w.vg.shape
+        D = len(self.dirs)
+        wp.launch(_fine_gain_kernel, dim=len(poses) * D, device=self.dev,
+                  inputs=[wp.from_torch(o.contiguous(), dtype=wp.vec3), wp.from_torch(R.contiguous(), dtype=wp.mat33),
+                          wp.from_torch(self.dirs, dtype=wp.vec3), D, float(rho),
+                          wp.from_torch(self.w.vg.grid.view(-1)), self._base(e),
+                          wp.vec3(*map(float, self.w.vg.lo)), self.w.vg.voxel, nx, ny, nz,
+                          wp.from_torch(missing), wp.vec3i(*map(int, region["f0"])), wp.vec3i(*map(int, region["fs"])),
+                          float(self.w.fine_voxel), wp.from_torch(scratch)])
         return scratch.view(len(poses), nb).sum(1).cpu().numpy()
 
     def best_posture(self, e: int, xy, yaw: float, region):

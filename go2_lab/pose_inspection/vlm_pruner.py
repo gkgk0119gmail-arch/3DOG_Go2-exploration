@@ -92,10 +92,20 @@ class VlmPruner:
             if not ok:
                 self.stats["failures"] += 1
             s.state, s.request = "monitoring", None
-        # expiry: time to live, or a visit of this object since the verdict -> re-consult
-        if s.verdict is not None and (t - s.verdict["t"] > self.v.ttl_s or self._visits(agent, o) > s.visits_at_verdict):
-            s.verdict = None
-            s.state = "observing"
+        if s.state == "closed":
+            return []
+        # a verdict holds until every kept sector is visited (then the object is closed, POSE "IDLE") or it expires
+        if s.verdict is not None:
+            left = s.verdict["keep_sectors"] - agent.retired.get(o, set())
+            if not left and s.verdict["done"]:
+                s.state = "closed"
+                self.stats["closed"] = self.stats.get("closed", 0) + 1
+                return []
+            if not left:  # kept sectors visited but not done: ask again with the new observations
+                s.verdict, s.state, s.t_last = None, "observing", -1e9
+            if t - s.verdict["t"] > self.v.ttl_s:
+                s.verdict = None
+                s.state = "observing"
         if s.state == "monitoring" and s.verdict is None:
             s.state = "observing"
         if s.state == "observing" and targets and t - s.t_last >= self.v.consult_period_s:
@@ -106,8 +116,6 @@ class VlmPruner:
             return targets
         self.stats["verdict_ticks"] += 1
         kept = [tg for tg in targets if tg.sector in s.verdict["keep_sectors"]]
-        if s.verdict["done"] and not kept:
-            return []
         return kept[: self.v.max_keep]
 
     # ---------------------------------------------------------------------------------------------------------------

@@ -64,6 +64,7 @@ perception:
     # per class). Phrasings from scripts/pose_inspection/prompt_study.py: alone, "excavator" also fires on the IC120
     # crawler carrier and "dump truck" finds it poorly; jointly, "excavator . tracked dump truck ." separates them
     query: joint
+    det_batch: 8                 # images per Grounding DINO forward pass (GPU memory next to Isaac)
     prompts:
       forklift: [forklift]
       excavator: [excavator]
@@ -109,7 +110,8 @@ planner:
     s_min_deg2: 50.0             # POSE S_min (their 10^3 px^2 on a panorama; here solid angle of visible voxels)
     level_hold_s: 0.5            # scan time at a viewpoint without a posture
     prune: none                  # none (visit every sector's best candidate) | geometric (skip G* < prune_min_gain)
-    prune_min_gain: 40
+    prune_min_gain: 40           # coarse unknown voxels (box region)
+    prune_min_gain_fine: 100     # missing-surface fine voxels (template / cad regions), ~1 m^2
   posture:
     enabled: true
     # POSE Table I: pitch {-30,-15,0,15,30}, roll {-20,0,20}; scaled to the Go2 policy limits (robot.*_limit_deg)
@@ -129,7 +131,8 @@ planner:
     model: Qwen/Qwen3-VL-8B-Instruct
     max_new_tokens: 160
     consult_period_s: 10.0       # POSE T_c: minimum time between consults of one object
-    ttl_s: 60.0                  # POSE T_ttl: a verdict expires after this (also after a visit of the object)
+    ttl_s: 120.0                 # POSE T_ttl: a verdict expires after this; when all kept sectors are visited the
+                                 # object is closed
     min_confidence: 0.5          # verdicts below this fall back to the geometric default
     max_keep: 3                  # POSE: candidates retained per verdict <= 3
     max_photos: 3                # POSE: up to three images per consult (plus the map crop)
@@ -141,6 +144,11 @@ priors:                          # stage 6: region where unseen parts are expect
   method: box                    # box (POSE, delta_b) | template | template_vlm | cad (exact surface, upper bound)
   min_fit_voxels: 20
   dilate: 0.2
+  # template / cad: the gain counts predicted-surface fine voxels not hit yet ("missing surface") instead of
+  # unknown coarse voxels in the inflated box (POSE)
+  fine_voxel: 0.1
+  shell: 0.25                    # template surface shell half-thickness (absorbs the template's size error) [m]
+  min_surface_z: 0.15            # no predicted surface at the ground
   # coarse class shapes in the object's base frame (x = track / long axis), typical sizes rounded:
   # boxes / upper_boxes rows = [cx, cy, z0, sx, sy, sz]; upper boxes rotate with the upper body (excavator boom)
   templates:

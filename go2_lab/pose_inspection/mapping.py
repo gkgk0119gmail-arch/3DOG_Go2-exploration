@@ -30,6 +30,15 @@ class WorldModel:
         self.band = (int(np.floor(band[0] / v)), int(np.ceil(band[1] / v)))
         self.lo = torch.as_tensor(self.vg.lo, device=device)
         self.centers_xy = None
+        # object surface the robot has hit itself (labelled returns within d_max), at the fine voxel size: the
+        # "missing surface" gain of the shape priors compares a predicted surface against it (stage 6)
+        self.fine = None
+        if cfg.priors.method != "box":
+            fv = cfg.priors.fine_voxel
+            hi = np.array([scene_meta["bounds"][2], scene_meta["bounds"][3], scene_meta["z_range"][1]])
+            self.fine_voxel = fv
+            self.fine_shape = tuple(int(np.ceil(v)) for v in (hi - self.vg.lo) / fv)
+            self.fine = torch.zeros((n_envs, *self.fine_shape), dtype=torch.bool, device=device)
 
     # ---------------------------------------------------------------------------------------------------------------
     def reset(self, env_ids=None):
@@ -38,6 +47,20 @@ class WorldModel:
             self.labels.fill_(-1)
         else:
             self.labels[env_ids] = -1
+        if self.fine is not None:
+            if env_ids is None:
+                self.fine.zero_()
+            else:
+                self.fine[env_ids] = False
+
+    def mark_fine(self, env: torch.Tensor, points: torch.Tensor):
+        """Mark the fine voxels of object-labelled returns ``points`` [N, 3] of environments ``env`` [N]."""
+        if self.fine is None or len(points) == 0:
+            return
+        ijk = torch.floor((points - self.lo) / self.fine_voxel).long()
+        shape = torch.tensor(self.fine_shape, device=points.device)
+        ok = ((ijk >= 0) & (ijk < shape)).all(-1)
+        self.fine[env[ok], ijk[ok, 0], ijk[ok, 1], ijk[ok, 2]] = True
 
     def voxel_index(self, p: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         ijk = torch.floor((p - self.lo) / self.vg.voxel).long()

@@ -98,29 +98,39 @@ class TemplatePrior:
 
     # ---------------------------------------------------------------------------------------------------------------
     def region(self, agent, o, m):
+        """Predicted surface of the fitted template on the fine grid (missing-surface gain); box when no fit."""
         fit = self.fit(agent, o, m)
-        inflate = self.cfg.planner.posture.delta_b
         if fit is None:
-            return self.sc.region_box(m["lo"], m["hi"], inflate)
+            return self.sc.region_box(m["lo"], m["hi"], self.cfg.planner.posture.delta_b)
         boxes = self.boxes_world(fit)
-        dil = self.p.dilate
-        lo = np.minimum(m["lo"] - inflate, np.min([np.r_[c - np.abs(h).max() * 1.5, z0] for c, _, h, z0, _ in boxes], 0))
-        hi = np.maximum(m["hi"] + inflate, np.max([np.r_[c + np.abs(h).max() * 1.5, z1] for c, _, h, _, z1 in boxes], 0))
-        b0, size, _ = self.sc.region_box(lo, hi, dil)
-        v, glo = self.sc.w.vg.voxel, self.sc.w.vg.lo
-        idx = np.stack(np.meshgrid(*[np.arange(n) for n in size], indexing="ij"), -1).reshape(-1, 3)
-        ctr = glo + (b0 + idx + 0.5) * v
-        mask = np.zeros(len(ctr), bool)
+        w, sh = self.sc.w, self.p.shell
+        reach = max(float(np.abs(h).max()) * 1.5 for _, _, h, _, _ in boxes) + sh
+        lo = np.min([np.r_[c - reach, z0 - sh] for c, _, _, z0, _ in boxes], 0)
+        hi = np.max([np.r_[c + reach, z1 + sh] for c, _, _, _, z1 in boxes], 0)
+        f0, fs, ctr = fine_box(w, lo, hi)
+        inside_any = np.zeros(len(ctr), bool)
+        near_any = np.zeros(len(ctr), bool)
         for c, a, h, z0, z1 in boxes:
             uv = (ctr[:, :2] - c) @ _rot2(-a).T
-            mask |= (np.abs(uv) <= h + dil).all(1) & (ctr[:, 2] >= z0 - dil) & (ctr[:, 2] <= z1 + dil)
-        mlo, mhi = m["lo"] - inflate, m["hi"] + inflate
-        mask |= ((ctr >= mlo) & (ctr <= mhi)).all(1)
-        return b0, size, torch.as_tensor(mask.astype(np.uint8), device=self.sc.dev)
+            near_any |= (np.abs(uv) <= h + sh).all(1) & (ctr[:, 2] >= z0 - sh) & (ctr[:, 2] <= z1 + sh)
+            inside_any |= (np.abs(uv) < h - sh).all(1) & (ctr[:, 2] > z0 + sh) & (ctr[:, 2] < z1 - sh)
+        mask = near_any & ~inside_any & (ctr[:, 2] >= self.p.min_surface_z)
+        return {"f0": f0, "fs": fs, "mask": torch.as_tensor(mask.astype(np.uint8), device=self.sc.dev)}
 
     def center(self, agent, o, m):
         fit = self.fits.get((agent.e, o)) or self.fit(agent, o, m)
         return None if fit is None else fit["center"]
+
+
+def fine_box(world, lo, hi):
+    """Fine-grid index box covering [lo, hi] (clipped) -> (f0, size, voxel centres [N, 3])."""
+    fv = world.fine_voxel
+    shape = np.array(world.fine_shape)
+    f0 = np.clip(np.floor((np.asarray(lo) - world.vg.lo) / fv).astype(int), 0, shape - 1)
+    f1 = np.clip(np.ceil((np.asarray(hi) - world.vg.lo) / fv).astype(int), 1, shape)
+    fs = np.maximum(f1 - f0, 1)
+    idx = np.stack(np.meshgrid(*[np.arange(n) for n in fs], indexing="ij"), -1).reshape(-1, 3)
+    return f0, fs, world.vg.lo + (f0 + idx + 0.5) * fv
 
 
 class CadPrior:
@@ -134,18 +144,19 @@ class CadPrior:
         self.pts = {o: s["points"][s["obj"] == o].astype(np.float32) for o in range(n_obj)}
 
     def region(self, agent, o, m):
+        """The object's exact surface on the fine grid (dilated by one fine voxel)."""
         p = self.pts.get(o)
         if p is None or len(p) == 0:
             return self.sc.region_box(m["lo"], m["hi"], agent.p.posture.delta_b)
-        b0, size, _ = self.sc.region_box(p.min(0), p.max(0), self.sc.w.vg.voxel)
-        v, glo = self.sc.w.vg.voxel, self.sc.w.vg.lo
-        ijk = np.floor((p - glo) / v).astype(int) - b0
-        mask = np.zeros(tuple(size), bool)
+        w = self.sc.w
+        f0, fs, _ = fine_box(w, p.min(0) - w.fine_voxel, p.max(0) + w.fine_voxel)
+        ijk = np.floor((p - w.vg.lo) / w.fine_voxel).astype(int) - f0
+        mask = np.zeros(tuple(fs), bool)
         for d in np.array([(i, j, k) for i in (-1, 0, 1) for j in (-1, 0, 1) for k in (-1, 0, 1)]):
             q = ijk + d
-            ok = ((q >= 0) & (q < size)).all(1)
+            ok = ((q >= 0) & (q < fs)).all(1)
             mask[q[ok, 0], q[ok, 1], q[ok, 2]] = True
-        return b0, size, torch.as_tensor(mask.reshape(-1).astype(np.uint8), device=self.sc.dev)
+        return {"f0": f0, "fs": fs, "mask": torch.as_tensor(mask.reshape(-1).astype(np.uint8), device=self.sc.dev)}
 
     def center(self, agent, o, m):
         p = self.pts.get(o)

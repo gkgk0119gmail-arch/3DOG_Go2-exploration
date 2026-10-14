@@ -26,6 +26,10 @@ ap.add_argument("--name", default=None)
 ap.add_argument("--visual", action="store_true", help="also load the textured scene (GUI / video / cameras)")
 ap.add_argument("--policy", default="weights/go2_posture_walk_model_1999.pt")
 ap.add_argument("--max_wall_s", type=float, default=7200.0)
+ap.add_argument("--video_out", default=None, help="mp4 of robot 0 from a following camera (implies --visual)")
+ap.add_argument("--video_every_s", type=float, default=0.2, help="sim seconds between video frames")
+ap.add_argument("--video_max_s", type=float, default=600.0)
+ap.add_argument("--video_eye", type=float, nargs=3, default=(-3.2, -2.4, 2.4), help="camera offset from the robot")
 AppLauncher.add_app_launcher_args(ap)
 args = ap.parse_args()
 
@@ -43,6 +47,8 @@ out = sim_path(os.path.join(cfg.experiment.results_dir, "isaac", args.scene, nam
 os.environ.update({"GO2_PI_EXP": args.exp, "GO2_PI_SCENE": args.scene, "GO2_PI_SET": json.dumps(over),
                    "GO2_PI_SEEDS": ",".join(map(str, seeds)), "GO2_PI_OUT": out, "GO2_PI_TAG": name,
                    "GO2_PI_VISUAL": "1" if args.visual else "0"})
+if args.video_out:
+    args.visual = True
 if args.visual or cfg.perception.mode == "gsam2" or cfg.planner.semantic.prune == "vlm" or \
         cfg.priors.method == "template_vlm":
     args.enable_cameras = True
@@ -51,6 +57,7 @@ app = AppLauncher(args).app
 import importlib.metadata as metadata  # noqa: E402
 
 import gymnasium as gym  # noqa: E402
+import numpy as np  # noqa: E402
 import torch  # noqa: E402
 import warp as wp  # noqa: E402
 from rsl_rl.runners import OnPolicyRunner  # noqa: E402
@@ -66,7 +73,21 @@ def main():
     # same config path as scripts/rl.py play: physics / renderer presets resolved to their defaults
     env_cfg, agent_cfg = resolve_task_config("Go2-Pose-Inspection-Play", "rsl_rl_cfg_entry_point", overrides=[])
     env_cfg.sim.device = args.device if args.device is not None else env_cfg.sim.device
-    env = gym.make("Go2-Pose-Inspection-Play", cfg=env_cfg)
+    writer = None
+    if args.video_out:
+        env_cfg.viewer.origin_type = "asset_root"
+        env_cfg.viewer.asset_name = "robot"
+        env_cfg.viewer.env_index = 0
+        env_cfg.viewer.eye = tuple(args.video_eye)
+        env_cfg.viewer.lookat = (0.0, 0.0, 0.6)
+        env_cfg.viewer.resolution = (960, 540)
+        env_cfg.sim.render_interval = env_cfg.decimation
+    env = gym.make("Go2-Pose-Inspection-Play", cfg=env_cfg, render_mode="rgb_array" if args.video_out else None)
+    if args.video_out:
+        import imageio.v2 as iio
+
+        os.makedirs(os.path.dirname(os.path.abspath(args.video_out)), exist_ok=True)
+        writer = iio.get_writer(args.video_out, fps=25, codec="libx264", quality=7)
     agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, metadata.version("rsl-rl-lib"))
     venv = RslRlVecEnvWrapper(env, clip_actions=agent_cfg.clip_actions)
     runner = OnPolicyRunner(venv, agent_cfg.to_dict(), log_dir=None, device=agent_cfg.device)
@@ -76,10 +97,16 @@ def main():
     print(f"[{name} / {args.scene}] seeds {seeds} -> {out}")
     obs = venv.get_observations()
     t0, last = time.time(), 0.0
+    next_frame = 0.0
     while app.is_running() and not term.finished:
         with torch.inference_mode():
             obs, _, dones, _ = venv.step(policy(obs))
             policy.reset(dones)
+        if writer is not None and term.t >= next_frame and term.t <= args.video_max_s:
+            next_frame = term.t + args.video_every_s
+            frame = env.render()
+            if frame is not None:
+                writer.append_data(np.asarray(frame)[..., :3])
         if term.t - last >= 60.0:
             last = term.t
             co = term.session.surf.co().cpu().numpy().round(3)
@@ -90,6 +117,9 @@ def main():
             print("wall-clock limit reached; saving partial runs")
             term.session.save({"engine": "isaac", "partial": True})
             break
+    if writer is not None:
+        writer.close()
+        print("wrote", args.video_out)
     s = term.session
     print(f"done: sim {term.t:.0f} s in {time.time() - t0:.0f} s wall")
     for e in range(len(seeds)):
