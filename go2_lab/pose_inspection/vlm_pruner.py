@@ -35,8 +35,9 @@ Candidates:
 {table}
 Task: keep <= {max_keep} candidates (at most one per sector) that would scan surfaces not yet green; prune only \
 sectors whose side of the object is fully green; if more than half of the object is green, keep at most one \
-candidate and set done to true. Reply with JSON only: {{"keep": [candidate numbers], "confidence": 0-1, \
-"reason": "one sentence", "done": true/false}}"""
+candidate and set done to true. Reply with JSON only: {{"green_fraction": <0-1, your estimate of how much of \
+the object's surface is already green>, "keep": [candidate numbers], "confidence": 0-1, "reason": "one sentence", \
+"done": true/false}}"""
 
 
 class ObjectSession:
@@ -83,6 +84,12 @@ class VlmPruner:
                 id2sec = r.meta.get("id2sector", {})
                 keep = {id2sec[str(k)] for k in keep_ids if str(k) in id2sec} if isinstance(keep_ids, list) else set()
                 ok = conf >= self.v.min_confidence
+                # POSE guardrail, enforced on the model's own estimate: mostly green -> at most one more view, done
+                gf = r.parsed.get("green_fraction")
+                if isinstance(gf, (int, float)) and gf >= self.v.done_green_fraction:
+                    ordered = [id2sec[str(k)] for k in keep_ids if str(k) in id2sec] if isinstance(keep_ids, list) else []
+                    keep = set(ordered[:1])
+                    r.parsed["done"] = True
                 s.history.append(f"#{s.n_consults}: keep {sorted(keep)} done {bool(r.parsed.get('done'))}")
                 if ok:
                     s.verdict = {"keep_sectors": keep, "done": bool(r.parsed.get("done", False)), "confidence": conf,
@@ -147,7 +154,7 @@ class VlmPruner:
         s.state, s.t_last = "consulting", t
         s.n_consults += 1
         self.stats["consults"] += 1
-        if self.log_images > 0 and self.image_dir:
+        if self.log_images > 0 and self.image_dir and len(images) > 1:  # consults with photos
             import os
 
             os.makedirs(self.image_dir, exist_ok=True)
