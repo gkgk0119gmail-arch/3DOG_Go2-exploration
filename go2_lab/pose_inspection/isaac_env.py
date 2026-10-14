@@ -288,6 +288,7 @@ class PoseInspectionCommand(WaypointTurnThenGoCommand):
             if self.vlm is not None:
                 extra["vlm"] = {"client": self.vlm.summary(),
                                 "per_robot": {str(e): p.summary() for e, p in self.pruners.items()}}
+                os.makedirs(s.out_dir, exist_ok=True)
                 with open(os.path.join(s.out_dir, "vlm_calls.json"), "w") as f:
                     json.dump(self.vlm.log, f, indent=1, default=str)
             s.save(extra)
