@@ -1,0 +1,10 @@
+Select inspection viewpoints for one object so a ground robot's range sensor can 3D-scan all of it, especially the top. Sensor: 360 deg LiDAR, vertical FOV +/-15 deg, mounted 15 deg nose-up; the body can tilt up to 25 deg. Object: forklift, mapped height 4.0 m, footprint 1.2 x 3.2 m. Sectors around the object (0..7): [1, 1, 0, 0, 0, 1, 1, 1] (0 unseen, 1 seen, 255 unreachable). Previous verdicts: #1: keep [1, 2, 3] done False; #2: keep [1, 2, 5] done False. Consult #3.
+IMG 1: top-down map crop around the object (green = object parts scanned closely, grey-green = mapped from afar only, numbered circles = candidates, blue = robot). IMG 2..4: robot camera photos of the object from sectors [7, 0, 1]; green tint = parts already scanned closely, untinted parts of the machine still need scanning.
+Candidates:
+#1 sec 1, 3 m, top@level 2.1 m, top@-25deg 4.7 m, visibility 3940, posture gain 92 vs level 0
+#2 sec 2, 3 m, top@level 2.1 m, top@-25deg 4.7 m, visibility 3943, posture gain 94 vs level 0
+#3 sec 3, 5 m, top@level 3.3 m, top@-25deg 7.5 m, visibility 577, posture gain 3 vs level 2
+#4 sec 4, 5 m, top@level 3.3 m, top@-25deg 7.5 m, visibility 67, posture gain 0 vs level 0
+#5 sec 6, 3 m, top@level 2.1 m, top@-25deg 4.7 m, visibility 2574, posture gain 0 vs level 0
+Measured from the map: 64% of the object's mapped voxels are already scanned closely (green).
+Task: keep <= 3 candidates (at most one per sector) that would scan surfaces not yet green; prune sectors whose side of the object is already green. Reply with JSON only: {"keep": [candidate numbers], "confidence": 0-1, "reason": "one sentence"}
