@@ -103,7 +103,7 @@ class VlmPruner:
                 return []
             if not left:  # kept sectors visited but not done: ask again with the new observations
                 s.verdict, s.state, s.t_last = None, "observing", -1e9
-            if t - s.verdict["t"] > self.v.ttl_s:
+            elif t - s.verdict["t"] > self.v.ttl_s:
                 s.verdict = None
                 s.state = "observing"
         if s.state == "monitoring" and s.verdict is None:

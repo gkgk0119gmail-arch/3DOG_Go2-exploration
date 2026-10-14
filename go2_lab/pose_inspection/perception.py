@@ -288,7 +288,10 @@ class Gsam2Perception:
         return labels, cov
 
     def summary(self) -> dict:
-        out = {"frames": self.n_frames, "wall_s": round(self.wall_s, 1)}
+        out = {"frames": self.n_frames, "wall_s": round(self.wall_s, 1),
+               "hypotheses": [[{"cls": self.classes[b["cls"]] if b["cls"] >= 0 else None,
+                                "center": ((b["lo"] + b["hi"]) / 2).round(2).tolist(),
+                                "votes": b["votes"].astype(int).tolist()} for b in a.boxes] for a in self.assoc]}
         for c, (tp, fp, fn) in self.stats.items():
             b, cl, oc = self.fp_on[c]
             out[c] = {"precision": tp / max(1, tp + fp), "recall": tp / max(1, tp + fn), "tp": tp, "fp": fp, "fn": fn,

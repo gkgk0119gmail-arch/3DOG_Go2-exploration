@@ -120,6 +120,10 @@ class InspectionAgent:
                 tgt.gain, tgt.gain0 = g0, g0
             thr = sp.prune_min_gain_fine if isinstance(region, dict) else sp.prune_min_gain
             if sp.prune == "geometric" and tgt.gain < thr:
+                # pruned for good: a refitted model may push the gain back over the threshold and the robot
+                # would dither between sectors
+                self.retired.setdefault(o, set()).add(s)
+                self._event(self.t_plan, "prune", obj=o, sector=s, gain=round(float(tgt.gain), 1))
                 continue
             out.append(tgt)
         if self.pruner is not None:
