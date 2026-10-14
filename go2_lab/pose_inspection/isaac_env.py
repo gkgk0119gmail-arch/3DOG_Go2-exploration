@@ -87,7 +87,8 @@ class PoseInspectionCommand(WaypointTurnThenGoCommand):
                     cls_fn = (lambda o: objs[o]["class"])
                 else:
                     cls_fn = (lambda o, e=e: self.perc.classes[self.perc.assoc[e].boxes[o]["cls"]]
-                              if o < len(self.perc.assoc[e].boxes) else "machine")
+                              if o < len(self.perc.assoc[e].boxes) and self.perc.assoc[e].boxes[o] is not None
+                              else "machine")
                 self.pruners[e] = VlmPruner(exp, self.vlm, e, cls_fn,
                                             log_images=exp.planner.vlm.log_consults if e == 0 else 0,
                                             image_dir=os.path.join(out, "vlm_inputs"))

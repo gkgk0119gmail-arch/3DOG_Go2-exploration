@@ -151,8 +151,10 @@ class InspectionAgent:
         if self.p.exploration.enabled:
             targets += self.exploration_targets(nav, nav_map)
         if self.p.semantic.enabled:
-            mf = self.cfg.perception.gsam2.min_footprint if self.cfg.perception.mode != "gt" else 0.0
-            self.models = self.w.object_models(self.e, self.p.semantic.min_object_voxels, mf)
+            g = self.cfg.perception.gsam2
+            mf, mb = (g.min_footprint, g.get("max_base_z", float("inf"))) if self.cfg.perception.mode != "gt" \
+                else (0.0, float("inf"))
+            self.models = self.w.object_models(self.e, self.p.semantic.min_object_voxels, mf, mb)
             for o, m in self.models.items():
                 st = self.semantic_targets(o, m, nav)
                 if not st:

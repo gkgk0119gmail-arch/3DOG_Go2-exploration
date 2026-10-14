@@ -156,18 +156,24 @@ class ClassToInstance:
     ``assoc_radius`` of its box whatever their class; a hypothesis' class is the majority of the labels it received
     (an excavator prompt firing on the dump truck is outvoted by the dump-truck labels of the same machine)."""
 
-    def __init__(self, assoc_radius: float, max_objects: int, n_classes: int, max_extent: float):
+    def __init__(self, assoc_radius: float, max_objects: int, n_classes: int, max_extent: float,
+                 class_extent: list[float] | None = None, merge_gap: float | None = None):
         self.r = assoc_radius
         self.max = max_objects
         self.nc = n_classes
         self.max_extent = max_extent   # a hypothesis never grows beyond this footprint diagonal [m]
-        self.boxes: list[dict] = []    # {"cls", "lo", "hi", "votes"}
+        self.class_extent = class_extent or [max_extent] * n_classes
+        self.merge_gap = merge_gap     # None: no merging
+        self.boxes: list[dict] = []    # {"cls", "lo", "hi", "votes"}; merged-away hypotheses keep their slot (None)
+        self.merged: list[tuple[int, int]] = []   # (from, into) since the last call; the map relabels its voxels
 
     def assign(self, pts: np.ndarray, cls: np.ndarray) -> np.ndarray:
         """pts [N, 3], cls [N] (class ids >= 0) -> hypothesis ids [N]."""
         inst = np.full(len(pts), -1, int)
         todo = np.ones(len(pts), bool)
         for k, b in enumerate(self.boxes):
+            if b is None:
+                continue
             d = np.maximum(0, np.maximum(b["lo"][:2] - pts[:, :2], pts[:, :2] - b["hi"][:2])).max(1)
             near = todo & (d <= self.r)
             # points that would stretch the box beyond a machine's size do not join (no chaining across the site)
@@ -194,7 +200,38 @@ class ClassToInstance:
             b["votes"] += np.bincount(cls[sel], minlength=self.nc) / sel.sum()
             b["cls"] = int(np.argmax(b["votes"]))
             b["frames"] = b.get("frames", 0) + 1
+        if self.merge_gap is not None:
+            for j, i in self._merge():
+                inst[inst == j] = i
         return inst
+
+    def _merge(self) -> list[tuple[int, int]]:
+        """Fragments of one machine (first seen from different sides) whose footprints touch become one hypothesis
+        while the union stays within the smaller of the two classes' size caps."""
+        out = []
+        again = True
+        while again:
+            again = False
+            live = [k for k, b in enumerate(self.boxes) if b is not None]
+            for a in live:
+                for c in live:
+                    if c <= a or self.boxes[a] is None or self.boxes[c] is None:
+                        continue
+                    A, C = self.boxes[a], self.boxes[c]
+                    gap = np.maximum(0, np.maximum(A["lo"][:2] - C["hi"][:2], C["lo"][:2] - A["hi"][:2])).max()
+                    lo, hi = np.minimum(A["lo"], C["lo"]), np.maximum(A["hi"], C["hi"])
+                    cap = min(self.class_extent[A["cls"]] if A["cls"] >= 0 else self.max_extent,
+                              self.class_extent[C["cls"]] if C["cls"] >= 0 else self.max_extent)
+                    if gap <= self.merge_gap and np.linalg.norm(hi[:2] - lo[:2]) <= cap:
+                        A["lo"], A["hi"] = lo, hi
+                        A["votes"] = A["votes"] + C["votes"]
+                        A["cls"] = int(np.argmax(A["votes"]))
+                        A["frames"] = A.get("frames", 0) + C.get("frames", 0)
+                        self.boxes[c] = None
+                        out.append((c, a))
+                        again = True
+        self.merged += out
+        return out
 
 
 def ring_camera_yaws(n: int) -> list[float]:
@@ -219,7 +256,12 @@ class Gsam2Perception:
                                          for o in scene_meta["objects"]] + [-1], device=device)
         self.model = GroundedSam2(g, device)
         ext = max(g.max_extent[c] for c in self.classes)
-        self.assoc = [ClassToInstance(g.assoc_radius, g.max_objects, len(self.classes), ext) for _ in range(n_envs)]
+        cext = [g.max_extent[c] for c in self.classes]
+        self.assoc = [ClassToInstance(g.assoc_radius, g.max_objects, len(self.classes), ext, cext, g.get("merge_gap"))
+                      for _ in range(n_envs)]
+        # class size prior: a return above the class' height is not that machine (rack shelves, building)
+        mh = g.get("max_height") or {}
+        self.max_height = torch.as_tensor([float(mh.get(c, 1e9)) for c in self.classes], device=device)
         self.frames: dict[int, list[dict]] = {}
         # LiDAR-return label quality at camera frames: tp / fp / fn per class (vs the GT class of the hit triangle)
         self.stats = {c: [0, 0, 0] for c in self.classes}
@@ -233,7 +275,7 @@ class Gsam2Perception:
         self.frames[env_id] = cams
 
     def inst_class(self, e: int) -> torch.Tensor:
-        cls = [b["cls"] for b in self.assoc[e].boxes]
+        cls = [-1 if b is None else b["cls"] for b in self.assoc[e].boxes]
         out = torch.full((self.g.max_objects + 1,), -1, dtype=torch.long, device=self.dev)
         if cls:
             out[: len(cls)] = torch.as_tensor(cls, device=self.dev)
@@ -269,10 +311,16 @@ class Gsam2Perception:
                 k += len(cams)
                 sel = torch.nonzero(hit[i]).flatten()
                 cls = project_labels(pts[i, sel], cams, seg, self.class_ids, H, W, self.g.depth_tol, self.g.erode_px)
+                high = (cls >= 0) & (pts[i, sel, 2] > self.max_height[cls.clamp(min=0)])
+                cls[high] = -1
                 got = cls >= 0
                 if got.any():
                     inst = self.assoc[e].assign(pts[i, sel[got]].cpu().numpy(), cls[got].cpu().numpy())
                     labels[i, sel[got]] = torch.as_tensor(inst, device=dev)
+                for j, k_ in self.assoc[e].merged:   # merged hypotheses: relabel the map and this scan
+                    w.labels[e][w.labels[e] == j] = k_
+                    labels[i][labels[i] == j] = k_
+                self.assoc[e].merged.clear()
                 # quality of the per-return class labels at this frame
                 gto = obj[i, sel]
                 gtc = self.gt_class[gto]
@@ -300,7 +348,8 @@ class Gsam2Perception:
         out = {"frames": self.n_frames, "wall_s": round(self.wall_s, 1),
                "hypotheses": [[{"cls": self.classes[b["cls"]] if b["cls"] >= 0 else None,
                                 "center": ((b["lo"] + b["hi"]) / 2).round(2).tolist(),
-                                "votes": b["votes"].round(2).tolist()} for b in a.boxes] for a in self.assoc]}
+                                "votes": b["votes"].round(2).tolist(), "frames": b.get("frames", 0)}
+                               for b in a.boxes if b is not None] for a in self.assoc]}
         for c, (tp, fp, fn) in self.stats.items():
             b, cl, oc = self.fp_on[c]
             out[c] = {"precision": tp / max(1, tp + fp), "recall": tp / max(1, tp + fn), "tp": tp, "fp": fp, "fn": fn,

@@ -80,7 +80,11 @@ perception:
     max_extent: {forklift: 4.5, excavator: 6.0, dump_truck: 8.5}   # hypothesis footprint diagonal cap [m]
     class_box_threshold: {dump_truck: 0.40}                        # per-class detection threshold
     min_footprint: 0.8           # a hypothesis whose footprint is thinner than this is not a machine (fences) [m]
-    max_objects: 40
+    # v3 (warehouse v2 ran out of hypotheses: shelf false positives + one forklift split into several fragments)
+    max_height: {forklift: 4.5, excavator: 4.0, dump_truck: 4.5}   # class size prior: returns above are not it [m]
+    max_base_z: 0.8              # a machine stands on the floor: hypotheses whose lowest voxel is higher are skipped
+    merge_gap: 0.3               # fragments whose footprints touch merge (union within the class size cap) [m]
+    max_objects: 64
   cameras:                       # ring of pinhole cameras on the base (stage 4)
     n: 4
     width: 512

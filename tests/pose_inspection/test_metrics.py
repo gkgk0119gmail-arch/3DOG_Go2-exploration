@@ -53,3 +53,18 @@ def test_surface_coverage_full_and_targets():
     sc.reset()
     sc.mark(torch.zeros(len(p), dtype=torch.long, device=sc.device), p, (o + 1) % sc.n_obj)
     assert sc.co()[0].item() < 0.05
+
+
+def test_hypothesis_fragments_merge():
+    from go2_lab.pose_inspection.perception import ClassToInstance
+
+    a = ClassToInstance(assoc_radius=1.5, max_objects=8, n_classes=1, max_extent=4.5, merge_gap=0.3)
+    # one frame along a 3.3 m forklift: seeding splits it (seed radius 2.25 m); the touching fragments merge
+    y = np.linspace(0.0, 3.3, 34)
+    inst = a.assign(np.stack([np.zeros_like(y), y, np.ones_like(y)], 1), np.zeros(len(y), int))
+    assert sum(b is not None for b in a.boxes) == 1 and set(inst.tolist()) == {0}
+    assert a.merged == [(1, 0)]
+    # a second forklift 4 m further along stays separate (the union would exceed the size cap)
+    y2 = y + 7.3
+    inst2 = a.assign(np.stack([np.zeros_like(y2), y2, np.ones_like(y2)], 1), np.zeros(len(y2), int))
+    assert sum(b is not None for b in a.boxes) == 2 and 0 not in set(inst2.tolist())
