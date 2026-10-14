@@ -61,7 +61,7 @@ class GroundedSam2:
                 labels = r.get("text_labels", r.get("labels"))
                 for score, box, lab in zip(r["scores"].tolist(), r["boxes"].tolist(), labels):
                     cls = self._class_of(str(lab), q)
-                    if cls is not None:
+                    if cls is not None and score >= self.cfg.class_box_threshold.get(cls, self.cfg.box_threshold):
                         dets[k].append((cls, float(score), box, str(lab)))
         return [self._nms(d) for d in dets]
 
@@ -156,10 +156,11 @@ class ClassToInstance:
     ``assoc_radius`` of its box whatever their class; a hypothesis' class is the majority of the labels it received
     (an excavator prompt firing on the dump truck is outvoted by the dump-truck labels of the same machine)."""
 
-    def __init__(self, assoc_radius: float, max_objects: int, n_classes: int):
+    def __init__(self, assoc_radius: float, max_objects: int, n_classes: int, max_extent: float):
         self.r = assoc_radius
         self.max = max_objects
         self.nc = n_classes
+        self.max_extent = max_extent   # a hypothesis never grows beyond this footprint diagonal [m]
         self.boxes: list[dict] = []    # {"cls", "lo", "hi", "votes"}
 
     def assign(self, pts: np.ndarray, cls: np.ndarray) -> np.ndarray:
@@ -169,12 +170,16 @@ class ClassToInstance:
         for k, b in enumerate(self.boxes):
             d = np.maximum(0, np.maximum(b["lo"][:2] - pts[:, :2], pts[:, :2] - b["hi"][:2])).max(1)
             near = todo & (d <= self.r)
+            # points that would stretch the box beyond a machine's size do not join (no chaining across the site)
+            lo = np.minimum(b["lo"][:2], pts[:, :2])
+            hi = np.maximum(b["hi"][:2], pts[:, :2])
+            near &= np.linalg.norm(hi - lo, axis=1) <= self.max_extent
             if near.any():
                 inst[near] = k
                 todo &= ~near
         while todo.any() and len(self.boxes) < self.max:
             seed = pts[np.flatnonzero(todo)[0]]
-            grp = todo & (np.linalg.norm(pts[:, :2] - seed[:2], axis=1) <= 2 * self.r)
+            grp = todo & (np.linalg.norm(pts[:, :2] - seed[:2], axis=1) <= min(2 * self.r, self.max_extent / 2))
             self.boxes.append({"cls": -1, "lo": pts[grp].min(0), "hi": pts[grp].max(0),
                                "votes": np.zeros(self.nc)})
             inst[grp] = len(self.boxes) - 1
@@ -210,7 +215,8 @@ class Gsam2Perception:
         self.gt_class = torch.as_tensor([self.class_ids.get(o["class"], -1) if o["target"] else -1
                                          for o in scene_meta["objects"]] + [-1], device=device)
         self.model = GroundedSam2(g, device)
-        self.assoc = [ClassToInstance(g.assoc_radius, g.max_objects, len(self.classes)) for _ in range(n_envs)]
+        ext = max(g.max_extent[c] for c in self.classes)
+        self.assoc = [ClassToInstance(g.assoc_radius, g.max_objects, len(self.classes), ext) for _ in range(n_envs)]
         self.frames: dict[int, list[dict]] = {}
         # LiDAR-return label quality at camera frames: tp / fp / fn per class (vs the GT class of the hit triangle)
         self.stats = {c: [0, 0, 0] for c in self.classes}

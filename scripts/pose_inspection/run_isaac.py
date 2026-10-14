@@ -44,11 +44,13 @@ seeds = args.seeds if args.seeds is not None else list(range(cfg.experiment.seed
                                                              cfg.experiment.seed_base + cfg.experiment.n_seeds))
 name = args.name or os.path.splitext(os.path.basename(args.exp))[0]
 out = sim_path(os.path.join(cfg.experiment.results_dir, "isaac", args.scene, name))
+if args.video_out:
+    os.environ["GO2_PI_VIDEO"] = "1"
+    args.video_out = os.path.abspath(args.video_out)
+    args.visual = True
 os.environ.update({"GO2_PI_EXP": args.exp, "GO2_PI_SCENE": args.scene, "GO2_PI_SET": json.dumps(over),
                    "GO2_PI_SEEDS": ",".join(map(str, seeds)), "GO2_PI_OUT": out, "GO2_PI_TAG": name,
                    "GO2_PI_VISUAL": "1" if args.visual else "0"})
-if args.video_out:
-    args.visual = True
 if args.visual or cfg.perception.mode == "gsam2" or cfg.planner.semantic.prune == "vlm" or \
         cfg.priors.method == "template_vlm":
     args.enable_cameras = True
@@ -74,15 +76,7 @@ def main():
     env_cfg, agent_cfg = resolve_task_config("Go2-Pose-Inspection-Play", "rsl_rl_cfg_entry_point", overrides=[])
     env_cfg.sim.device = args.device if args.device is not None else env_cfg.sim.device
     writer = None
-    if args.video_out:
-        env_cfg.viewer.origin_type = "asset_root"
-        env_cfg.viewer.asset_name = "robot"
-        env_cfg.viewer.env_index = 0
-        env_cfg.viewer.eye = tuple(args.video_eye)
-        env_cfg.viewer.lookat = (0.0, 0.0, 0.6)
-        env_cfg.viewer.resolution = (960, 540)
-        env_cfg.sim.render_interval = env_cfg.decimation
-    env = gym.make("Go2-Pose-Inspection-Play", cfg=env_cfg, render_mode="rgb_array" if args.video_out else None)
+    env = gym.make("Go2-Pose-Inspection-Play", cfg=env_cfg)
     if args.video_out:
         import imageio.v2 as iio
 
@@ -104,9 +98,18 @@ def main():
             policy.reset(dones)
         if writer is not None and term.t >= next_frame and term.t <= args.video_max_s:
             next_frame = term.t + args.video_every_s
-            frame = env.render()
-            if frame is not None:
-                writer.append_data(np.asarray(frame)[..., :3])
+            cam = env.unwrapped.scene["pi_video"]
+            if term.t > 0:
+                writer.append_data(cam.data.output["rgb"].torch[0, ..., :3].cpu().numpy())
+            # chase view for the next frame: behind / beside / above robot 0 in its heading frame
+            rob = env.unwrapped.scene["robot"]
+            p = rob.data.root_pos_w.torch[0]
+            yaw = float(rob.data.heading_w.torch[0])
+            ex, ey, ez = args.video_eye
+            c, s_ = np.cos(yaw), np.sin(yaw)
+            eye = torch.tensor([[p[0] + c * ex - s_ * ey, p[1] + s_ * ex + c * ey, ez]], device=p.device)
+            look = torch.tensor([[p[0], p[1], 0.7]], device=p.device)
+            cam.set_world_poses_from_view(eye.float(), look.float())
         if term.t - last >= 60.0:
             last = term.t
             co = term.session.surf.co().cpu().numpy().round(3)

@@ -74,6 +74,8 @@ perception:
     erode_px: 2                  # mask rim dropped before projecting (SAM masks bleed onto the ground)
     min_label_height: 0.15       # floor returns never take an object label (flat floor at z = 0)
     assoc_radius: 1.5            # class voxels join an object hypothesis within this distance of its box [m]
+    max_extent: {forklift: 4.5, excavator: 6.0, dump_truck: 8.5}   # hypothesis footprint diagonal cap [m]
+    class_box_threshold: {dump_truck: 0.40}                        # per-class detection threshold
     max_objects: 40
   cameras:                       # ring of pinhole cameras on the base (stage 4)
     n: 4
@@ -137,7 +139,9 @@ planner:
     max_keep: 3                  # POSE: candidates retained per verdict <= 3
     max_photos: 3                # POSE: up to three images per consult (plus the map crop)
     bev_px: 384
-    photo_range: 8.0             # photos for an object's sector are kept when the robot is this close [m]
+    photo_range: 8.0             # sector photos are taken between photo_min_range and photo_range [m] ...
+    photo_min_range: 4.0
+    photo_keep_margin: 0.5       # ... preferring the farther one (the whole machine in view)
     log_consults: 6              # save the inputs of the first consults of robot 0 for inspection
 
 priors:                          # stage 6: region where unseen parts are expected (posture gain, viewpoint centre)

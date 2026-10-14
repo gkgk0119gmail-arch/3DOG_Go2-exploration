@@ -180,14 +180,20 @@ class PoseInspectionCommand(WaypointTurnThenGoCommand):
         for o, m in agent.models.items():
             c = m["centroid"]
             d = float(np.hypot(c[0] - xy[0], c[1] - xy[1]))
-            if d > self.exp.planner.vlm.photo_range:
+            v = self.exp.planner.vlm
+            if not v.photo_min_range <= d <= v.photo_range:
                 continue
+            key = (o, sector_of(c, xy, self.exp.planner.semantic.n_sectors))
+            old = self.pruners[e].frames.get(key)
+            if old is not None and old.get("dist", 0.0) > d + v.photo_keep_margin:
+                continue  # keep the farther photo of this sector: it shows the whole machine
             k = best_camera(cam_yaws, math.atan2(c[1] - xy[1], c[0] - xy[0]))
             f = dict(cams[k])
             f["depth"] = f["depth"].cpu().numpy()
             f["t"] = self.t
             f["cam_yaw"] = cam_yaws[k]
-            self.pruners[e].store_frame(o, sector_of(c, xy, self.exp.planner.semantic.n_sectors), f)
+            f["dist"] = d
+            self.pruners[e].store_frame(*key, f)
 
     HINT_PROMPT = ("This robot camera photo shows a {cls}. Where does its boom / arm (or its tallest part) point in "
                    "the image? Reply with JSON only: {{\"direction\": \"left|right|toward camera|away from camera|"
@@ -320,6 +326,15 @@ class Go2PoseInspectionEnvCfg(Go2WarehouseDemoEnvCfg):
                                            collision_props=sim_utils.CollisionPropertiesCfg(collision_enabled=False)))
         if gsam2:
             self._add_cameras(exp)
+        if os.environ.get("GO2_PI_VIDEO", "0") == "1":  # chase camera for recordings (moved by run_isaac.py)
+            from isaaclab.sensors import CameraCfg  # noqa: PLC0415
+
+            w, h = (int(v) for v in os.environ.get("GO2_PI_VIDEO_RES", "960,540").split(","))
+            self.scene.pi_video = CameraCfg(prim_path="{ENV_REGEX_NS}/VideoCam", update_period=0.0, height=h, width=w,
+                                            data_types=["rgb"], update_latest_camera_pose=True,
+                                            spawn=sim_utils.PinholeCameraCfg(focal_length=14.0,
+                                                                             horizontal_aperture=20.955,
+                                                                             clipping_range=(0.1, 200.0)))
         # VLP-16 visual on the robot at the experiment's mount tilt
         self.scene.robot.spawn = self.scene.robot.spawn.replace(usd_path=_go2_vlp16_usd(exp.lidar.mount_tilt_deg))
         old = self.commands.base_velocity
@@ -334,7 +349,9 @@ class Go2PoseInspectionEnvCfg(Go2WarehouseDemoEnvCfg):
         cx, cy = (b[0] + b[2]) / 2, (b[1] + b[3]) / 2
         self.viewer.eye = (cx, b[1] - 8.0, 22.0)
         self.viewer.lookat = (cx, cy, 0.0)
-        if not gsam2:
+        if os.environ.get("GO2_PI_VIDEO", "0") == "1":
+            self.sim.render_interval = self.decimation
+        elif not gsam2:
             self.sim.render_interval = 50
         self.seed = seeds[0]
 

@@ -223,24 +223,27 @@ class VlmPruner:
         return im
 
     def _tinted(self, f: dict, m: dict) -> Image.Image:
-        """Camera photo with the object's mapped voxels re-projected as a green tint."""
+        """Camera photo with the object's mapped voxels re-projected as a solid green tint (each voxel painted at
+        its projected size, hidden ones skipped by the depth image)."""
         rgb = f["rgb"].astype(np.float32).copy()
         H, W = rgb.shape[:2]
         vox = m["voxels"].to(f["R_wc"].device)
         pc = vox @ f["R_wc"].T + f["t_wc"]
         z = pc[:, 2]
         ok = z > 0.2
-        uv = pc[ok, :2] / z[ok, None] @ f["K"][:2, :2].T + f["K"][:2, 2]
-        u, v = uv[:, 0].long().cpu().numpy(), uv[:, 1].long().cpu().numpy()
+        K = f["K"]
+        uv = pc[ok, :2] / z[ok, None] @ K[:2, :2].T + K[:2, 2]
+        u, v = uv[:, 0].cpu().numpy(), uv[:, 1].cpu().numpy()
         zz = z[ok].cpu().numpy()
+        half = np.maximum(1, 0.5 * float(K[0, 0]) * self.cfg.metrics.scene_voxel / zz).astype(int)
         mask = np.zeros((H, W), bool)
-        for du in (-2, -1, 0, 1, 2):
-            for dv in (-2, -1, 0, 1, 2):
-                uu, vv = u + du, v + dv
-                good = (uu >= 0) & (uu < W) & (vv >= 0) & (vv < H)
-                if f.get("depth") is not None:  # numpy [H, W]: skip voxels hidden behind other geometry
-                    good[good] &= zz[good] <= f["depth"][vv[good], uu[good]] + 0.4
-                mask[vv[good], uu[good]] = True
+        dep = f.get("depth")
+        for ui, vi, zi, h in zip(u.astype(int), v.astype(int), zz, half):
+            if not (0 <= ui < W and 0 <= vi < H):
+                continue
+            if dep is not None and zi > dep[vi, ui] + 0.5:
+                continue
+            mask[max(0, vi - h):vi + h + 1, max(0, ui - h):ui + h + 1] = True
         rgb[mask] = 0.45 * rgb[mask] + 0.55 * np.array([40, 220, 60])
         return Image.fromarray(rgb.clip(0, 255).astype(np.uint8))
 
