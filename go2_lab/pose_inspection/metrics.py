@@ -92,6 +92,7 @@ class Termination:
         self.done = np.zeros(n_envs, bool)
         self.t_eff = np.full(n_envs, np.nan)
         self.timeout = np.zeros(n_envs, bool)
+        self.stalled = np.zeros(n_envs, bool)  # stopped below cs_threshold: planner idle and Cs flat
 
     def update(self, t: float, cs: np.ndarray, idle_since: np.ndarray | None = None):
         """``idle_since`` [E]: time the planner ran out of targets (nan while it still has some); with
@@ -109,8 +110,13 @@ class Termination:
             if c.get("require_planner_idle", False) and idle_since is not None:
                 idle_ok = bool(np.isfinite(idle_since[e]))
                 t_idle = float(idle_since[e]) if idle_ok else np.inf
-            if cs[e] > c.cs_threshold and full and (h[-1][1] - h[0][1]) < c.min_gain and idle_ok:
+            flat = full and (h[-1][1] - h[0][1]) < c.min_gain
+            # our addition: a planner with nothing left to do and a flat Cs is finished even below the threshold
+            # (heavy pruning can leave Cs < cs_threshold; POSE's rule would then idle until the time limit)
+            stall = c.get("stop_when_idle", False) and np.isfinite(t_idle) and cs[e] <= c.cs_threshold
+            if flat and idle_ok and (cs[e] > c.cs_threshold or stall):
                 self.done[e], self.t_eff[e] = True, max(t - c.window_s, t_idle)
+                self.stalled[e] = bool(stall)
             elif t >= c.time_limit_s:
                 self.done[e], self.t_eff[e], self.timeout[e] = True, c.time_limit_s, True
         return self.done

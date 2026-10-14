@@ -195,7 +195,8 @@ class Session:
         row = [r for r in c if r[0] <= t_eff + 1e-6]
         row = row[-1] if row else c[-1]
         names = [o["name"] for o in self.meta["objects"]]
-        return {"seed": self.seeds[e], "timeout": bool(self.term.timeout[e]), "finished": bool(self.term.done[e]),
+        return {"seed": self.seeds[e], "timeout": bool(self.term.timeout[e]), "stalled": bool(self.term.stalled[e]),
+                "finished": bool(self.term.done[e]),
                 "t_eff": t_eff, "L_eff": row[6], "N_post": int(row[7]), "Co": row[1], "Co_n26": row[2],
                 "Cs_raw": row[3], "Cs": row[4], "Co_vs_ub": row[5],
                 "Co_per_object": {n: row[8][i] for i, n in enumerate(names)},

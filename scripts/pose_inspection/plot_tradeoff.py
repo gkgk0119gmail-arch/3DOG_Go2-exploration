@@ -50,7 +50,7 @@ def main():
             for d in glob.glob(os.path.join(root, scene, f"sweep_{m}_*")):
                 thr = int(re.search(r"_(\d+)$", d).group(1))
                 pts.append((thr, load(d)))
-            pts.sort()
+            pts.sort(reverse=True)  # most pruning (fastest) first, then no pruning
             if os.path.isdir(os.path.join(root, scene, full)):
                 pts.append(("all", load(os.path.join(root, scene, full))))
             groups[m] = [(k, r) for k, r in pts if r]
@@ -87,8 +87,7 @@ def main():
             ax.set_xlabel("effective time t_eff [s]")
             ax.set_ylabel(yl)
             ax.grid(alpha=0.3)
-            ax.set_title(f"{scene}: {yl.split(' (')[0]} vs time (labels = prune threshold, all = no pruning)",
-                         fontsize=10)
+            ax.set_title(f"{scene}: {yl.split(' (')[0]}\n(labels = prune threshold, all = no pruning)", fontsize=10)
             ax.legend(fontsize=8, loc="lower right")
     fig.tight_layout()
     base = os.path.join(SIM, args.out)

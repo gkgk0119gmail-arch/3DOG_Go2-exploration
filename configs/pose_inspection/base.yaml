@@ -36,6 +36,9 @@ termination:
   # our addition: also wait until the planner has no targets left (exploration + inspection). In the open yard Cs
   # saturates within a minute and POSE's Cs-only test would stop the run mid-inspection.
   require_planner_idle: true
+  # our addition: planner idle + Cs flat over the window also ends the run when Cs stays below cs_threshold
+  # (aggressive pruning; reported as "stalled" in the summary) instead of idling until the time limit
+  stop_when_idle: true
 
 upper_bound:
   grid_step: 0.5                 # candidate robot positions [m] (reachable, clear cells)
