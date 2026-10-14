@@ -26,6 +26,7 @@ metrics:
   free_ray_stride: 2             # Cs: every n-th azimuth column marks free space (speed)
   no_return_free_range: 30.0     # Cs: a ray without a return frees space up to this range [m]
   log_period_s: 1.0              # coverage curve sample period
+  traj_period_s: 0.5             # robot pose samples kept for figures / GIFs
 
 termination:
   cs_threshold: 0.90             # on Cs normalised by the observable volume (see upper_bound)

@@ -1,0 +1,3 @@
+# POSE with VLM-assisted viewpoint pruning (stage 5): local Qwen3-VL, ground-truth perception
+_base_: ../base.yaml
+planner: {semantic: {prune: vlm}}

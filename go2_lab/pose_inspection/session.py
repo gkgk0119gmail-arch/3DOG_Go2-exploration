@@ -95,6 +95,8 @@ class Session:
         self.next_log = 0.0
         self.t_wall0 = time.time()
         self.target_names = [o["name"] for o in scene_meta["objects"] if o["target"]]
+        self.traj = [[] for _ in range(self.E)]   # (t, x, y, yaw, pitch, roll) at traj_period_s, for figures / GIFs
+        self.next_traj = 0.0
         self.L_at_eff = np.full(self.E, np.nan)
         self.npost_at_eff = np.full(self.E, -1)
 
@@ -127,6 +129,12 @@ class Session:
 
     def control(self, t: float, poses: np.ndarray, postures: np.ndarray) -> list[dict | None]:
         """poses [E, 3] (x, y, yaw), postures [E, 2] (pitch, roll) measured -> command per robot (None when done)."""
+        if t + 1e-9 >= self.next_traj:
+            self.next_traj = t + self.cfg.metrics.traj_period_s
+            for e in range(self.E):
+                if not self.term.done[e]:
+                    self.traj[e].append([round(float(t), 2), *(round(float(v), 3) for v in poses[e][:3]),
+                                         *(round(float(v), 3) for v in postures[e][:2])])
         out = []
         for e, a in enumerate(self.agents):
             out.append(None if self.term.done[e] else a.step(t, poses[e], postures[e]))
@@ -190,6 +198,7 @@ class Session:
         for e in range(self.E):
             run = {"tag": self.tag, "scene": self.meta["name"], "seed": self.seeds[e], "summary": self.summary(e),
                    "curve_columns": cols, "curve": self.curves[e], "events": self.agents[e].events,
+                   "traj_columns": ["t", "x", "y", "yaw", "pitch", "roll"], "traj": self.traj[e],
                    "object_names": [o["name"] for o in self.meta["objects"]],
                    "targets": self.target_names, "wall_s": round(time.time() - self.t_wall0, 1),
                    "config": {k: v for k, v in self.cfg.items() if k != "_source_"}, **(extra or {})}

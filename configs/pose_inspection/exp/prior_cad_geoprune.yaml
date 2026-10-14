@@ -1,0 +1,3 @@
+_base_: ../base.yaml
+priors: {method: cad}
+planner: {semantic: {prune: geometric}}

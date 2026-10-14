@@ -1,0 +1,2045 @@
+{
+ "engine": "isaac",
+ "scenes": {
+  "A_warehouse": {
+   "T": 547.6799999997919,
+   "conditions": {
+    "pose": {
+     "label": "POSE geometric (15\u00b0)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.43357498690739676,
+      "std": 0.012458286104845043
+     },
+     "t_eff": {
+      "mean": 519.9233333331505,
+      "std": 19.9086731518187
+     },
+     "L_eff": {
+      "mean": 204.50333333333333,
+      "std": 13.68589005752518
+     },
+     "N_post": {
+      "mean": 12.666666666666666,
+      "std": 2.250925735484551
+     },
+     "Co": {
+      "mean": 0.7758682866891226,
+      "std": 0.020657540146766087
+     },
+     "Co_vs_ub": {
+      "mean": 0.8305280307928721,
+      "std": 0.022138006101539015
+     },
+     "Cs": {
+      "mean": 0.9975617825984955,
+      "std": 0.00016861483678408368
+     },
+     "Co_per_object": {
+      "forklift_0": {
+       "mean": 0.7424333333333334,
+       "std": 0.06744510854514704
+      },
+      "forklift_1": {
+       "mean": 0.8082333333333335,
+       "std": 0.06307607047578873
+      },
+      "forklift_2": {
+       "mean": 0.7914833333333333,
+       "std": 0.053794810778240186
+      },
+      "forklift_3": {
+       "mean": 0.6240166666666667,
+       "std": 0.02493587108297334
+      },
+      "forklift_4": {
+       "mean": 0.8506499999999999,
+       "std": 0.050138797352948135
+      },
+      "forklift_5": {
+       "mean": 0.7883333333333334,
+       "std": 0.09887781685831591
+      },
+      "forklift_6": {
+       "mean": 0.8260333333333333,
+       "std": 0.023028735672343544
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 510.19999999982593,
+       "L_eff": 201.91,
+       "N_post": 13,
+       "Co": 0.7858402132987976,
+       "Co_n26": 0.9577457904815674,
+       "Cs_raw": 0.9923925995826721,
+       "Cs": 0.9975890517234802,
+       "Co_vs_ub": 0.8413822054862976,
+       "Co_per_object": {
+        "forklift_0": 0.7927,
+        "forklift_1": 0.8531,
+        "forklift_2": 0.7903,
+        "forklift_3": 0.5966,
+        "forklift_4": 0.7844,
+        "forklift_5": 0.8744,
+        "forklift_6": 0.8095
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.44922552047916603
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 503.45999999983206,
+       "L_eff": 190.34,
+       "N_post": 15,
+       "Co": 0.8053271174430847,
+       "Co_n26": 0.9630826711654663,
+       "Cs_raw": 0.9922873377799988,
+       "Cs": 0.9975151419639587,
+       "Co_vs_ub": 0.8619893789291382,
+       "Co_per_object": {
+        "forklift_0": 0.7817,
+        "forklift_1": 0.8397,
+        "forklift_2": 0.8489,
+        "forklift_3": 0.6082,
+        "forklift_4": 0.8834,
+        "forklift_5": 0.8176,
+        "forklift_6": 0.8578
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.4400419842542436
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 500.95999999983434,
+       "L_eff": 194.53,
+       "N_post": 12,
+       "Co": 0.7817274332046509,
+       "Co_n26": 0.9509400725364685,
+       "Cs_raw": 0.9922519326210022,
+       "Cs": 0.9974690079689026,
+       "Co_vs_ub": 0.836767852306366,
+       "Co_per_object": {
+        "forklift_0": 0.6702,
+        "forklift_1": 0.8414,
+        "forklift_2": 0.8359,
+        "forklift_3": 0.6092,
+        "forklift_4": 0.881,
+        "forklift_5": 0.8193,
+        "forklift_6": 0.815
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.4306590526836893
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 515.679999999821,
+       "L_eff": 199.77,
+       "N_post": 9,
+       "Co": 0.7439287304878235,
+       "Co_n26": 0.9412456154823303,
+       "Cs_raw": 0.9920753240585327,
+       "Cs": 0.997499406337738,
+       "Co_vs_ub": 0.7962351441383362,
+       "Co_per_object": {
+        "forklift_0": 0.6424,
+        "forklift_1": 0.7381,
+        "forklift_2": 0.7037,
+        "forklift_3": 0.6565,
+        "forklift_4": 0.7875,
+        "forklift_5": 0.8686,
+        "forklift_6": 0.8106
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.4117318705169121
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 547.6799999997919,
+       "L_eff": 227.73,
+       "N_post": 12,
+       "Co": 0.7658147215843201,
+       "Co_n26": 0.9544163942337036,
+       "Cs_raw": 0.9920471906661987,
+       "Cs": 0.997412919998169,
+       "Co_vs_ub": 0.8197787404060364,
+       "Co_per_object": {
+        "forklift_0": 0.78,
+        "forklift_1": 0.7175,
+        "forklift_2": 0.8116,
+        "forklift_3": 0.6209,
+        "forklift_4": 0.8845,
+        "forklift_5": 0.7365,
+        "forklift_6": 0.8099
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.4351872843937231
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 541.5599999997975,
+       "L_eff": 212.74,
+       "N_post": 15,
+       "Co": 0.7725715041160583,
+       "Co_n26": 0.9498629570007324,
+       "Cs_raw": 0.9926816821098328,
+       "Cs": 0.9978851675987244,
+       "Co_vs_ub": 0.8270148634910583,
+       "Co_per_object": {
+        "forklift_0": 0.7876,
+        "forklift_1": 0.8596,
+        "forklift_2": 0.7585,
+        "forklift_3": 0.6527,
+        "forklift_4": 0.8831,
+        "forklift_5": 0.6136,
+        "forklift_6": 0.8534
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.4346042091166465
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    },
+    "planar": {
+     "label": "planar (15\u00b0)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.3847938953064572,
+      "std": 0.007328975932244631
+     },
+     "t_eff": {
+      "mean": 488.44333333317905,
+      "std": 14.472696592766866
+     },
+     "L_eff": {
+      "mean": 195.89666666666668,
+      "std": 8.022819122145703
+     },
+     "N_post": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "Co": {
+      "mean": 0.6766386131445566,
+      "std": 0.01649052491428103
+     },
+     "Co_vs_ub": {
+      "mean": 0.724345862865448,
+      "std": 0.017604664766512314
+     },
+     "Cs": {
+      "mean": 0.9964683850606283,
+      "std": 0.0007682785590327661
+     },
+     "Co_per_object": {
+      "forklift_0": {
+       "mean": 0.6607166666666667,
+       "std": 0.025763494845743785
+      },
+      "forklift_1": {
+       "mean": 0.7523666666666667,
+       "std": 0.028773436824033823
+      },
+      "forklift_2": {
+       "mean": 0.66775,
+       "std": 0.012513792390798237
+      },
+      "forklift_3": {
+       "mean": 0.62205,
+       "std": 0.03100198380749204
+      },
+      "forklift_4": {
+       "mean": 0.7080333333333334,
+       "std": 0.002429540422933266
+      },
+      "forklift_5": {
+       "mean": 0.6202666666666666,
+       "std": 0.03281777973395925
+      },
+      "forklift_6": {
+       "mean": 0.7054833333333334,
+       "std": 0.040054833249767316
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 466.4799999998657,
+       "L_eff": 189.42,
+       "N_post": 0,
+       "Co": 0.6516842842102051,
+       "Co_n26": 0.8563944697380066,
+       "Cs_raw": 0.9899786710739136,
+       "Cs": 0.9954962134361267,
+       "Co_vs_ub": 0.6977609992027283,
+       "Co_per_object": {
+        "forklift_0": 0.6095,
+        "forklift_1": 0.7092,
+        "forklift_2": 0.6509,
+        "forklift_3": 0.6151,
+        "forklift_4": 0.7079,
+        "forklift_5": 0.6064,
+        "forklift_6": 0.6629
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.3865248410840576
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 484.23999999984954,
+       "L_eff": 191.37,
+       "N_post": 0,
+       "Co": 0.6655405759811401,
+       "Co_n26": 0.8749021291732788,
+       "Cs_raw": 0.9905761480331421,
+       "Cs": 0.9957823753356934,
+       "Co_vs_ub": 0.7124953866004944,
+       "Co_per_object": {
+        "forklift_0": 0.6771,
+        "forklift_1": 0.7288,
+        "forklift_2": 0.6526,
+        "forklift_3": 0.611,
+        "forklift_4": 0.7086,
+        "forklift_5": 0.6057,
+        "forklift_6": 0.6752
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.3901690575439307
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 486.63999999984736,
+       "L_eff": 193.98,
+       "N_post": 0,
+       "Co": 0.6720035672187805,
+       "Co_n26": 0.8847434520721436,
+       "Cs_raw": 0.9912142753601074,
+       "Cs": 0.9964501261711121,
+       "Co_vs_ub": 0.7193120718002319,
+       "Co_per_object": {
+        "forklift_0": 0.6606,
+        "forklift_1": 0.7587,
+        "forklift_2": 0.6787,
+        "forklift_3": 0.6158,
+        "forklift_4": 0.7076,
+        "forklift_5": 0.6064,
+        "forklift_6": 0.6766
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.38324177926200076
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 508.3399999998276,
+       "L_eff": 211.74,
+       "N_post": 0,
+       "Co": 0.6850274205207825,
+       "Co_n26": 0.8906189203262329,
+       "Cs_raw": 0.9920487999916077,
+       "Cs": 0.9972777366638184,
+       "Co_vs_ub": 0.733259916305542,
+       "Co_per_object": {
+        "forklift_0": 0.6709,
+        "forklift_1": 0.7549,
+        "forklift_2": 0.6742,
+        "forklift_3": 0.6089,
+        "forklift_4": 0.7117,
+        "forklift_5": 0.6095,
+        "forklift_6": 0.7653
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.37076766529487293
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 484.87999999984896,
+       "L_eff": 193.97,
+       "N_post": 0,
+       "Co": 0.6923717260360718,
+       "Co_n26": 0.9011457562446594,
+       "Cs_raw": 0.991195023059845,
+       "Cs": 0.9963998198509216,
+       "Co_vs_ub": 0.7410728335380554,
+       "Co_per_object": {
+        "forklift_0": 0.6702,
+        "forklift_1": 0.7813,
+        "forklift_2": 0.6742,
+        "forklift_3": 0.6839,
+        "forklift_4": 0.7041,
+        "forklift_5": 0.6064,
+        "forklift_6": 0.7266
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.3899375652754333
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 500.07999999983514,
+       "L_eff": 194.9,
+       "N_post": 0,
+       "Co": 0.6932041049003601,
+       "Co_n26": 0.8970329165458679,
+       "Cs_raw": 0.9921910166740417,
+       "Cs": 0.9974040389060974,
+       "Co_vs_ub": 0.742173969745636,
+       "Co_per_object": {
+        "forklift_0": 0.676,
+        "forklift_1": 0.7813,
+        "forklift_2": 0.6759,
+        "forklift_3": 0.5976,
+        "forklift_4": 0.7083,
+        "forklift_5": 0.6872,
+        "forklift_6": 0.7263
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.3881224633784483
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    },
+    "pose_geoprune": {
+     "label": "POSE + geo-prune (15\u00b0)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.41519120697572615,
+      "std": 0.071170808157989
+     },
+     "t_eff": {
+      "mean": 223.27333333335812,
+      "std": 54.11819016437267
+     },
+     "L_eff": {
+      "mean": 115.98666666666666,
+      "std": 26.686889415341508
+     },
+     "N_post": {
+      "mean": 6.0,
+      "std": 2.6076809620810595
+     },
+     "Co": {
+      "mean": 0.5184913277626038,
+      "std": 0.10769382568124447
+     },
+     "Co_vs_ub": {
+      "mean": 0.5551622857650121,
+      "std": 0.11529088500475787
+     },
+     "Cs": {
+      "mean": 0.9741223355134329,
+      "std": 0.016990027651399536
+     },
+     "Co_per_object": {
+      "forklift_0": {
+       "mean": 0.5049666666666667,
+       "std": 0.391246575277876
+      },
+      "forklift_1": {
+       "mean": 0.44880000000000003,
+       "std": 0.17440366968616228
+      },
+      "forklift_2": {
+       "mean": 0.41401666666666664,
+       "std": 0.32493957848601124
+      },
+      "forklift_3": {
+       "mean": 0.57585,
+       "std": 0.16742798750507637
+      },
+      "forklift_4": {
+       "mean": 0.6644333333333332,
+       "std": 0.2191282151313853
+      },
+      "forklift_5": {
+       "mean": 0.3977333333333333,
+       "std": 0.3851333881484007
+      },
+      "forklift_6": {
+       "mean": 0.6236833333333334,
+       "std": 0.11164748840285961
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 288.62000000002746,
+       "L_eff": 157.98,
+       "N_post": 8,
+       "Co": 0.6212788820266724,
+       "Co_n26": 0.8536525964736938,
+       "Cs_raw": 0.973341703414917,
+       "Cs": 0.9788034558296204,
+       "Co_vs_ub": 0.6651460528373718,
+       "Co_per_object": {
+        "forklift_0": 0.7481,
+        "forklift_1": 0.4384,
+        "forklift_2": 0.6434,
+        "forklift_3": 0.4671,
+        "forklift_4": 0.8776,
+        "forklift_5": 0.6595,
+        "forklift_6": 0.5149
+       },
+       "semantic_visits": 8,
+       "AUCo": 0.47981053872267737
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 162.8600000000095,
+       "L_eff": 95.22,
+       "N_post": 3,
+       "Co": 0.38929691910743713,
+       "Co_n26": 0.5613493919372559,
+       "Cs_raw": 0.9816856980323792,
+       "Cs": 0.9872711896896362,
+       "Co_vs_ub": 0.4167584180831909,
+       "Co_per_object": {
+        "forklift_0": 0.7536,
+        "forklift_1": 0.2733,
+        "forklift_2": 0.0408,
+        "forklift_3": 0.4243,
+        "forklift_4": 0.3349,
+        "forklift_5": 0.1396,
+        "forklift_6": 0.7592
+       },
+       "semantic_visits": 3,
+       "AUCo": 0.3256265521312493
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 289.2400000000269,
+       "L_eff": 135.71,
+       "N_post": 10,
+       "Co": 0.6388562917709351,
+       "Co_n26": 0.819085419178009,
+       "Cs_raw": 0.9715596437454224,
+       "Cs": 0.9768190979957581,
+       "Co_vs_ub": 0.684022843837738,
+       "Co_per_object": {
+        "forklift_0": 0.0,
+        "forklift_1": 0.6021,
+        "forklift_2": 0.7218,
+        "forklift_3": 0.788,
+        "forklift_4": 0.8773,
+        "forklift_5": 0.7201,
+        "forklift_6": 0.7616
+       },
+       "semantic_visits": 10,
+       "AUCo": 0.48336891895818046
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 187.02000000002187,
+       "L_eff": 87.44,
+       "N_post": 6,
+       "Co": 0.3947806656360626,
+       "Co_n26": 0.5713866353034973,
+       "Cs_raw": 0.9351560473442078,
+       "Cs": 0.9404047131538391,
+       "Co_vs_ub": 0.42278853058815,
+       "Co_per_object": {
+        "forklift_0": 0.0,
+        "forklift_1": 0.2818,
+        "forklift_2": 0.0,
+        "forklift_3": 0.5247,
+        "forklift_4": 0.5468,
+        "forklift_5": 0.847,
+        "forklift_6": 0.5618
+       },
+       "semantic_visits": 6,
+       "AUCo": 0.3285822751512414
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 221.0800000000393,
+       "L_eff": 116.32,
+       "N_post": 4,
+       "Co": 0.5491578578948975,
+       "Co_n26": 0.7513219714164734,
+       "Cs_raw": 0.9722904562950134,
+       "Cs": 0.9777724742889404,
+       "Co_vs_ub": 0.588013231754303,
+       "Co_per_object": {
+        "forklift_0": 0.7742,
+        "forklift_1": 0.7065,
+        "forklift_2": 0.4001,
+        "forklift_3": 0.788,
+        "forklift_4": 0.5595,
+        "forklift_5": 0.0,
+        "forklift_6": 0.617
+       },
+       "semantic_visits": 4,
+       "AUCo": 0.44128768186862644
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 190.8200000000238,
+       "L_eff": 103.25,
+       "N_post": 5,
+       "Co": 0.5175773501396179,
+       "Co_n26": 0.7098022103309631,
+       "Cs_raw": 0.9778923988342285,
+       "Cs": 0.9836630821228027,
+       "Co_vs_ub": 0.5542446374893188,
+       "Co_per_object": {
+        "forklift_0": 0.7539,
+        "forklift_1": 0.3907,
+        "forklift_2": 0.678,
+        "forklift_3": 0.463,
+        "forklift_4": 0.7905,
+        "forklift_5": 0.0202,
+        "forklift_6": 0.5276
+       },
+       "semantic_visits": 5,
+       "AUCo": 0.4324712750223816
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    },
+    "pose_tilt0": {
+     "label": "POSE geometric (0\u00b0)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.36417263016140594,
+      "std": 0.010762772910291415
+     },
+     "t_eff": {
+      "mean": 520.6766666664831,
+      "std": 23.016503354456432
+     },
+     "L_eff": {
+      "mean": 200.25166666666667,
+      "std": 14.340817852084538
+     },
+     "N_post": {
+      "mean": 20.166666666666668,
+      "std": 1.7224014243685086
+     },
+     "Co": {
+      "mean": 0.6631250977516174,
+      "std": 0.009696240623214464
+     },
+     "Co_vs_ub": {
+      "mean": 0.7111677328745524,
+      "std": 0.010357509133922107
+     },
+     "Cs": {
+      "mean": 0.9834030369917551,
+      "std": 0.003032589742016812
+     },
+     "Co_per_object": {
+      "forklift_0": {
+       "mean": 0.5773166666666666,
+       "std": 0.06344993039134612
+      },
+      "forklift_1": {
+       "mean": 0.7205166666666667,
+       "std": 0.023221405355117207
+      },
+      "forklift_2": {
+       "mean": 0.6340166666666666,
+       "std": 0.056219833392377364
+      },
+      "forklift_3": {
+       "mean": 0.5847666666666667,
+       "std": 0.021252450839060133
+      },
+      "forklift_4": {
+       "mean": 0.7148666666666667,
+       "std": 0.011661675122668564
+      },
+      "forklift_5": {
+       "mean": 0.6652333333333332,
+       "std": 0.044403408277593585
+      },
+      "forklift_6": {
+       "mean": 0.7451666666666666,
+       "std": 0.025383511708718852
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 493.8599999998408,
+       "L_eff": 187.28,
+       "N_post": 21,
+       "Co": 0.6749412417411804,
+       "Co_n26": 0.8604093194007874,
+       "Cs_raw": 0.9773579239845276,
+       "Cs": 0.9826635718345642,
+       "Co_vs_ub": 0.7239060997962952,
+       "Co_per_object": {
+        "forklift_0": 0.5913,
+        "forklift_1": 0.736,
+        "forklift_2": 0.6886,
+        "forklift_3": 0.575,
+        "forklift_4": 0.7288,
+        "forklift_5": 0.6711,
+        "forklift_6": 0.7338
+       },
+       "semantic_visits": 34,
+       "AUCo": 0.3791308377727775
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 540.7199999997982,
+       "L_eff": 196.11,
+       "N_post": 22,
+       "Co": 0.6664708256721497,
+       "Co_n26": 0.8535057306289673,
+       "Cs_raw": 0.9796244502067566,
+       "Cs": 0.9849189519882202,
+       "Co_vs_ub": 0.7147659659385681,
+       "Co_per_object": {
+        "forklift_0": 0.5875,
+        "forklift_1": 0.7154,
+        "forklift_2": 0.5961,
+        "forklift_3": 0.5808,
+        "forklift_4": 0.7055,
+        "forklift_5": 0.6961,
+        "forklift_6": 0.7838
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.3673445171204541
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 543.6199999997956,
+       "L_eff": 206.98,
+       "N_post": 18,
+       "Co": 0.6485996842384338,
+       "Co_n26": 0.8178613781929016,
+       "Cs_raw": 0.9777569770812988,
+       "Cs": 0.9830047488212585,
+       "Co_vs_ub": 0.6956453323364258,
+       "Co_per_object": {
+        "forklift_0": 0.5415,
+        "forklift_1": 0.6976,
+        "forklift_2": 0.5629,
+        "forklift_3": 0.5719,
+        "forklift_4": 0.7113,
+        "forklift_5": 0.7118,
+        "forklift_6": 0.7431
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.35748459974033897
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 515.6199999998211,
+       "L_eff": 205.24,
+       "N_post": 21,
+       "Co": 0.6593713760375977,
+       "Co_n26": 0.8395025730133057,
+       "Cs_raw": 0.9831604361534119,
+       "Cs": 0.9884636998176575,
+       "Co_vs_ub": 0.7070966958999634,
+       "Co_per_object": {
+        "forklift_0": 0.4828,
+        "forklift_1": 0.7494,
+        "forklift_2": 0.6441,
+        "forklift_3": 0.6086,
+        "forklift_4": 0.699,
+        "forklift_5": 0.6677,
+        "forklift_6": 0.764
+       },
+       "semantic_visits": 34,
+       "AUCo": 0.35504674649680523
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 536.4999999998021,
+       "L_eff": 222.42,
+       "N_post": 18,
+       "Co": 0.6713670492172241,
+       "Co_n26": 0.8680474162101746,
+       "Cs_raw": 0.9765416979789734,
+       "Cs": 0.9818191528320312,
+       "Co_vs_ub": 0.71980881690979,
+       "Co_per_object": {
+        "forklift_0": 0.675,
+        "forklift_1": 0.6907,
+        "forklift_2": 0.7074,
+        "forklift_3": 0.6127,
+        "forklift_4": 0.7189,
+        "forklift_5": 0.5835,
+        "forklift_6": 0.7115
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.35265394842590736
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 493.7399999998409,
+       "L_eff": 183.48,
+       "N_post": 21,
+       "Co": 0.6580004096031189,
+       "Co_n26": 0.8401390910148621,
+       "Cs_raw": 0.9742580056190491,
+       "Cs": 0.9795480966567993,
+       "Co_vs_ub": 0.705783486366272,
+       "Co_per_object": {
+        "forklift_0": 0.5858,
+        "forklift_1": 0.734,
+        "forklift_2": 0.605,
+        "forklift_3": 0.5596,
+        "forklift_4": 0.7257,
+        "forklift_5": 0.6612,
+        "forklift_6": 0.7348
+       },
+       "semantic_visits": 34,
+       "AUCo": 0.3733751314121523
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    },
+    "planar_tilt0": {
+     "label": "planar (0\u00b0)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.31240510973235597,
+      "std": 0.01566778329541732
+     },
+     "t_eff": {
+      "mean": 494.8366666665066,
+      "std": 25.62855412748587
+     },
+     "L_eff": {
+      "mean": 202.81499999999997,
+      "std": 20.02531472911225
+     },
+     "N_post": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "Co": {
+      "mean": 0.5383943915367126,
+      "std": 0.015077979831614215
+     },
+     "Co_vs_ub": {
+      "mean": 0.5773143470287323,
+      "std": 0.016177416838074242
+     },
+     "Cs": {
+      "mean": 0.9183590710163116,
+      "std": 0.01018277637275795
+     },
+     "Co_per_object": {
+      "forklift_0": {
+       "mean": 0.5301333333333333,
+       "std": 0.020596180875751373
+      },
+      "forklift_1": {
+       "mean": 0.5591499999999999,
+       "std": 0.010609571150616769
+      },
+      "forklift_2": {
+       "mean": 0.56955,
+       "std": 0.004824417063231571
+      },
+      "forklift_3": {
+       "mean": 0.5188333333333334,
+       "std": 0.0347269155939117
+      },
+      "forklift_4": {
+       "mean": 0.5505,
+       "std": 0.005995665100720699
+      },
+      "forklift_5": {
+       "mean": 0.49025,
+       "std": 0.04673888103067938
+      },
+      "forklift_6": {
+       "mean": 0.5504333333333333,
+       "std": 0.02712524039832029
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 491.93999999984254,
+       "L_eff": 197.04,
+       "N_post": 0,
+       "Co": 0.5231100916862488,
+       "Co_n26": 0.6663728952407837,
+       "Cs_raw": 0.9190441370010376,
+       "Cs": 0.923976719379425,
+       "Co_vs_ub": 0.5608026385307312,
+       "Co_per_object": {
+        "forklift_0": 0.5357,
+        "forklift_1": 0.5616,
+        "forklift_2": 0.5656,
+        "forklift_3": 0.4853,
+        "forklift_4": 0.5482,
+        "forklift_5": 0.4548,
+        "forklift_6": 0.5108
+       },
+       "semantic_visits": 34,
+       "AUCo": 0.2907538566794757
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 479.07999999985424,
+       "L_eff": 183.75,
+       "N_post": 0,
+       "Co": 0.5582647919654846,
+       "Co_n26": 0.6894829869270325,
+       "Cs_raw": 0.8971594572067261,
+       "Cs": 0.9019513130187988,
+       "Co_vs_ub": 0.5986237525939941,
+       "Co_per_object": {
+        "forklift_0": 0.5384,
+        "forklift_1": 0.5661,
+        "forklift_2": 0.5725,
+        "forklift_3": 0.5551,
+        "forklift_4": 0.5571,
+        "forklift_5": 0.55,
+        "forklift_6": 0.5687
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.32920837892173854
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 471.9799999998607,
+       "L_eff": 188.89,
+       "N_post": 0,
+       "Co": 0.5551801919937134,
+       "Co_n26": 0.693497896194458,
+       "Cs_raw": 0.9170292615890503,
+       "Cs": 0.9220573306083679,
+       "Co_vs_ub": 0.5953143835067749,
+       "Co_per_object": {
+        "forklift_0": 0.5374,
+        "forklift_1": 0.5609,
+        "forklift_2": 0.5707,
+        "forklift_3": 0.5483,
+        "forklift_4": 0.5454,
+        "forklift_5": 0.5493,
+        "forklift_6": 0.5742
+       },
+       "semantic_visits": 35,
+       "AUCo": 0.33140152908860343
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 491.459999999843,
+       "L_eff": 204.53,
+       "N_post": 0,
+       "Co": 0.5354974865913391,
+       "Co_n26": 0.6768018007278442,
+       "Cs_raw": 0.9256259202957153,
+       "Cs": 0.9306212067604065,
+       "Co_vs_ub": 0.5743026733398438,
+       "Co_per_object": {
+        "forklift_0": 0.4883,
+        "forklift_1": 0.5654,
+        "forklift_2": 0.5687,
+        "forklift_3": 0.5479,
+        "forklift_4": 0.5461,
+        "forklift_5": 0.4565,
+        "forklift_6": 0.5755
+       },
+       "semantic_visits": 34,
+       "AUCo": 0.3064508832465959
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 490.0199999998443,
+       "L_eff": 202.3,
+       "N_post": 0,
+       "Co": 0.5242851972579956,
+       "Co_n26": 0.668576180934906,
+       "Cs_raw": 0.9153076410293579,
+       "Cs": 0.9202610850334167,
+       "Co_vs_ub": 0.5622734427452087,
+       "Co_per_object": {
+        "forklift_0": 0.5391,
+        "forklift_1": 0.5379,
+        "forklift_2": 0.5766,
+        "forklift_3": 0.4884,
+        "forklift_4": 0.5471,
+        "forklift_5": 0.4545,
+        "forklift_6": 0.5266
+       },
+       "semantic_visits": 34,
+       "AUCo": 0.3034923401282326
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 544.5399999997948,
+       "L_eff": 240.38,
+       "N_post": 0,
+       "Co": 0.5340285897254944,
+       "Co_n26": 0.6804739832878113,
+       "Cs_raw": 0.9064635038375854,
+       "Cs": 0.9112867712974548,
+       "Co_vs_ub": 0.5725691914558411,
+       "Co_per_object": {
+        "forklift_0": 0.5419,
+        "forklift_1": 0.563,
+        "forklift_2": 0.5632,
+        "forklift_3": 0.488,
+        "forklift_4": 0.5591,
+        "forklift_5": 0.4764,
+        "forklift_6": 0.5468
+       },
+       "semantic_visits": 34,
+       "AUCo": 0.3131236703294896
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    }
+   }
+  },
+  "B_construction": {
+   "T": 323.3399999999959,
+   "conditions": {
+    "pose": {
+     "label": "POSE geometric (15\u00b0)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.4174761018553794,
+      "std": 0.08811600633514396
+     },
+     "t_eff": {
+      "mean": 299.96000000001715,
+      "std": 19.12986774651969
+     },
+     "L_eff": {
+      "mean": 111.855,
+      "std": 13.781731023351165
+     },
+     "N_post": {
+      "mean": 6.666666666666667,
+      "std": 2.9439202887759492
+     },
+     "Co": {
+      "mean": 0.6310015817483267,
+      "std": 0.021347907517675443
+     },
+     "Co_vs_ub": {
+      "mean": 0.7830674052238464,
+      "std": 0.02634580421275649
+     },
+     "Cs": {
+      "mean": 0.9993083576361338,
+      "std": 0.00018106113221884673
+     },
+     "Co_per_object": {
+      "excavator_a": {
+       "mean": 0.8537500000000001,
+       "std": 0.0023364502990648236
+      },
+      "excavator_b": {
+       "mean": 0.86045,
+       "std": 0.005904828532650198
+      },
+      "dump_truck": {
+       "mean": 0.5399333333333333,
+       "std": 0.02977950077933926
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 323.3399999999959,
+       "L_eff": 128.13,
+       "N_post": 5,
+       "Co": 0.6463321447372437,
+       "Co_n26": 0.8651036620140076,
+       "Cs_raw": 0.9911301732063293,
+       "Cs": 0.9993392825126648,
+       "Co_vs_ub": 0.8017855286598206,
+       "Co_per_object": {
+        "excavator_a": 0.8537,
+        "excavator_b": 0.862,
+        "dump_truck": 0.5611,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4115200139948043
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 315.3200000000032,
+       "L_eff": 119.92,
+       "N_post": 8,
+       "Co": 0.6562380790710449,
+       "Co_n26": 0.8758127689361572,
+       "Cs_raw": 0.9907529950141907,
+       "Cs": 0.9989590048789978,
+       "Co_vs_ub": 0.8141798973083496,
+       "Co_per_object": {
+        "excavator_a": 0.8511,
+        "excavator_b": 0.8575,
+        "dump_truck": 0.5765,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4673355348045739
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 306.20000000001147,
+       "L_eff": 116.34,
+       "N_post": 6,
+       "Co": 0.6056376099586487,
+       "Co_n26": 0.8292282223701477,
+       "Cs_raw": 0.9911720752716064,
+       "Cs": 0.9993764162063599,
+       "Co_vs_ub": 0.7517333030700684,
+       "Co_per_object": {
+        "excavator_a": 0.8551,
+        "excavator_b": 0.85,
+        "dump_truck": 0.5062,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4172733804676917
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 299.40000000001766,
+       "L_eff": 116.9,
+       "N_post": 2,
+       "Co": 0.6045666933059692,
+       "Co_n26": 0.8308345675468445,
+       "Cs_raw": 0.9912863373756409,
+       "Cs": 0.9994648098945618,
+       "Co_vs_ub": 0.750403642654419,
+       "Co_per_object": {
+        "excavator_a": 0.8508,
+        "excavator_b": 0.8663,
+        "dump_truck": 0.5023,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.24871440962963745
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 281.0200000000344,
+       "L_eff": 95.47,
+       "N_post": 10,
+       "Co": 0.6374971866607666,
+       "Co_n26": 0.8612407445907593,
+       "Cs_raw": 0.9912406206130981,
+       "Cs": 0.9994161128997803,
+       "Co_vs_ub": 0.7913857102394104,
+       "Co_per_object": {
+        "excavator_a": 0.8564,
+        "excavator_b": 0.8644,
+        "dump_truck": 0.5477,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.48012816084116233
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 274.4800000000403,
+       "L_eff": 94.37,
+       "N_post": 9,
+       "Co": 0.6357377767562866,
+       "Co_n26": 0.8710319399833679,
+       "Cs_raw": 0.9910895228385925,
+       "Cs": 0.9992945194244385,
+       "Co_vs_ub": 0.7889163494110107,
+       "Co_per_object": {
+        "excavator_a": 0.8554,
+        "excavator_b": 0.8625,
+        "dump_truck": 0.5458,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.47988511139440704
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    },
+    "planar": {
+     "label": "planar (15\u00b0)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.41518709285156036,
+      "std": 0.08812604396528476
+     },
+     "t_eff": {
+      "mean": 289.6833333333598,
+      "std": 21.176157976976157
+     },
+     "L_eff": {
+      "mean": 111.30666666666666,
+      "std": 14.036218389105619
+     },
+     "N_post": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "Co": {
+      "mean": 0.6166717906792959,
+      "std": 0.017786541900994643
+     },
+     "Co_vs_ub": {
+      "mean": 0.7651882270971934,
+      "std": 0.021838225764377103
+     },
+     "Cs": {
+      "mean": 0.9992543657620748,
+      "std": 0.0002183504581127859
+     },
+     "Co_per_object": {
+      "excavator_a": {
+       "mean": 0.8507666666666666,
+       "std": 0.002436117129094297
+      },
+      "excavator_b": {
+       "mean": 0.8606666666666666,
+       "std": 0.0055211109993068075
+      },
+      "dump_truck": {
+       "mean": 0.5203833333333333,
+       "std": 0.02466952911319278
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 316.14000000000243,
+       "L_eff": 128.0,
+       "N_post": 0,
+       "Co": 0.621012806892395,
+       "Co_n26": 0.8344298005104065,
+       "Cs_raw": 0.9909968376159668,
+       "Cs": 0.9992074370384216,
+       "Co_vs_ub": 0.770253598690033,
+       "Co_per_object": {
+        "excavator_a": 0.8546,
+        "excavator_b": 0.8604,
+        "dump_truck": 0.5258,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.40125746189328254
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 300.9200000000163,
+       "L_eff": 118.89,
+       "N_post": 0,
+       "Co": 0.6404039263725281,
+       "Co_n26": 0.861890971660614,
+       "Cs_raw": 0.9906437993049622,
+       "Cs": 0.9988501667976379,
+       "Co_vs_ub": 0.7942349910736084,
+       "Co_per_object": {
+        "excavator_a": 0.8513,
+        "excavator_b": 0.8599,
+        "dump_truck": 0.5537,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.45805492303000694
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 296.0800000000207,
+       "L_eff": 116.32,
+       "N_post": 0,
+       "Co": 0.5961906313896179,
+       "Co_n26": 0.8147709369659424,
+       "Cs_raw": 0.9911289215087891,
+       "Cs": 0.9993495345115662,
+       "Co_vs_ub": 0.740146279335022,
+       "Co_per_object": {
+        "excavator_a": 0.8492,
+        "excavator_b": 0.8516,
+        "dump_truck": 0.4938,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4182130480501964
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 297.00000000001984,
+       "L_eff": 116.54,
+       "N_post": 0,
+       "Co": 0.5948902368545532,
+       "Co_n26": 0.8145797252655029,
+       "Cs_raw": 0.9913079142570496,
+       "Cs": 0.9994609355926514,
+       "Co_vs_ub": 0.738341748714447,
+       "Co_per_object": {
+        "excavator_a": 0.8473,
+        "excavator_b": 0.8689,
+        "dump_truck": 0.4888,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.2486680376187862
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 263.7000000000501,
+       "L_eff": 94.52,
+       "N_post": 0,
+       "Co": 0.6253729462623596,
+       "Co_n26": 0.8550065159797668,
+       "Cs_raw": 0.9910691976547241,
+       "Cs": 0.9992586374282837,
+       "Co_vs_ub": 0.7762370705604553,
+       "Co_per_object": {
+        "excavator_a": 0.8511,
+        "excavator_b": 0.8615,
+        "dump_truck": 0.5324,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4845917262556293
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 264.2600000000496,
+       "L_eff": 93.57,
+       "N_post": 0,
+       "Co": 0.6221601963043213,
+       "Co_n26": 0.8458273410797119,
+       "Cs_raw": 0.9911949038505554,
+       "Cs": 0.9993994832038879,
+       "Co_vs_ub": 0.7719156742095947,
+       "Co_per_object": {
+        "excavator_a": 0.8511,
+        "excavator_b": 0.8617,
+        "dump_truck": 0.5278,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4803373602614606
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    },
+    "pose_geoprune": {
+     "label": "POSE + geo-prune (15\u00b0)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.3549183475217519,
+      "std": 0.07471362329800636
+     },
+     "t_eff": {
+      "mean": 134.0566666666688,
+      "std": 20.7427381670517
+     },
+     "L_eff": {
+      "mean": 65.39166666666667,
+      "std": 6.893676571080681
+     },
+     "N_post": {
+      "mean": 4.5,
+      "std": 3.7815340802378077
+     },
+     "Co": {
+      "mean": 0.4379063894351323,
+      "std": 0.0709171982083159
+     },
+     "Co_vs_ub": {
+      "mean": 0.5435780535141627,
+      "std": 0.08802623937187318
+     },
+     "Cs": {
+      "mean": 0.9963681002457937,
+      "std": 0.0036348113749488787
+     },
+     "Co_per_object": {
+      "excavator_a": {
+       "mean": 0.42616666666666664,
+       "std": 0.3398922574385399
+      },
+      "excavator_b": {
+       "mean": 0.51645,
+       "std": 0.29162940695341405
+      },
+      "dump_truck": {
+       "mean": 0.4244333333333334,
+       "std": 0.15126088280407024
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 143.05999999999938,
+       "L_eff": 78.04,
+       "N_post": 4,
+       "Co": 0.5056605339050293,
+       "Co_n26": 0.765164852142334,
+       "Cs_raw": 0.990537166595459,
+       "Cs": 0.9987733364105225,
+       "Co_vs_ub": 0.6277424097061157,
+       "Co_per_object": {
+        "excavator_a": 0.7932,
+        "excavator_b": 0.3332,
+        "dump_truck": 0.4827,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 4,
+       "AUCo": 0.38102473069279225
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 144.0000000000152,
+       "L_eff": 57.41,
+       "N_post": 8,
+       "Co": 0.47368624806404114,
+       "Co_n26": 0.6894745230674744,
+       "Cs_raw": 0.9814844727516174,
+       "Cs": 0.9896042943000793,
+       "Co_vs_ub": 0.5879475474357605,
+       "Co_per_object": {
+        "excavator_a": 0.0,
+        "excavator_b": 0.7346,
+        "dump_truck": 0.5163,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 8,
+       "AUCo": 0.41312105407826644
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 109.03999999999544,
+       "L_eff": 66.6,
+       "N_post": 0,
+       "Co": 0.3496902287006378,
+       "Co_n26": 0.5904918909072876,
+       "Cs_raw": 0.9908152222633362,
+       "Cs": 0.9989948868751526,
+       "Co_vs_ub": 0.434134304523468,
+       "Co_per_object": {
+        "excavator_a": 0.6018,
+        "excavator_b": 0.6738,
+        "dump_truck": 0.2336,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 1,
+       "AUCo": 0.25890660636978474
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 106.39999999999597,
+       "L_eff": 64.18,
+       "N_post": 0,
+       "Co": 0.3464392423629761,
+       "Co_n26": 0.5846783518791199,
+       "Cs_raw": 0.9908711314201355,
+       "Cs": 0.9990448355674744,
+       "Co_vs_ub": 0.4300028383731842,
+       "Co_per_object": {
+        "excavator_a": 0.6021,
+        "excavator_b": 0.6743,
+        "dump_truck": 0.2289,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 1,
+       "AUCo": 0.2606432939293556
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 153.36000000000465,
+       "L_eff": 62.81,
+       "N_post": 8,
+       "Co": 0.4653101861476898,
+       "Co_n26": 0.7007573246955872,
+       "Cs_raw": 0.9876368045806885,
+       "Cs": 0.9958130121231079,
+       "Co_vs_ub": 0.5775952339172363,
+       "Co_per_object": {
+        "excavator_a": 0.5599,
+        "excavator_b": 0.0,
+        "dump_truck": 0.5402,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 8,
+       "AUCo": 0.40016600859702833
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 148.48000000000215,
+       "L_eff": 63.31,
+       "N_post": 7,
+       "Co": 0.4866518974304199,
+       "Co_n26": 0.7171269059181213,
+       "Cs_raw": 0.9877930283546448,
+       "Cs": 0.9959782361984253,
+       "Co_vs_ub": 0.6040459871292114,
+       "Co_per_object": {
+        "excavator_a": 0.0,
+        "excavator_b": 0.6828,
+        "dump_truck": 0.5449,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 8,
+       "AUCo": 0.4156483914632842
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    },
+    "pose_tilt0": {
+     "label": "POSE geometric (0\u00b0)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.4121923590288982,
+      "std": 0.07830909167516711
+     },
+     "t_eff": {
+      "mean": 289.9466666666929,
+      "std": 12.414950127422433
+     },
+     "L_eff": {
+      "mean": 101.43833333333333,
+      "std": 12.064707898107878
+     },
+     "N_post": {
+      "mean": 10.333333333333334,
+      "std": 3.614784456460256
+     },
+     "Co": {
+      "mean": 0.5880695680777231,
+      "std": 0.027340892349170948
+     },
+     "Co_vs_ub": {
+      "mean": 0.7283482551574707,
+      "std": 0.033815824458710966
+     },
+     "Cs": {
+      "mean": 0.9908402562141418,
+      "std": 0.015550563894896497
+     },
+     "Co_per_object": {
+      "excavator_a": {
+       "mean": 0.7950833333333334,
+       "std": 0.03537498645464994
+      },
+      "excavator_b": {
+       "mean": 0.7852,
+       "std": 0.040296699616717974
+      },
+      "dump_truck": {
+       "mean": 0.5066666666666667,
+       "std": 0.025775233590923406
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 313.1000000000052,
+       "L_eff": 125.77,
+       "N_post": 3,
+       "Co": 0.5361432433128357,
+       "Co_n26": 0.7483363151550293,
+       "Cs_raw": 0.9513980746269226,
+       "Cs": 0.9592065811157227,
+       "Co_vs_ub": 0.6641235947608948,
+       "Co_per_object": {
+        "excavator_a": 0.723,
+        "excavator_b": 0.7136,
+        "dump_truck": 0.4628,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.2530873147288561
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 284.4800000000312,
+       "L_eff": 95.5,
+       "N_post": 12,
+       "Co": 0.5833779573440552,
+       "Co_n26": 0.8049415349960327,
+       "Cs_raw": 0.9895415902137756,
+       "Cs": 0.9976927042007446,
+       "Co_vs_ub": 0.7223617434501648,
+       "Co_per_object": {
+        "excavator_a": 0.8068,
+        "excavator_b": 0.7857,
+        "dump_truck": 0.4976,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4323514954701324
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 284.2000000000315,
+       "L_eff": 96.13,
+       "N_post": 11,
+       "Co": 0.6132104396820068,
+       "Co_n26": 0.8492313027381897,
+       "Cs_raw": 0.9885143041610718,
+       "Cs": 0.9966377019882202,
+       "Co_vs_ub": 0.7593232989311218,
+       "Co_per_object": {
+        "excavator_a": 0.8089,
+        "excavator_b": 0.7881,
+        "dump_truck": 0.5386,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4550569745146598
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 277.42000000003765,
+       "L_eff": 94.65,
+       "N_post": 12,
+       "Co": 0.5985236763954163,
+       "Co_n26": 0.838254451751709,
+       "Cs_raw": 0.9867758750915527,
+       "Cs": 0.9949027299880981,
+       "Co_vs_ub": 0.741458535194397,
+       "Co_per_object": {
+        "excavator_a": 0.8132,
+        "excavator_b": 0.8381,
+        "dump_truck": 0.507,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.44482381986205366
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 287.54000000002844,
+       "L_eff": 96.5,
+       "N_post": 12,
+       "Co": 0.5932456254959106,
+       "Co_n26": 0.8200872540473938,
+       "Cs_raw": 0.9900571703910828,
+       "Cs": 0.9982061386108398,
+       "Co_vs_ub": 0.7349191904067993,
+       "Co_per_object": {
+        "excavator_a": 0.8097,
+        "excavator_b": 0.787,
+        "dump_truck": 0.5106,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4403371048932553
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 292.94000000002353,
+       "L_eff": 100.08,
+       "N_post": 12,
+       "Co": 0.6039164662361145,
+       "Co_n26": 0.8311787843704224,
+       "Cs_raw": 0.9902539849281311,
+       "Cs": 0.9983956813812256,
+       "Co_vs_ub": 0.7479031682014465,
+       "Co_per_object": {
+        "excavator_a": 0.8089,
+        "excavator_b": 0.7987,
+        "dump_truck": 0.5234,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4474974447044319
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    },
+    "planar_tilt0": {
+     "label": "planar (0\u00b0)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.382038129478755,
+      "std": 0.05850432876821028
+     },
+     "t_eff": {
+      "mean": 277.94333333336596,
+      "std": 20.407463013958743
+     },
+     "L_eff": {
+      "mean": 103.99166666666667,
+      "std": 14.656735539221096
+     },
+     "N_post": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "Co": {
+      "mean": 0.5354101459185282,
+      "std": 0.015932056284162714
+     },
+     "Co_vs_ub": {
+      "mean": 0.6631679534912109,
+      "std": 0.019737349995307248
+     },
+     "Cs": {
+      "mean": 0.9410281380017599,
+      "std": 0.008248256451163219
+     },
+     "Co_per_object": {
+      "excavator_a": {
+       "mean": 0.6977333333333333,
+       "std": 0.013135854241984688
+      },
+      "excavator_b": {
+       "mean": 0.71755,
+       "std": 0.008219914841408023
+      },
+      "dump_truck": {
+       "mean": 0.46603333333333335,
+       "std": 0.023302160128766316
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 302.8600000000145,
+       "L_eff": 123.14,
+       "N_post": 0,
+       "Co": 0.526352047920227,
+       "Co_n26": 0.7315077185630798,
+       "Cs_raw": 0.9411212801933289,
+       "Cs": 0.9489083290100098,
+       "Co_vs_ub": 0.6519452333450317,
+       "Co_per_object": {
+        "excavator_a": 0.7243,
+        "excavator_b": 0.7033,
+        "dump_truck": 0.4509,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.2634546509018423
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 270.14000000004427,
+       "L_eff": 95.57,
+       "N_post": 0,
+       "Co": 0.5274611711502075,
+       "Co_n26": 0.730283796787262,
+       "Cs_raw": 0.9289968013763428,
+       "Cs": 0.9366459846496582,
+       "Co_vs_ub": 0.6530824899673462,
+       "Co_per_object": {
+        "excavator_a": 0.6934,
+        "excavator_b": 0.7243,
+        "dump_truck": 0.4544,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4018022089386878
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 267.160000000047,
+       "L_eff": 95.82,
+       "N_post": 0,
+       "Co": 0.5455901622772217,
+       "Co_n26": 0.7495601773262024,
+       "Cs_raw": 0.9378349184989929,
+       "Cs": 0.9455421566963196,
+       "Co_vs_ub": 0.6757333278656006,
+       "Co_per_object": {
+        "excavator_a": 0.6934,
+        "excavator_b": 0.7171,
+        "dump_truck": 0.4813,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.41658450237538913
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 261.56000000005207,
+       "L_eff": 94.54,
+       "N_post": 0,
+       "Co": 0.5218771696090698,
+       "Co_n26": 0.728103756904602,
+       "Cs_raw": 0.9377333521842957,
+       "Cs": 0.9454154372215271,
+       "Co_vs_ub": 0.646590530872345,
+       "Co_per_object": {
+        "excavator_a": 0.6915,
+        "excavator_b": 0.7163,
+        "dump_truck": 0.4485,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.3995830834532388
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 304.9400000000126,
+       "L_eff": 122.55,
+       "N_post": 0,
+       "Co": 0.5633366703987122,
+       "Co_n26": 0.7837910652160645,
+       "Cs_raw": 0.9355453848838806,
+       "Cs": 0.9432656168937683,
+       "Co_vs_ub": 0.697815477848053,
+       "Co_per_object": {
+        "excavator_a": 0.6894,
+        "excavator_b": 0.7174,
+        "dump_truck": 0.5069,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.399567418965917
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 261.0000000000253,
+       "L_eff": 92.33,
+       "N_post": 0,
+       "Co": 0.5278436541557312,
+       "Co_n26": 0.7346822023391724,
+       "Cs_raw": 0.9188432097434998,
+       "Cs": 0.9263913035392761,
+       "Co_vs_ub": 0.6538406610488892,
+       "Co_per_object": {
+        "excavator_a": 0.6944,
+        "excavator_b": 0.7269,
+        "dump_truck": 0.4542,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4112369122374549
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    }
+   }
+  }
+ }
+}

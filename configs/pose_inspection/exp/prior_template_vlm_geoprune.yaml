@@ -1,0 +1,3 @@
+_base_: ../base.yaml
+priors: {method: template_vlm}
+planner: {semantic: {prune: geometric}}

@@ -1,159 +1,173 @@
-# 3DOG-BIM: 도면을 아는 4족 로봇의 자율 3D 스캔
+# 3DOG-POSE: 몸을 기울여 장비를 스캔하는 4족 로봇
 
-연세대 PRAXIS 실전문제연구팀 **3DOG** · `bim` 브랜치 · 2026년 10월 7일 기준
+연세대 PRAXIS 실전문제연구팀 **3DOG** · `pose-inspection` 브랜치 · 진행 중 (2026-10-15 기준)
 
-4족 로봇 Unitree Go2에 VLP-16 라이다를 달아, 건물을 스스로 돌아다니며 **벽·천장까지 빠짐없는 3D 지도**를 만드는
-탐사 정책을 강화학습으로 만든다. 실내·건설 현장에는 대부분 **BIM 도면**이 있다. 이 브랜치의 질문은
-**"도면을 미리 알고 있다면, 탐사 정책을 어떻게 학습시켜야 더 빨리, 덜 돌면서, 빠짐없이 스캔할까?"** 이다.
+Unitree Go2 + VLP-16 라이다가 **처음 보는 현장**을 탐사하면서, 발견한 장비(지게차·굴착기·덤프트럭)의 표면을
+**몸의 pitch / roll을 바꿔 가며** 빠짐없이 스캔한다. CMU의 **POSE** (arXiv 2609.19460)를 Isaac Sim에서 우리 조건
+(Go2 자세 보행 정책, VLP-16 ±15°, 건설장비)으로 재현하고, 우리 가설인 **"장비 종류별 형상 사전지식이 박스 부풀림보다
+낫다"**를 검증한다. 실로봇은 다루지 않고 전부 시뮬레이션이다.
 
-![](plan/fig_roadmap.png)
+<img src="media/pose_inspection/warehouse_pose_vs_planar.gif" width="100%">
 
-| 단계 | 상태 | 핵심 결과 |
-|---|---|---|
-| ① 4족 보행 (PPO, 4096 병렬) | 완료 | 속도 추종 오차 0.06 m/s, 에피소드 99.5 %가 넘어지지 않고 종료 |
-| ② 2D 자율탐사 (ARiADNE + A* + turn-then-go) | 완료 | Isaac 창고 탐사 95–125 s, 지도 recall 99.7 % |
-| ③ 탐사 정책 재학습 (SAC, 회전 비용 + 3D 효용) | 완료 | 학습에 안 쓴 지도 60장: 2D 완료 83 → **100 %**, 회전 **−66 %** |
-| ④ 몸을 기울이는 자세 스캔 | 데모 | 굴착기·덤프트럭 스캔, 최종 커버리지 차이는 작음 (아래) |
-| ⑤ BIM 사전정보 활용 | **진행 중** | BIM 계획을 보상에 넣는 방식은 실패 → 모방학습 + RL로 전환 |
-| ⑥ Sim-to-real | 예정 | 실제 Go2 + VLP-16 (15° 브래킷), SLAM 위치추정 |
+*창고, 같은 시작점. 왼쪽 POSE 방식(정지 지점에서 몸을 기울임, 주황 별 = 자세 실행), 오른쪽 수평 자세만. 지게차 색 =
+표면 커버리지. (키네마틱 엔진 그림, 아래 표는 Isaac Go2 결과)*
 
-①–②의 영상과 세부 지표는 [`main` 브랜치 README](https://github.com/gkgk0119gmail-arch/3DOG_Go2-exploration/tree/main)에 있다.
+## 진행 현황
+
+| 단계 | 내용 | 상태 | 핵심 결과 |
+|---|---|---|---|
+| 0 | 현황 파악 | 완료 | 기존 자세 스캔은 경로 고정 → 자세 효과 +1 %p |
+| 1 | 장면 두 개 + 정답 라벨 | 완료 | 창고(지게차 7대, 3.93 m) · 공사장(굴착기 2, 덤프트럭 1, 자재) |
+| 2 | 평가 지표 + 이론 상한 | 완료 | 지게차: 수평 82 % → 자세 포함 **93 %**까지 볼 수 있음 |
+| 3 | POSE 방식 플래너 (VLM 없이) | 완료 | 창고 Co **0.68 → 0.78 (+10 %p)**, AUCo 0.38 → 0.43 |
+| 4 | 인식기 교체 (Grounded-SAM 2) | 실험 중 | 프롬프트 연구 완료, 6 seed 실험 진행 중 |
+| 5 | 로컬 VLM 가지치기 (Qwen3-VL-8B) | 실험 중 | 동작 확인 (응답 ~2 s, 비동기) |
+| 6 | 장비 형상 사전지식 (우리 기여) | 실험 중 | 템플릿 / CAD 구현, 비교 진행 중 |
 
 ---
 
-## 지금까지: 탐사 정책을 4족 로봇에 맞게 다시 학습 (③)
+## 1. 장면
 
-공개된 그래프 기반 탐사 정책 ARiADNE(RA-L 2024)는 바퀴 로봇 기준이라 **방향 전환 비용**이 없고 **2D 지도**만 본다.
-Go2는 제자리에서 돌아야 하고(약 1.5 rad/s), 라이다가 15° 위로 기울어 있어 이동 방향에 따라 보이는 벽·천장이 달라진다.
-그래서 보상과 노드 입력을 바꿔 공개 체크포인트에서 SAC로 재학습했다.
+![](results/pose_inspection/stage1_scenes.png)
 
-```
-r = frontier 보상 (원본)  −  t / 16  +  (새로 본 벽·천장 면적) / 250 m²   (+20: 2D 완료)
-t = |Δψ| / 1.5 rad/s  +  0.5 s · [|Δψ| > 0.44 rad]  +  이동거리 / 1.0 m/s     (Go2 turn-then-go 시간)
-```
+| 장면 | 대상 | 비고 |
+|---|---|---|
+| **A. Isaac 창고** (31.6 × 54 m) | 지게차 7대 (Isaac ForkliftB, 리프트 1 m 올림 → **3.93 m**) | POSE 창고와 같은 조건 (3.9 m 지게차 7대, 4 m 통로) |
+| **B. 공사장** (30 × 30 m, 펜스) | 굴착기 ix35e 2대 (기본 / 상부 90° 회전), 덤프트럭 IC120 | 자재 더미·컨테이너는 비대상 장애물 |
 
-노드 입력에는 **회전 비용**(노드 방향과 현재 heading의 차이)과 **3D 효용**(그 노드에서 360° 둘러볼 때
-시선이 닿는 미관측 벽·천장 면적)을 추가했다. 새 입력의 가중치는 0에서 시작하고, critic은 정답 지도를 본다
-(ARiADNE와 같은 asymmetric actor-critic).
+- 대상마다 `UsdSemantics` **class 라벨** → 카메라 정답 분할, 구운 라이다 메시에는 **삼각형별 물체 ID** → 라이다 점의 정답 분할
+- 정답 표면 = 메시를 2 cm 간격으로 균일 샘플 → **0.1 m 표면 복셀** (Co의 분모)
 
-**학습에 안 쓴 지도 60장** (greedy, 라이다 15°, 노드 4 m 간격, 평균은 미완료 지도 포함):
+<img src="results/pose_inspection/stage1_render_A_warehouse.png" width="49%"> <img src="results/pose_inspection/stage1_render_B_construction.png" width="49%">
 
-| 정책 | 2D 탐사 완료 | 종료 시간 | 누적 회전 | 최종 3D 커버리지 |
+## 2. 평가 지표와 이론 상한
+
+POSE와 같은 정의: **Co(t)** 표면 커버리지, **Cs(t)** 장면 부피 커버리지, **AUCo** (같은 장면 비교 실행 중 가장 긴 시간 T로
+정규화), t_eff · L_eff · N_post. 추가로 **이론 상한**: 도달 가능한 모든 위치(0.5 m 격자) × 8방향 × 자세 15개에서 볼 수 있는
+표면 비율.
+
+![](results/pose_inspection/stage2_upper_bound.png)
+
+| 장면 / 대상 | 라이다 0° 수평 | 0° 자세 포함 | **15° 수평** | **15° 자세 포함** |
 |---|---|---|---|---|
-| 원본 공개 체크포인트 | 83 % | 649 s | 7,235° | 95.1 % |
-| 재학습 (1,500 에피소드) | **100 %** | **467 s (−28 %)** | **2,426° (−66 %)** | 96.7 % |
+| 창고 지게차 | 0.58 | 0.93 | 0.82 | 0.93 |
+| 공사장 굴착기 | 0.75 | 0.95 | 0.89 | 0.95 |
+| 공사장 덤프트럭 | 0.58 | 0.75 | 0.71 | 0.75 |
 
-<img src="media/ariadne3d_original_vs_run3.gif" width="100%">
+자세가 필요한 몫은 **높은 지게차**에서 크고(15° 장착에서도 11 %p), 덤프트럭은 적재함 안쪽·하부 25 %가 어떤 자세로도 안 보인다.
 
-한계: 같은 정책을 실제 Isaac 창고(3 m 통로, 2 m 노드)에 옮기면 2D 완료가 0 → 25 %에 그친다.
-학습 지도와 실제 건물 구조의 차이가 크다는 뜻이고, 이것이 ⑤에서 **실제 건물 도면(BIM)으로 학습**하는 이유다.
+## 3. POSE 방식 플래너 (VLM 없이) — Isaac Go2, 6 seeds
 
-## 지금까지: 몸을 기울여 보는 자세 스캔 (④)
+장비를 발견하면 주변 **부채꼴 8구역 × 거리 {3, 4, 5} m**에 후보 → 가시성 점수(지금까지 본 장비 복셀까지 ray cast) →
+구역별 최고 후보 → **자세 이득 G** (부풀린 박스 δb = 0.5 m 안의 미관측 복셀을 기울인 VLP-16이 몇 개 닿는가, G > G0일
+때만 기울임) → 프런티어 시점과 함께 TSP(탐욕 + 2-opt). 자세는 Go2 자세 보행 정책이 학습한 범위
+(pitch ±25°, roll ±15°)로 제한.
 
-장비 CAD 모델을 사전 정보로 쓰고, 정지 지점마다 몸 기울기 후보 25개(앞뒤 5 × 좌우 5)의 새 관측 면을 ray-cast로
-미리 계산해 이득이 가장 큰 자세로 기울인다. 기울기 명령을 따라가는 보행 정책은 PPO로 따로 학습했다
-(`weights/go2_posture_walk_model_1999.pt`).
+![](results/pose_inspection/stage3_isaac.png)
 
-<img src="plan/excavator_posture_scan.gif" width="100%">
+**A. 창고** (T = 548 s)
 
-![](figures/fig9_posture_scan.png)
+| 방법 | AUCo ↑ | t_eff [s] | L_eff [m] | N_post | Co ↑ | Co / 상한 ↑ |
+|---|---|---|---|---|---|---|
+| **POSE 방식 (15°)** | **0.43 ± 0.01** | 520 ± 20 | 205 ± 14 | 12.7 ± 2.3 | **0.78 ± 0.02** | **0.83 ± 0.02** |
+| 수평만 (15°) | 0.38 ± 0.01 | 488 ± 14 | 196 ± 8 | 0 | 0.68 ± 0.02 | 0.72 ± 0.02 |
+| POSE + 기하 가지치기 (15°) | 0.42 ± 0.07 | 223 ± 54 | 116 ± 27 | 6.0 ± 2.6 | 0.52 ± 0.11 | 0.56 ± 0.12 |
+| POSE 방식 (0°) | 0.36 ± 0.01 | 521 ± 23 | 200 ± 14 | 20.2 ± 1.7 | 0.66 ± 0.01 | 0.71 ± 0.01 |
+| 수평만 (0°) | 0.31 ± 0.02 | 495 ± 26 | 203 ± 20 | 0 | 0.54 ± 0.02 | 0.58 ± 0.02 |
 
-같은 경로·같은 정지 지점 기준 최종 표면 커버리지는 굴착기 74.1 → 75.1 %, 덤프트럭 44.1 → 45.3 %로 차이가 작다.
-경로 자체가 고정돼 있어서 자세만으로 얻을 수 있는 몫이 작았고, 경로와 자세를 함께 고르는 쪽이 다음 과제다.
+**B. 공사장** (T = 323 s)
 
----
+| 방법 | AUCo ↑ | t_eff [s] | L_eff [m] | N_post | Co ↑ | Co / 상한 ↑ |
+|---|---|---|---|---|---|---|
+| POSE 방식 (15°) | 0.42 ± 0.09 | 300 ± 19 | 112 ± 14 | 6.7 ± 2.9 | 0.63 ± 0.02 | 0.78 ± 0.03 |
+| 수평만 (15°) | 0.42 ± 0.09 | 290 ± 21 | 111 ± 14 | 0 | 0.62 ± 0.02 | 0.77 ± 0.02 |
+| POSE + 기하 가지치기 (15°) | 0.35 ± 0.07 | 134 ± 21 | 65 ± 7 | 4.5 ± 3.8 | 0.44 ± 0.07 | 0.54 ± 0.09 |
+| POSE 방식 (0°) | 0.41 ± 0.08 | 290 ± 12 | 101 ± 12 | 10.3 ± 3.6 | 0.59 ± 0.03 | 0.73 ± 0.03 |
+| 수평만 (0°) | 0.38 ± 0.06 | 278 ± 20 | 104 ± 15 | 0 | 0.54 ± 0.02 | 0.66 ± 0.02 |
 
-## 지금: BIM 사전정보로 탐사 정책 유도 (⑤)
+**읽는 법**
+- 창고에서 자세 선택이 Co를 **+10 %p** 올린다 (POSE 논문 +8–10 %p와 같은 경향). 라이다 0° 장착이면 +12 %p.
+- 공사장 15°에서는 차이가 없다: 굴착기 높이 2.86 m는 15° 장착 + 3–5 m 거리에서 이미 보이고, 상한 차이도 4–6 %p뿐.
+- **기하 가지치기**(G* < 40이면 구역 건너뜀)는 시간을 절반 이하로 줄이지만 Co가 크게 떨어진다: 장비 모델이 부분적일 때
+  박스가 작아 "더 볼 게 없다"고 잘못 판단한다. → 5단계(VLM), 6단계(형상 사전지식)가 겨냥하는 지점.
+- GT 장애물과의 충돌 0 s, 넘어짐 0회 (36개 실행 전부).
 
-### 만든 것
+<img src="media/pose_inspection/construction_pose_vs_planar.gif" width="100%">
 
-| 구성 | 내용 | 코드 |
-|---|---|---|
-| IFC → 2.5D 학습 세계 | 층별 벽·가구 높이와 천장 높이 (0.4 m 격자). 학습 8장 (Duplex, DigitalHub), 평가 3장 (치과 의원) | `tools/bim_to_25d.py` |
-| IFC → Isaac Sim 장면 | 같은 도면을 Go2가 실제로 걸어 다닐 수 있는 장면으로 변환 | `tools/ifc_to_isaac.py`, `go2_lab/bim.py` |
-| BIM 전문가 계획 | 정답 지도를 보고 "초당 새로 보이는 벽·천장 면적"이 가장 큰 정지 지점을 탐욕적으로 고른 순서. 로봇이 현장에서 실행할 수 없는 **상한선** | `ariadne3d/bim_expert.py` |
-| 가이드 보상 | 매 스텝 계획의 다음 지점 쪽으로 간 정도에 따라 −1…0을 보상에 더함. 정책은 계획을 보지 못함 | `ariadne3d/bim_env.py` |
+## 4. 인식기 교체: Grounded-SAM 2 (진행 중)
 
-### 결과: 보상으로 넣었더니 오히려 나빠졌다
+로봇 둘레 핀홀 카메라 4대(90°씩) → Grounding DINO(base) + SAM 2.1(large) → 라이다 점을 마스크에 투영(깊이로 가림 판정,
+마스크 가장자리 2 px 침식, 바닥 반사점 제외) → 클래스 무관 공간 묶음 + **다수결 클래스**로 물체 가설 (정답 ID 사용 안 함).
+Co는 인식기가 붙인 클래스가 맞을 때만 센다.
 
-학습에 안 쓴 치과 1층 도면, 200 스텝. 왼쪽부터 정책이 보는 지도 · 3D 관측 · 정답 지도와 BIM 계획(파란 점).
+**프롬프트 연구** (로봇 높이 카메라, 대상마다 8방향 × 3/6/10/15 m, [표 전체](results/pose_inspection/stage4_prompt_study.md))
 
-**학습 전 (원본 정책)**: 2D 77 %, 3D 75 %
-<img src="plan/dental1F_before_training.gif" width="100%">
+| 클래스 | 단어 (단독) | 검출률 | 이미지당 오검출 |
+|---|---|---|---|
+| 지게차 | forklift / reach truck / industrial vehicle | 0.46 / 0.49 / 0.52 | 0.08 / 0.46 / 0.69 |
+| 굴착기 | excavator / digger | 0.81 / 0.83 | 0.53 / 0.55 |
+| 덤프트럭 (IC120 크롤러) | dump truck / crawler carrier | 0.81 / 0.79 | 0.85 / 0.93 |
 
-**BIM 가이드 보상으로 1,500 에피소드 학습 후**: 2D 7 %, 3D 8 %
-<img src="plan/dental1F_bim_guide_ep1500.gif" width="100%">
+단어를 **따로** 물으면 "excavator"가 크롤러 덤프트럭에도 박스를 친다(43장 중 35건). 공사장 두 클래스를 **한 질의
+"excavator . tracked dump truck ."**에 넣으면 굴착기→덤프트럭 오인이 3건으로 줄고 덤프트럭 검출이 16 → 34/43으로 오른다.
+6개 단어를 한 질의에 몰아넣으면 점수가 나뉘어 거의 아무것도 안 잡힌다.
 
-![](plan/fig_bim_guide_training.png)
+![](results/pose_inspection/stage4_prompt_study.png)
 
-약 9,800 에피소드 동안 학습 지도에서의 2D 탐사율(61 → 45 %)과 계획 지점 통과율(43 → 25 %)이 내려가고
-회전 시간(116 → 255 s)은 늘었다. 원인은 분석 중이고, 지금 가설은 셋이다.
+## 5. 로컬 VLM 가지치기 (진행 중)
 
-1. **정보 비대칭**: 계획은 정답 지도를 보고 만들었는데 정책은 자기가 본 지도만 본다. 정책이 볼 수 없는 방향을
-   보상으로 요구하는 셈이라, 보상이 "따라갈 수 있는 신호"보다 잡음에 가깝다.
-2. **보상 부호**: 가이드 항은 항상 0 이하라서, 기존 frontier·3D 보상과 섞이면 탐사로 얻는 이득을 지운다.
-3. **학습 지도 수**: BIM 학습 지도가 8장뿐이라 일반화할 만큼 다양하지 않다.
+Qwen3-VL-8B-Instruct를 같은 프로세스의 별도 스레드에서 비동기로 돌린다. 장비마다 세션: 위에서 본 지도 크롭(번호 붙인
+후보) + 구역 사진 최대 3장(이미 스캔한 부분 초록 틴트) + 후보 표 → `{"keep", "confidence", "reason", "done"}`.
+VLM은 후보만 고르고 각도·거리는 항상 3단계 기하 계산. 응답 시간만큼 시뮬레이션 시간이 지난 뒤에 판단이 적용되고,
+그동안 로봇은 이전 판단으로 계속 움직인다. 실패·저신뢰·만료 시 "구역마다 최고 후보"로 돌아간다.
 
-## 다음 계획: BIM 계획을 보상이 아니라 선생으로
+## 6. 장비 형상 사전지식 (진행 중)
 
-![](plan/fig_method.png)
-
-1. **모방학습 (BC → DAgger)**: 전문가 계획이 고른 다음 노드를 라벨로, 정책은 자기 지도만 보고 따라 하도록
-   지도학습한다. 정책이 스스로 간 경로에서 전문가에게 다시 물어 라벨을 붙여(DAgger) 분포 차이를 줄인다.
-   가설 1(정보 비대칭)을 정면으로 다루는 방법이다: 정책이 볼 수 없는 정보를 보상이 아니라
-   "그 상황에서 무엇을 했어야 하는가"로 증류한다 (teacher–student).
-2. **RL 미세조정**: ③과 같은 시간·3D 보상으로 SAC 미세조정하되, BC 손실을 정규화로 남겨
-   모방한 행동에서 갑자기 멀어지지 않게 한다.
-3. **도면을 입력으로**: 도면은 현장에서도 주어지는 정보다. 정책 입력에 도면 채널을 추가하고,
-   도면에 없는 가구·장비를 학습 중 무작위로 넣어 **도면과 현장이 다를 때**도 버티게 한다.
-4. **평가**: 학습에 안 쓴 치과 도면에서 시간에 따른 2D·3D 커버리지를 비교한다.
-   비교 대상은 원본 ARiADNE, ③ 재학습 정책, BIM 전문가(상한선), 제안 방법이다.
-   이어서 Isaac BIM 장면에서 실제 보행 정책으로 검증하고, 실제 Go2로 옮긴다 (⑥).
-
-### 연구 질문
-
-- **사전 지도(BIM)를 탐사 정책에 넣는 가장 좋은 방법은 무엇인가?** 보상 shaping, 전문가 모방, 관측 입력을 같은
-  환경·같은 예산에서 비교한다.
-- **정답을 보는 전문가에서 정답을 못 보는 정책으로 무엇이 얼마나 옮겨지는가?** 전문가 대비 성능 비율을
-  도면–현장 차이의 크기별로 측정한다.
-- **로봇 동역학 비용(4족 회전, 몸 자세)을 고수준 탐사 정책이 얼마나 반영해야 하는가?** ③의 회전 비용,
-  ④의 자세 선택을 하나의 계층형 정책으로 묶는다.
+자세 이득을 세는 "아직 안 본 부분이 있을 영역"을 바꿔 끼운다: 박스 부풀림(POSE) / **클래스 템플릿**(굴착기 하부·상부·붐
+범위, 지게차 마스트 높이, 덤프트럭 적재함을 상자 조합으로; 하부 방향은 낮은 복셀 PCA, 붐 방향은 높은 복셀 또는 VLM이
+첫 사진에서 읽음) / 정확한 CAD(상한).
 
 ---
 
-## 구성과 실행
+## POSE와 다른 점
+
+| 항목 | POSE | 여기 | 이유 |
+|---|---|---|---|
+| 로봇 | 키네마틱 Spot, ±30° / ±20° | Isaac Go2 + 자세 보행 정책, ±25° / ±15° | 정책 학습 범위 |
+| 라이다 | ±22.5° | VLP-16 ±15° (15° 기울여 장착, 0°는 비교군) | 실제 장비 |
+| 종료 | Cs > 90 % & 30 s 정체 | 같은 조건 + **플래너에 남은 목표 없음** | 트인 공사장은 Cs가 1분 만에 포화 |
+| Cs 분모 | 전체 복셀 | 관측 가능한 부피 (상한 계산으로 구함), 원래 값도 기록 | 막힌 내부 제외 |
+| 물체 발견 | d_max 6 m | 발견 20 m (모델·시점 생성), Co는 6 m 이내 반사점만 | 트인 현장에서 6 m 안에 안 들어가면 장비를 못 찾음 |
+| VLM | GPT-5.4 API + heartbeat | 로컬 Qwen3-VL-8B, 방문·만료 시 재질의 | API 미사용 조건 |
+| 라이다 | Isaac 센서 | 같은 패턴을 warp로 직접 ray cast (삼각형 ID → 정답 분할) | 정확한 GT 분할 |
+
+## 실행
+
+```bash
+conda activate isaac && cd sim
+scripts/pose_inspection/fetch_assets.sh Assets/Isaac/6.1/Isaac/Robots/IsaacSim/ForkliftB/   # Isaac 에셋 받기
+python scripts/pose_inspection/build_scenes.py                     # 1단계: 장면 생성
+python scripts/pose_inspection/compute_upper_bound.py              # 2단계: 이론 상한
+python scripts/pose_inspection/run_isaac.py --exp exp/pose.yaml --scene A_warehouse   # 3단계 (6 seeds 병렬)
+scripts/pose_inspection/run_isaac_batch.sh "pose planar" "A_warehouse B_construction"
+python scripts/pose_inspection/aggregate.py --engine isaac --conds pose planar --name stage3
+python scripts/pose_inspection/run_kinematic.py --exp exp/pose.yaml --scene B_construction  # 빠른 개발용 엔진
+```
+
+모든 파라미터는 [`configs/pose_inspection/`](configs/pose_inspection/) YAML (`base.yaml` + 장면 + `exp/` 조건별 덮어쓰기).
 
 | 경로 | 내용 |
 |---|---|
-| `ariadne3d/` | 탐사 정책 재학습 (SAC): 2.5D 세계, 기울인 VLP-16, 3D 효용, BIM 세계·전문가 (`bim_env.py`, `bim_expert.py`) |
-| `go2_lab/` | Isaac Lab 태스크: 보행, 자세 보행(`posture.py`), 장비 스캔(`excavator.py`, `adaptive_scan.py`), BIM 장면(`bim.py`) |
-| `tools/` | IFC 변환(`bim_to_25d.py`, `ifc_to_isaac.py`), 커버리지 평가, 그림·영상 생성 (`make_plan_figures.py`: 이 README의 새 그림) |
-| `plan/` | 이 README의 그림과 GIF |
-| `weights/` | 보행·자세 보행 정책, ③ 탐사 정책 |
+| `go2_lab/pose_inspection/` | scene_builder · raycast · metrics · upper_bound · mapping · viewpoints · navigation · agent · session · kinematic · isaac_env · perception · vlm · vlm_pruner · priors |
+| `scripts/pose_inspection/` | 장면 생성, 상한, 실행(키네마틱 / Isaac), 집계, 프롬프트 연구, GIF |
+| `results/pose_inspection/` | 단계별 JSON · 표(md) · 그림, 실행별 seed JSON |
 
-환경: Ubuntu, RTX 5090, Isaac Sim 6.0.1 + Isaac Lab 3.0, conda env `isaac` (Python 3.12, torch 2.11 cu128).
-
-```bash
-python tools/bim_to_25d.py assets/bim_ifc/dental_clinic.ifc ariadne3d/maps_test       # IFC → 2.5D 세계
-./run.sh bim-demo                                                                     # Isaac 치과 장면 + Go2 + VLP-16
-
-cd ariadne3d
-ARIADNE_BIM_DIR=maps_train python driver3d.py --world bim --node_res 2 --name bim_guide --episodes 12000
-ARIADNE_BIM_DIR=maps_test python eval3d.py pretrained/ariadne_ral2024.pth model/bim_guide/checkpoint.pth \
-    --world bim --node_res 2 --n 3
-```
-
-리포에 포함하지 않은 것: NVIDIA 창고·Go2 USD, `third_party/` 원본 코드, 학습 로그·체크포인트.
-받는 방법은 [docs/SIM_GUIDE.md](docs/SIM_GUIDE.md).
+이전 작업(①–⑤ 보행, ARiADNE 탐사 재학습, BIM 사전정보)은 [`bim` 브랜치 README](https://github.com/gkgk0119gmail-arch/3DOG_Go2-exploration/tree/bim).
 
 ## 출처
 
-- ARiADNE: Cao et al., RA-L 2024 — [marmotlab/ARiADNE-ROS-Planner](https://github.com/marmotlab/ARiADNE-ROS-Planner),
-  학습 코드 [marmotlab/large-scale-DRL-exploration](https://github.com/marmotlab/large-scale-DRL-exploration)
-  (`ariadne3d/`의 agent·env·model 등은 이 코드의 사본을 기반으로 확장, 라이선스 표기 없음 → 공개 전 확인 필요)
-- BIM: 공개 IFC 예제 모델 (Duplex, DigitalHub, Dental Clinic), [IfcOpenShell](https://github.com/IfcOpenShell/IfcOpenShell)로 변환
-- 장비: ix35e 미니 굴착기 URDF, PWRI IC120 크롤러 덤프트럭 (Apache-2.0)
-- Go2 URDF: [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros), VLP-16 마운트:
-  [anujjain-dev/unitree-go2-ros2](https://github.com/anujjain-dev/unitree-go2-ros2),
-  VLP-16 메시: [ToyotaResearchInstitute/velodyne_simulator](https://github.com/ToyotaResearchInstitute/velodyne_simulator)
-- [Isaac Lab](https://github.com/isaac-sim/IsaacLab), NVIDIA Isaac Sim 창고 에셋
+- POSE: Zhan, Chen, Shimada, *Pose-aware Legged Robot Semantic Exploration with Omnidirectional Perception in Confined
+  Unknown Environments*, arXiv 2609.19460 (2026)
+- Grounding DINO (IDEA-Research/grounding-dino-base), SAM 2.1 (facebook/sam2.1-hiera-large), Qwen3-VL-8B-Instruct
+- 장비: ix35e 미니 굴착기 URDF, PWRI IC120 크롤러 덤프트럭 (Apache-2.0), NVIDIA Isaac Sim 창고·ForkliftB 에셋
+- [Isaac Lab](https://github.com/isaac-sim/IsaacLab) 3.0, Isaac Sim 6.0.1
