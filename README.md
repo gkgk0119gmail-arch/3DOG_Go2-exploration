@@ -99,6 +99,10 @@ POSE와 같은 정의: **Co(t)** 표면 커버리지, **Cs(t)** 장면 부피 �
 
 <img src="media/pose_inspection/construction_pose_vs_planar.gif" width="100%">
 
+<img src="media/pose_inspection/isaac_construction_posture.gif" width="100%">
+
+*Isaac Sim, 공사장. 크롤러 덤프트럭(높이 3.87 m) 옆에서 고개를 들고(pitch −25°) 옆으로 기울여(roll −15°) 적재함 위쪽을 스캔.*
+
 ## 4. 인식기 교체: Grounded-SAM 2 (진행 중)
 
 로봇 둘레 핀홀 카메라 4대(90°씩) → Grounding DINO(base) + SAM 2.1(large) → 라이다 점을 마스크에 투영(깊이로 가림 판정,
