@@ -1,0 +1,41 @@
+{
+ "B_construction": {
+  "labels": [
+   "BACKGROUND",
+   "UNLABELLED",
+   "dump_truck",
+   "excavator",
+   "material_pile"
+  ],
+  "views": [
+   {
+    "object": "excavator_a",
+    "class": "excavator",
+    "pixel_fraction": {
+     "BACKGROUND": 0.436,
+     "UNLABELLED": 0.446,
+     "excavator": 0.098,
+     "material_pile": 0.021
+    }
+   },
+   {
+    "object": "excavator_b",
+    "class": "excavator",
+    "pixel_fraction": {
+     "BACKGROUND": 0.422,
+     "UNLABELLED": 0.466,
+     "excavator": 0.112
+    }
+   },
+   {
+    "object": "dump_truck",
+    "class": "dump_truck",
+    "pixel_fraction": {
+     "BACKGROUND": 0.412,
+     "UNLABELLED": 0.21,
+     "dump_truck": 0.378
+    }
+   }
+  ]
+ }
+}

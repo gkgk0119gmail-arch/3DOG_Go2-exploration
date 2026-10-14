@@ -1,0 +1,524 @@
+[
+ {
+  "name": "A_warehouse",
+  "config": "/home/dlab27/Desktop/3DOG/sim/configs/pose_inspection/scene_A_warehouse.yaml",
+  "bounds": [
+   -26.3,
+   -23.6,
+   5.3,
+   30.4
+  ],
+  "z_range": [
+   0.0,
+   9.0
+  ],
+  "robot_start": {
+   "region": [
+    -20.0,
+    -18.0,
+    -2.0,
+    -8.0
+   ],
+   "min_clearance": 0.8
+  },
+  "objects": [
+   {
+    "name": "forklift_0",
+    "class": "forklift",
+    "target": true,
+    "index": 0,
+    "center": [
+     -22.39977264404297,
+     13.0,
+     1.966679334640503
+    ],
+    "bbox_min": [
+     -22.96446418762207,
+     11.484360694885254,
+     9.364862489746884e-05
+    ],
+    "bbox_max": [
+     -21.835081100463867,
+     14.515639305114746,
+     3.933264970779419
+    ],
+    "height_m": 3.933264970779419,
+    "triangles": 872340,
+    "surface_points": 116840,
+    "surface_voxels": 2914,
+    "file": "objects/forklift_0.usdc",
+    "translate": [
+     -22.399773025517767,
+     13.630512395117155,
+     0.0
+    ],
+    "yaw_deg": 90.0
+   },
+   {
+    "name": "forklift_1",
+    "class": "forklift",
+    "target": true,
+    "index": 1,
+    "center": [
+     -17.500226974487305,
+     20.5,
+     1.966679334640503
+    ],
+    "bbox_min": [
+     -18.064918518066406,
+     18.984359741210938,
+     9.364862489746884e-05
+    ],
+    "bbox_max": [
+     -16.935535430908203,
+     22.01563835144043,
+     3.933264970779419
+    ],
+    "height_m": 3.933264970779419,
+    "triangles": 872340,
+    "surface_points": 116862,
+    "surface_voxels": 2913,
+    "file": "objects/forklift_1.usdc",
+    "translate": [
+     -17.50022697448223,
+     19.869487604882845,
+     0.0
+    ],
+    "yaw_deg": -90.0
+   },
+   {
+    "name": "forklift_2",
+    "class": "forklift",
+    "target": true,
+    "index": 2,
+    "center": [
+     -12.499773025512695,
+     14.0,
+     1.966679334640503
+    ],
+    "bbox_min": [
+     -13.064465522766113,
+     12.484360694885254,
+     9.364862489746884e-05
+    ],
+    "bbox_max": [
+     -11.935080528259277,
+     15.515639305114746,
+     3.933264970779419
+    ],
+    "height_m": 3.933264970779419,
+    "triangles": 872340,
+    "surface_points": 116727,
+    "surface_voxels": 2919,
+    "file": "objects/forklift_2.usdc",
+    "translate": [
+     -12.499773025517769,
+     14.630512395117155,
+     0.0
+    ],
+    "yaw_deg": 90.0
+   },
+   {
+    "name": "forklift_3",
+    "class": "forklift",
+    "target": true,
+    "index": 3,
+    "center": [
+     -7.600226879119873,
+     21.0,
+     1.966679334640503
+    ],
+    "bbox_min": [
+     -8.164918899536133,
+     19.484359741210938,
+     9.364862489746884e-05
+    ],
+    "bbox_max": [
+     -7.035534858703613,
+     22.51563835144043,
+     3.933264970779419
+    ],
+    "height_m": 3.933264970779419,
+    "triangles": 872340,
+    "surface_points": 116705,
+    "surface_voxels": 2920,
+    "file": "objects/forklift_3.usdc",
+    "translate": [
+     -7.600226974482231,
+     20.369487604882845,
+     0.0
+    ],
+    "yaw_deg": -90.0
+   },
+   {
+    "name": "forklift_4",
+    "class": "forklift",
+    "target": true,
+    "index": 4,
+    "center": [
+     -3.0997729301452637,
+     20.0,
+     1.966679334640503
+    ],
+    "bbox_min": [
+     -3.6644651889801025,
+     18.48436164855957,
+     9.364862489746884e-05
+    ],
+    "bbox_max": [
+     -2.535080909729004,
+     21.515640258789062,
+     3.933264970779419
+    ],
+    "height_m": 3.933264970779419,
+    "triangles": 872340,
+    "surface_points": 116687,
+    "surface_voxels": 2917,
+    "file": "objects/forklift_4.usdc",
+    "translate": [
+     -3.0997730255177687,
+     20.630512395117155,
+     0.0
+    ],
+    "yaw_deg": 90.0
+   },
+   {
+    "name": "forklift_5",
+    "class": "forklift",
+    "target": true,
+    "index": 5,
+    "center": [
+     1.899773120880127,
+     15.0,
+     1.966679334640503
+    ],
+    "bbox_min": [
+     1.3350809812545776,
+     13.484360694885254,
+     9.364862489746884e-05
+    ],
+    "bbox_max": [
+     2.4644651412963867,
+     16.51563835144043,
+     3.933264970779419
+    ],
+    "height_m": 3.933264970779419,
+    "triangles": 872340,
+    "surface_points": 116862,
+    "surface_voxels": 2922,
+    "file": "objects/forklift_5.usdc",
+    "translate": [
+     1.8997730255177685,
+     14.369487604882845,
+     0.0
+    ],
+    "yaw_deg": -90.0
+   },
+   {
+    "name": "forklift_6",
+    "class": "forklift",
+    "target": true,
+    "index": 6,
+    "center": [
+     -10.0,
+     3.4997730255126953,
+     1.966679334640503
+    ],
+    "bbox_min": [
+     -11.515639305114746,
+     2.9350810050964355,
+     9.364862489746884e-05
+    ],
+    "bbox_max": [
+     -8.484360694885254,
+     4.064465045928955,
+     3.933264970779419
+    ],
+    "height_m": 3.933264970779419,
+    "triangles": 872340,
+    "surface_points": 116751,
+    "surface_voxels": 2919,
+    "file": "objects/forklift_6.usdc",
+    "translate": [
+     -9.369487604882845,
+     3.4997730255177686,
+     0.0
+    ],
+    "yaw_deg": 0.0
+   }
+  ],
+  "triangles": 6624484,
+  "label_instance": "class",
+  "surface_voxel": 0.1,
+  "free_fraction": 0.8265518707482993,
+  "files": {
+   "scene": "scene.usda",
+   "raycast": "raycast.usdc",
+   "gt": "gt.npz",
+   "surface": "surface.npz",
+   "grid": "grid.npz"
+  },
+  "build_s": 10.8
+ },
+ {
+  "name": "B_construction",
+  "config": "/home/dlab27/Desktop/3DOG/sim/configs/pose_inspection/scene_B_construction.yaml",
+  "bounds": [
+   -15.0,
+   -15.0,
+   15.0,
+   15.0
+  ],
+  "z_range": [
+   0.0,
+   7.0
+  ],
+  "robot_start": {
+   "region": [
+    -6.0,
+    -13.5,
+    8.0,
+    -11.0
+   ],
+   "min_clearance": 0.8
+  },
+  "objects": [
+   {
+    "name": "excavator_a",
+    "class": "excavator",
+    "target": true,
+    "index": 0,
+    "center": [
+     -4.721534252166748,
+     3.8250904083251953,
+     1.4314848184585571
+    ],
+    "bbox_min": [
+     -6.159137725830078,
+     1.8039124011993408,
+     0.0
+    ],
+    "bbox_max": [
+     -3.283931016921997,
+     5.846268653869629,
+     2.8629696369171143
+    ],
+    "height_m": 2.8629696369171143,
+    "triangles": 42881,
+    "surface_points": 118654,
+    "surface_voxels": 3747,
+    "file": "objects/excavator_a.usdc",
+    "translate": [
+     -4.500710040330887,
+     3.1352044221440805,
+     0.0
+    ],
+    "yaw_deg": 30.0
+   },
+   {
+    "name": "excavator_b",
+    "class": "excavator",
+    "target": true,
+    "index": 1,
+    "center": [
+     6.301573753356934,
+     6.040194511413574,
+     1.4314848184585571
+    ],
+    "bbox_min": [
+     4.376339435577393,
+     4.030315399169922,
+     0.0
+    ],
+    "bbox_max": [
+     8.226808547973633,
+     8.050073623657227,
+     2.8629696369171143
+    ],
+    "height_m": 2.8629696369171143,
+    "triangles": 42881,
+    "surface_points": 118784,
+    "surface_voxels": 3761,
+    "file": "objects/excavator_b.usdc",
+    "translate": [
+     6.377830386851455,
+     5.247094295604657,
+     0.0
+    ],
+    "yaw_deg": -60.0
+   },
+   {
+    "name": "dump_truck",
+    "class": "dump_truck",
+    "target": true,
+    "index": 2,
+    "center": [
+     4.060937404632568,
+     -6.043796539306641,
+     1.935351014137268
+    ],
+    "bbox_min": [
+     0.39319175481796265,
+     -8.046768188476562,
+     0.0
+    ],
+    "bbox_max": [
+     7.7286834716796875,
+     -4.040824890136719,
+     3.870702028274536
+    ],
+    "height_m": 3.870702028274536,
+    "triangles": 26317,
+    "surface_points": 623240,
+    "surface_voxels": 18638,
+    "file": "objects/dump_truck.usdc",
+    "translate": [
+     4.100064220728,
+     -6.21026786793765,
+     0.0
+    ],
+    "yaw_deg": 10.0
+   },
+   {
+    "name": "container",
+    "class": "container",
+    "target": false,
+    "index": 3,
+    "center": [
+     -8.5,
+     -7.5,
+     1.2949999570846558
+    ],
+    "bbox_min": [
+     -9.720000267028809,
+     -10.529999732971191,
+     0.0
+    ],
+    "bbox_max": [
+     -7.279999732971191,
+     -4.470000267028809,
+     2.5899999141693115
+    ],
+    "height_m": 2.5899999141693115,
+    "triangles": 12,
+    "surface_points": 184008,
+    "surface_voxels": 7352,
+    "file": "objects/container.usdc",
+    "translate": [
+     -8.5,
+     -7.5,
+     0.0
+    ],
+    "yaw_deg": 90.0
+   },
+   {
+    "name": "gravel_pile",
+    "class": "material_pile",
+    "target": false,
+    "index": 4,
+    "center": [
+     -9.5,
+     10.0,
+     0.75
+    ],
+    "bbox_min": [
+     -11.5,
+     8.0,
+     0.0
+    ],
+    "bbox_max": [
+     -7.5,
+     12.0,
+     1.5
+    ],
+    "height_m": 1.5,
+    "triangles": 96,
+    "surface_points": 70526,
+    "surface_voxels": 3250,
+    "file": "objects/gravel_pile.usdc",
+    "translate": [
+     -9.5,
+     10.0,
+     0.0
+    ],
+    "yaw_deg": 0.0
+   },
+   {
+    "name": "brick_pallets",
+    "class": "material_pile",
+    "target": false,
+    "index": 5,
+    "center": [
+     0.0,
+     11.5,
+     1.2000000476837158
+    ],
+    "bbox_min": [
+     -1.850000023841858,
+     10.949999809265137,
+     0.0
+    ],
+    "bbox_max": [
+     1.850000023841858,
+     12.050000190734863,
+     2.4000000953674316
+    ],
+    "height_m": 2.4000000953674316,
+    "triangles": 48,
+    "surface_points": 77003,
+    "surface_voxels": 2944,
+    "file": "objects/brick_pallets.usdc",
+    "translate": [
+     0.0,
+     11.5,
+     0.0
+    ],
+    "yaw_deg": 0.0
+   },
+   {
+    "name": "pipe_bundle",
+    "class": "material_pile",
+    "target": false,
+    "index": 6,
+    "center": [
+     -11.5,
+     -0.5,
+     0.40980762243270874
+    ],
+    "bbox_min": [
+     -12.100000381469727,
+     -3.5,
+     -1.942890293094024e-16
+    ],
+    "bbox_max": [
+     -10.899999618530273,
+     2.5,
+     0.8196152448654175
+    ],
+    "height_m": 0.8196152448654175,
+    "triangles": 864,
+    "surface_points": 129996,
+    "surface_voxels": 3938,
+    "file": "objects/pipe_bundle.usdc",
+    "translate": [
+     -11.5,
+     -0.5,
+     0.0
+    ],
+    "yaw_deg": 90.0
+   }
+  ],
+  "triangles": 113149,
+  "label_instance": "class",
+  "surface_voxel": 0.1,
+  "free_fraction": 0.8318359375,
+  "files": {
+   "scene": "scene.usda",
+   "raycast": "raycast.usdc",
+   "gt": "gt.npz",
+   "surface": "surface.npz",
+   "grid": "grid.npz"
+  },
+  "build_s": 17.5
+ }
+]

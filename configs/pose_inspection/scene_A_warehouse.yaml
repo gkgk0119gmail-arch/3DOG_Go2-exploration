@@ -1,0 +1,39 @@
+# Scene A: Isaac Sim "Simple_Warehouse" with seven ~3.9 m forklifts parked in the 4 m aisles between rack rows
+# (POSE warehouse: 39 x 57 m, seven forklifts about 3.9 m tall in narrow aisles).
+_base_: scene_common.yaml
+
+name: A_warehouse
+out_dir: assets/pose_inspection/A_warehouse
+
+background:
+  type: usd
+  path: assets/warehouse/https/*/Assets/Isaac/6.1/Isaac/Environments/Simple_Warehouse/full_warehouse.usd
+  deactivate: [forklift]          # the stock 2.15 m forklift prop (replaced by the labelled targets below)
+  add_ground: false               # the warehouse has its own floor
+  lights: false                   # and its own lights
+
+# interior (inside the outer walls) [x0, y0, x1, y1] and the height of the explored volume [z0, z1]
+bounds: [-26.3, -23.6, 5.3, 30.4]
+z_range: [0.0, 9.0]
+
+# Isaac ForkliftB with the lift raised 1.0 m -> 3.93 m tall; physics stripped (static prop)
+forklift_source: &forklift
+  type: usd
+  path: assets/warehouse/https/*/Assets/Isaac/6.1/Isaac/Robots/IsaacSim/ForkliftB/forklift_b.usd
+  translate_children: {lift: [0.0, 0.0, 1.0]}
+  strip_physics: true
+
+# center_xy = centre of the object's footprint; yaw_deg rotates the asset about z (ForkliftB is long along x)
+objects:
+  - {name: forklift_0, class: forklift, target: true, source: *forklift, center_xy: [-22.4, 13.0], yaw_deg: 90}
+  - {name: forklift_1, class: forklift, target: true, source: *forklift, center_xy: [-17.5, 20.5], yaw_deg: -90}
+  - {name: forklift_2, class: forklift, target: true, source: *forklift, center_xy: [-12.5, 14.0], yaw_deg: 90}
+  - {name: forklift_3, class: forklift, target: true, source: *forklift, center_xy: [-7.6, 21.0], yaw_deg: -90}
+  - {name: forklift_4, class: forklift, target: true, source: *forklift, center_xy: [-3.1, 20.0], yaw_deg: 90}
+  - {name: forklift_5, class: forklift, target: true, source: *forklift, center_xy: [1.9, 15.0], yaw_deg: -90}
+  - {name: forklift_6, class: forklift, target: true, source: *forklift, center_xy: [-10.0, 3.5], yaw_deg: 0}
+
+# robot start poses are sampled per seed in this box (free cells only), any heading
+robot_start:
+  region: [-20.0, -18.0, -2.0, -8.0]
+  min_clearance: 0.8

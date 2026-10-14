@@ -1,0 +1,15 @@
+# Shared scene-building parameters (scripts/pose_inspection/build_scenes.py).
+build:
+  # ground-truth surface: triangles sampled uniformly at this spacing [m] (points + normals + object id)
+  surface_spacing: 0.02
+  # object-surface voxels for Co (POSE: S_o^* = complete surface voxel set) [m]
+  surface_voxel: 0.1
+  # 2D ground-truth traversability grid (collision checks, reachable set for the upper bound)
+  grid_cell: 0.1
+  grid_band: [0.05, 0.6]        # obstacle height band [m] that blocks the Go2 (body ~0.4 m, VLP-16 on top ~0.55 m)
+  grid_sample_spacing: 0.05     # triangle sampling for rasterising the band
+  # semantic label instance name (Isaac Lab sim.utils.semantics.add_labels default)
+  label_instance: class
+  background_label: background
+  # object USDs are written as binary crate files
+  object_format: usdc
