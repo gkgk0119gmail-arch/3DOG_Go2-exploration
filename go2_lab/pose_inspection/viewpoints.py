@@ -235,7 +235,9 @@ class ViewpointScorer:
         g = self.gains(e, poses, region)
         g0 = float(g[0])  # postures[0] is the level posture
         k = int(np.argmax(g))
-        if g[k] > g0 and k != 0:
+        # POSE adopts a tilt when G > G0; on the fine missing-surface gain a few voxels of difference are noise
+        margin = self.cfg.planner.posture.fine_adopt_margin if isinstance(region, dict) else 0.0
+        if g[k] > g0 + margin and k != 0:
             return self.postures[k][0], self.postures[k][1], float(g[k]), g0
         return 0.0, 0.0, g0, g0
 

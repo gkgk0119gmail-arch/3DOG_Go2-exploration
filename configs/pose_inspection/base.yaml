@@ -125,6 +125,7 @@ planner:
     hold_s: 1.5                  # hold the tilt this long once tracked (15 sweeps)
     settle_tol_deg: 4.0
     settle_timeout_s: 3.0
+    fine_adopt_margin: 50        # missing-surface gain: tilt only for >= 50 more fine voxels (~0.5 m^2) than level
     aim_aligned: false           # POSE Sec. IV-D (optional)
     aim_step_deg: 15.0
   tour:
