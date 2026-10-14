@@ -93,7 +93,9 @@ class Termination:
         self.t_eff = np.full(n_envs, np.nan)
         self.timeout = np.zeros(n_envs, bool)
 
-    def update(self, t: float, cs: np.ndarray):
+    def update(self, t: float, cs: np.ndarray, idle_since: np.ndarray | None = None):
+        """``idle_since`` [E]: time the planner ran out of targets (nan while it still has some); with
+        ``require_planner_idle`` the run also needs that, and t_eff = max(window start, idle start)."""
         c = self.cfg
         for e in range(len(cs)):
             if self.done[e]:
@@ -103,8 +105,12 @@ class Termination:
             while h and h[0][0] < t - c.window_s - 1e-6:
                 h.pop(0)
             full = h[0][0] <= t - c.window_s + 1e-6 and len(h) > 1
-            if cs[e] > c.cs_threshold and full and (h[-1][1] - h[0][1]) < c.min_gain:
-                self.done[e], self.t_eff[e] = True, t - c.window_s
+            idle_ok, t_idle = True, -np.inf
+            if c.get("require_planner_idle", False) and idle_since is not None:
+                idle_ok = bool(np.isfinite(idle_since[e]))
+                t_idle = float(idle_since[e]) if idle_ok else np.inf
+            if cs[e] > c.cs_threshold and full and (h[-1][1] - h[0][1]) < c.min_gain and idle_ok:
+                self.done[e], self.t_eff[e] = True, max(t - c.window_s, t_idle)
             elif t >= c.time_limit_s:
                 self.done[e], self.t_eff[e], self.timeout[e] = True, c.time_limit_s, True
         return self.done

@@ -1,0 +1,4 @@
+# LiDAR mount 0 deg, level body only
+_base_: ../base.yaml
+lidar: {mount_tilt_deg: 0.0}
+planner: {posture: {enabled: false}}

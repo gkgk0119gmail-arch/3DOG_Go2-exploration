@@ -28,6 +28,9 @@ _TASKS = {
     "Go2-Excavator-Posture-Demo-Play": ("excavator:Go2ExcavatorPostureDemoEnvCfg", "posture:Go2PostureWalkPPORunnerCfg"),
     # gain-driven posture scan of any machine (GO2_MACHINE, GO2_SCAN_MODE=adaptive|level|fixed; adaptive_scan.py)
     "Go2-Machine-Scan-Play": ("excavator:Go2MachineScanEnvCfg", "posture:Go2PostureWalkPPORunnerCfg"),
+    # POSE-style inspection experiments (go2_lab/pose_inspection; run through scripts/pose_inspection/run_isaac.py)
+    "Go2-Pose-Inspection-Play": ("pose_inspection.isaac_env:Go2PoseInspectionEnvCfg",
+                                 "posture:Go2PostureWalkPPORunnerCfg"),
     # our own URDF->USD conversion -- joints currently unstable in training
     "Go2-URDF-Blind-Rough": ("Go2BlindRoughEnvCfg", "Go2BlindRoughPPORunnerCfg"),
     "Go2-URDF-Blind-Rough-Play": ("Go2BlindRoughEnvCfg_PLAY", "Go2BlindRoughPPORunnerCfg"),

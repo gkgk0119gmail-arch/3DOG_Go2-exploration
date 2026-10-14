@@ -1,0 +1,3 @@
+# planar baseline (POSE "SEDEM" / "w/o PS"): same viewpoints, level body only
+_base_: ../base.yaml
+planner: {posture: {enabled: false}}

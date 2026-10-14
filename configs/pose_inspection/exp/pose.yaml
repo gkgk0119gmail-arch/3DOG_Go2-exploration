@@ -1,0 +1,2 @@
+# POSE geometric default (no VLM): every sector's best viewpoint, posture selection on, LiDAR mount 15 deg
+_base_: ../base.yaml

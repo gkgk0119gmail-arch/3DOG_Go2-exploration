@@ -32,6 +32,9 @@ termination:
   window_s: 30.0
   min_gain: 0.001                # Cs must grow less than 0.1 points over the window
   time_limit_s: 1200.0
+  # our addition: also wait until the planner has no targets left (exploration + inspection). In the open yard Cs
+  # saturates within a minute and POSE's Cs-only test would stop the run mid-inspection.
+  require_planner_idle: true
 
 upper_bound:
   grid_step: 0.5                 # candidate robot positions [m] (reachable, clear cells)
@@ -43,3 +46,135 @@ upper_bound:
   volume_grid_step: 2.0          # positions used for the observable-volume sweep (expensive)
   volume_az_res_deg: 2.0
   batch_poses: 512
+
+perception:
+  mode: gt                       # gt: LiDAR returns carry the hit triangle's object id | gsam2 (stage 4)
+  # an object is discovered (gets a model + viewpoints) from labelled returns up to this range; only returns within
+  # metrics.object_range (POSE d_max) count towards Co. In the open yard the LiDAR maps everything from afar and
+  # exploration ends before the robot ever comes within d_max of some machines.
+  discover_range: 20.0
+  gsam2:                         # stage 4 (perception.mode: gsam2)
+    detector: IDEA-Research/grounding-dino-base
+    segmenter: facebook/sam2.1-hiera-large
+    box_threshold: 0.30
+    text_threshold: 0.20
+    nms_iou: 0.5                 # suppression of overlapping boxes of different classes
+    # joint: the scene's target classes in one prompt, each box takes the phrase it matches (per_class: one prompt
+    # per class). Phrasings from scripts/pose_inspection/prompt_study.py: alone, "excavator" also fires on the IC120
+    # crawler carrier and "dump truck" finds it poorly; jointly, "excavator . tracked dump truck ." separates them
+    query: joint
+    prompts:
+      forklift: [forklift]
+      excavator: [excavator]
+      dump_truck: [tracked dump truck]
+    period_s: 1.0                # camera frames used for labelling (rendered every period)
+    depth_tol: 0.3               # a return may lie this far behind the camera depth and still take the mask label
+    erode_px: 2                  # mask rim dropped before projecting (SAM masks bleed onto the ground)
+    min_label_height: 0.15       # floor returns never take an object label (flat floor at z = 0)
+    assoc_radius: 1.5            # class voxels join an object hypothesis within this distance of its box [m]
+    max_objects: 40
+  cameras:                       # ring of pinhole cameras on the base (stage 4)
+    n: 4
+    width: 512
+    height: 384
+    hfov_deg: 90.0
+    pos: [0.15, 0.0, 0.12]       # on the body, below the LiDAR
+    pitch_up_deg: 10.0
+
+planner:
+  replan_period_s: 2.0
+  speed: 0.8                     # nominal u for travel-time costs [m/s] (Go2 turn-then-go max; POSE Spot 1.2)
+  yaw_rate: 1.0                  # nominal omega [rad/s] (POSE 0.6)
+  reach_radius: 0.4
+  final_reach_radius: 0.3        # tighter at a semantic viewpoint
+  stuck_s: 10.0                  # no progress along the path for this long -> blacklist the target
+  nav:
+    obstacle_band: [0.2, 0.8]    # voxel band (above the floor voxel) that blocks walking [m]
+    clearance: 0.8
+    clearance_weight: 3.0
+    unknown_cost: 1.5            # unknown cells are traversable at this cost multiplier
+    shortcut_max_cost: 1.5
+    coarse: 2                    # pairwise tour distances on a 2x coarser grid
+    unreachable_penalty: 3.0
+  exploration:
+    enabled: true
+    min_frontier_cells: 6
+    blacklist_radius: 1.0
+  semantic:
+    enabled: true
+    min_object_voxels: 15        # labelled 0.2 m voxels before an object gets viewpoints
+    n_sectors: 8                 # POSE N_s
+    standoffs: [3.0, 4.0, 5.0]   # POSE D [m]
+    s_min_deg2: 50.0             # POSE S_min (their 10^3 px^2 on a panorama; here solid angle of visible voxels)
+    level_hold_s: 0.5            # scan time at a viewpoint without a posture
+    prune: none                  # none (visit every sector's best candidate) | geometric (skip G* < prune_min_gain)
+    prune_min_gain: 40
+  posture:
+    enabled: true
+    # POSE Table I: pitch {-30,-15,0,15,30}, roll {-20,0,20}; scaled to the Go2 policy limits (robot.*_limit_deg)
+    pitch_deg: [-25.0, -12.5, 0.0, 12.5, 25.0]
+    roll_deg: [-15.0, 0.0, 15.0]
+    delta_b: 0.5                 # POSE box inflation [m]
+    rho_max: 8.0                 # POSE ray-casting range [m]
+    gain_az_res_deg: 1.0
+    hold_s: 1.5                  # hold the tilt this long once tracked (15 sweeps)
+    settle_tol_deg: 4.0
+    settle_timeout_s: 3.0
+    aim_aligned: false           # POSE Sec. IV-D (optional)
+    aim_step_deg: 15.0
+  tour:
+    two_opt_iters: 60
+  vlm:                           # stage 5 (semantic.prune: vlm)
+    model: Qwen/Qwen3-VL-8B-Instruct
+    max_new_tokens: 160
+    consult_period_s: 10.0       # POSE T_c: minimum time between consults of one object
+    ttl_s: 60.0                  # POSE T_ttl: a verdict expires after this (also after a visit of the object)
+    min_confidence: 0.5          # verdicts below this fall back to the geometric default
+    max_keep: 3                  # POSE: candidates retained per verdict <= 3
+    max_photos: 3                # POSE: up to three images per consult (plus the map crop)
+    bev_px: 384
+    photo_range: 8.0             # photos for an object's sector are kept when the robot is this close [m]
+    log_consults: 6              # save the inputs of the first consults of robot 0 for inspection
+
+priors:                          # stage 6: region where unseen parts are expected (posture gain, viewpoint centre)
+  method: box                    # box (POSE, delta_b) | template | template_vlm | cad (exact surface, upper bound)
+  min_fit_voxels: 20
+  dilate: 0.2
+  # coarse class shapes in the object's base frame (x = track / long axis), typical sizes rounded:
+  # boxes / upper_boxes rows = [cx, cy, z0, sx, sy, sz]; upper boxes rotate with the upper body (excavator boom)
+  templates:
+    excavator:                   # 3.5 t class mini excavator
+      footprint: [2.2, 1.6]
+      height: 2.9
+      low_z: 0.5
+      high_z: 1.6
+      boom_min_offset: 0.6
+      boxes: [[0.0, 0.0, 0.0, 2.2, 1.6, 0.55], [0.0, 0.0, 0.55, 1.6, 1.6, 2.0]]
+      upper_boxes: [[1.6, 0.0, 0.3, 2.4, 0.6, 2.6]]
+    forklift:                    # reach truck with the mast up
+      footprint: [3.1, 1.2]
+      height: 3.95
+      low_z: 0.4
+      high_z: 2.5
+      boom_min_offset: 0.0
+      boxes: [[0.0, 0.0, 0.0, 3.1, 1.2, 3.95]]
+      upper_boxes: []
+    dump_truck:                  # crawler carrier
+      footprint: [7.1, 3.2]
+      height: 3.9
+      low_z: 0.8
+      high_z: 2.0
+      boom_min_offset: 0.0
+      boxes: [[0.0, 0.0, 0.0, 7.1, 3.2, 3.0], [0.0, 0.0, 0.0, 7.1, 1.6, 3.9]]
+      upper_boxes: []
+
+kinematic:                       # development simulator (no Isaac): Spot-like kinematics, POSE's sim setting
+  dt: 0.02
+  posture_rate_deg_s: 40.0
+  turn_threshold: 0.35
+  go_threshold: 0.12
+
+experiment:
+  n_seeds: 6
+  seed_base: 0
+  results_dir: results/pose_inspection

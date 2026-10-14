@@ -1,0 +1,3 @@
+# POSE + geometric pruning: skip sector viewpoints whose best posture gain G* < prune_min_gain
+_base_: ../base.yaml
+planner: {semantic: {prune: geometric}}
