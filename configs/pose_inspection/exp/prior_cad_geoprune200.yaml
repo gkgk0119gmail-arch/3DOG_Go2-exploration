@@ -1,0 +1,4 @@
+# stage 6: exact CAD region + geometric pruning at threshold 200 fine voxels (best kinematic AUCo in the warehouse)
+_base_: ../base.yaml
+priors: {method: cad}
+planner: {semantic: {prune: geometric, prune_min_gain_fine: 200}}
