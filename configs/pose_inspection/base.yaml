@@ -108,6 +108,7 @@ planner:
     clearance: 0.8
     clearance_weight: 3.0
     unknown_cost: 1.5            # unknown cells are traversable at this cost multiplier
+    recover_radius: 3.0          # robot cell blocked: plan from the nearest free cell within this radius [m]
     shortcut_max_cost: 1.5
     coarse: 2                    # pairwise tour distances on a 2x coarser grid
     unreachable_penalty: 3.0

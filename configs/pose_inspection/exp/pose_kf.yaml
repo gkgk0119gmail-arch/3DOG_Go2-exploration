@@ -1,0 +1,3 @@
+# POSE with viewpoints restricted to known-free cells (same constraint as the RL configs), for a fair comparison
+_base_: ../base.yaml
+planner: {semantic: {candidates_known_free: true}}

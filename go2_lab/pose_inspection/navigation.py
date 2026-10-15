@@ -60,6 +60,10 @@ class NavPlanner:
         self.cost = cost_map(nav, cell, nav_cfg, robot_radius)
         self.ny, self.nx = nav.shape
         s = self.nearest_finite(self.cell_of(robot_xy))
+        if s is None:
+            # wedged in (e.g. under a rack shelf the map shows as free): recover from the nearest free cell up to
+            # recover_radius instead of ending the run with no reachable target
+            s = self.nearest_finite(self.cell_of(robot_xy), int(round(nav_cfg.get("recover_radius", 3.0) / cell)))
         self.start = s
         self.G = _graph(self.cost)
         if s is None:
@@ -89,6 +93,15 @@ class NavPlanner:
                     if d < bd:
                         best, bd = (y, x), d
         return best
+
+    def known_free(self, xy, radius: float) -> bool:
+        """Every map cell within ``radius`` of ``xy`` observed free (not unknown, not occupied)."""
+        c = self.cell_of(xy)
+        r = int(math.ceil(radius / self.cell))
+        y0, y1, x0, x1 = c[0] - r, c[0] + r + 1, c[1] - r, c[1] + r + 1
+        if y0 < 0 or x0 < 0 or y1 > self.ny or x1 > self.nx:
+            return False
+        return bool((self.nav[y0:y1, x0:x1] == 0).all())  # mapping.FREE2D
 
     def traversable(self, xy) -> bool:
         c = self.cell_of(xy)

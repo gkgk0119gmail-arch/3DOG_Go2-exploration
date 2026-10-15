@@ -103,8 +103,9 @@ class InspectionAgent:
         cxy = self.object_center(o, m)
         cands = sample_candidates(cxy, sp.n_sectors, sp.standoffs)
         retired = self.retired.get(o, set())
+        kf = sp.get("candidates_known_free", False)
         keep = [c for c in cands if int(c[3]) not in retired and nav.traversable(c[:2])
-                and np.isfinite(nav.path_length(c[:2]))]
+                and np.isfinite(nav.path_length(c[:2])) and (not kf or nav.known_free(c[:2], self.cfg.robot.radius))]
         if not keep:
             return []
         keep = np.array(keep)

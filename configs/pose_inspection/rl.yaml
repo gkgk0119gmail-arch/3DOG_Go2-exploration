@@ -6,6 +6,13 @@ _base_: base.yaml
 termination:
   time_limit_s: 1200.0
 
+planner:
+  semantic:
+    # viewpoints only on cells the robot has seen free (radius = robot radius). The 15 deg nose-up VLP-16 never sees
+    # the bottom of a rack; unknown cells are traversable for paths, and a viewpoint inside a rack (Isaac racks have no
+    # colliders) wedged run3 in the warehouse (seed 0)
+    candidates_known_free: true
+
 rl:
   envs: 12                       # robots per rollout (same procedural scene, different starts)
   iterations: 400                # rollouts (one fresh scene each)
