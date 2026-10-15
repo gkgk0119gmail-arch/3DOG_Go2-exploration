@@ -1,0 +1,3 @@
+# stage 7 end to end: final RL head with the stage-4 perception (Grounding DINO + SAM 2 v4) instead of GT labels
+_base_: rl_run3_it250.yaml
+perception: {mode: gsam2}
