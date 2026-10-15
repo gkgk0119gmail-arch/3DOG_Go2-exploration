@@ -1,0 +1,17 @@
+{
+ "A_warehouse/forklift_2": {
+  "level": 0.8259677971908188,
+  "posture": 0.11133949982870846,
+  "never": 0.06269270298047276
+ },
+ "B_construction/excavator_b": {
+  "level": 0.8928476469024196,
+  "posture": 0.052379686253655945,
+  "never": 0.05477266684392449
+ },
+ "B_construction/dump_truck": {
+  "level": 0.7113424187144544,
+  "posture": 0.03761133168794935,
+  "never": 0.2510462495975963
+ }
+}
