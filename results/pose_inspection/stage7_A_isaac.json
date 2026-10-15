@@ -924,6 +924,223 @@
      ],
      "perception": null,
      "vlm": null
+    },
+    "rl_run1_it260": {
+     "label": "RL head (run1 it260)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.5174477128004411,
+      "std": 0.01926466095840087
+     },
+     "t_eff": {
+      "mean": 413.9999999999134,
+      "std": 38.786595622679535
+     },
+     "L_eff": {
+      "mean": 207.915,
+      "std": 19.90608725993132
+     },
+     "N_post": {
+      "mean": 8.5,
+      "std": 2.4289915602982237
+     },
+     "Co": {
+      "mean": 0.7527663906415304,
+      "std": 0.03215025938599151
+     },
+     "Co_vs_ub": {
+      "mean": 0.8060231109460195,
+      "std": 0.034472100271246996
+     },
+     "Cs": {
+      "mean": 0.9944485823313395,
+      "std": 0.002847301636217617
+     },
+     "Co_per_object": {
+      "forklift_0": {
+       "mean": 0.7032166666666667,
+       "std": 0.1423619951625667
+      },
+      "forklift_1": {
+       "mean": 0.70485,
+       "std": 0.1145652608778071
+      },
+      "forklift_2": {
+       "mean": 0.7215333333333334,
+       "std": 0.07408993633865982
+      },
+      "forklift_3": {
+       "mean": 0.7849499999999999,
+       "std": 0.02975921705959349
+      },
+      "forklift_4": {
+       "mean": 0.7877333333333332,
+       "std": 0.09542925477371532
+      },
+      "forklift_5": {
+       "mean": 0.8224,
+       "std": 0.07417487445220247
+      },
+      "forklift_6": {
+       "mean": 0.7444833333333333,
+       "std": 0.028624843522134187
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 464.99999999986704,
+       "L_eff": 227.75,
+       "N_post": 10,
+       "Co": 0.7862808704376221,
+       "Co_n26": 0.956423819065094,
+       "Cs_raw": 0.9910454750061035,
+       "Cs": 0.9965617656707764,
+       "Co_vs_ub": 0.8420114517211914,
+       "Co_per_object": {
+        "forklift_0": 0.7824,
+        "forklift_1": 0.6169,
+        "forklift_2": 0.7766,
+        "forklift_3": 0.811,
+        "forklift_4": 0.8714,
+        "forklift_5": 0.8751,
+        "forklift_6": 0.7701
+       },
+       "semantic_visits": 18,
+       "AUCo": 0.534392408372996
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 394.9999999999307,
+       "L_eff": 193.18,
+       "N_post": 11,
+       "Co": 0.7406972646713257,
+       "Co_n26": 0.9322366118431091,
+       "Cs_raw": 0.9875704646110535,
+       "Cs": 0.9931067228317261,
+       "Co_vs_ub": 0.7930365204811096,
+       "Co_per_object": {
+        "forklift_0": 0.4506,
+        "forklift_1": 0.8538,
+        "forklift_2": 0.6602,
+        "forklift_3": 0.7887,
+        "forklift_4": 0.8526,
+        "forklift_5": 0.8717,
+        "forklift_6": 0.7071
+       },
+       "semantic_visits": 17,
+       "AUCo": 0.5358168893015577
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 459.9999999998716,
+       "L_eff": 228.17,
+       "N_post": 8,
+       "Co": 0.8003329634666443,
+       "Co_n26": 0.9638171195983887,
+       "Cs_raw": 0.9918810725212097,
+       "Cs": 0.997437596321106,
+       "Co_vs_ub": 0.8570080399513245,
+       "Co_per_object": {
+        "forklift_0": 0.801,
+        "forklift_1": 0.7539,
+        "forklift_2": 0.7948,
+        "forklift_3": 0.8021,
+        "forklift_4": 0.8344,
+        "forklift_5": 0.8491,
+        "forklift_6": 0.767
+       },
+       "semantic_visits": 20,
+       "AUCo": 0.4990395129323979
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 403.9999999999225,
+       "L_eff": 221.69,
+       "N_post": 4,
+       "Co": 0.7282119393348694,
+       "Co_n26": 0.9387485384941101,
+       "Cs_raw": 0.9912189841270447,
+       "Cs": 0.9968180656433105,
+       "Co_vs_ub": 0.7797179222106934,
+       "Co_per_object": {
+        "forklift_0": 0.7862,
+        "forklift_1": 0.7635,
+        "forklift_2": 0.6218,
+        "forklift_3": 0.7428,
+        "forklift_4": 0.7309,
+        "forklift_5": 0.6804,
+        "forklift_6": 0.7722
+       },
+       "semantic_visits": 11,
+       "AUCo": 0.4893917154905496
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 375.999999999948,
+       "L_eff": 189.95,
+       "N_post": 9,
+       "Co": 0.7257638573646545,
+       "Co_n26": 0.9261163473129272,
+       "Cs_raw": 0.9851482510566711,
+       "Cs": 0.9907004833221436,
+       "Co_vs_ub": 0.7772009968757629,
+       "Co_per_object": {
+        "forklift_0": 0.6136,
+        "forklift_1": 0.5321,
+        "forklift_2": 0.7869,
+        "forklift_3": 0.7538,
+        "forklift_4": 0.8169,
+        "forklift_5": 0.8549,
+        "forklift_6": 0.7215
+       },
+       "semantic_visits": 13,
+       "AUCo": 0.5183903396843297
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 383.9999999999407,
+       "L_eff": 186.75,
+       "N_post": 9,
+       "Co": 0.7353114485740662,
+       "Co_n26": 0.9502546191215515,
+       "Cs_raw": 0.9865109324455261,
+       "Cs": 0.9920668601989746,
+       "Co_vs_ub": 0.7871637344360352,
+       "Co_per_object": {
+        "forklift_0": 0.7855,
+        "forklift_1": 0.7089,
+        "forklift_2": 0.6889,
+        "forklift_3": 0.8113,
+        "forklift_4": 0.6202,
+        "forklift_5": 0.8032,
+        "forklift_6": 0.729
+       },
+       "semantic_visits": 15,
+       "AUCo": 0.527655411020816
+      }
+     ],
+     "perception": null,
+     "vlm": null
     }
    }
   }
