@@ -38,7 +38,7 @@ def _json_default(o):
 class Session:
     def __init__(self, cfg, scene_meta: dict, seeds: list[int], out_dir: str, device: str = "cuda:0",
                  region_fn=None, pruner_factory=None, perception=None, tag: str = "", class_fn=None,
-                 vlm_hint_fn=None):
+                 vlm_hint_fn=None, selector_factory=None):
         self.cfg, self.meta, self.seeds, self.dev = cfg, scene_meta, list(seeds), device
         self.E = len(seeds)
         self.out_dir, self.tag = out_dir, tag
@@ -88,7 +88,8 @@ class Session:
             region_fn = self.prior.region
             center_fn = self.prior.center if cfg.priors.use_center else None
         self.agents = [InspectionAgent(e, self.world, self.scorer, cfg, scene_meta, region_fn=region_fn,
-                                       pruner=pruner_factory(e) if pruner_factory else None, center_fn=center_fn)
+                                       pruner=pruner_factory(e) if pruner_factory else None, center_fn=center_fn,
+                                       selector=selector_factory(e) if selector_factory else None)
                        for e in range(self.E)]
         self.path_len = np.zeros(self.E)
         self.last_xy = None
@@ -173,6 +174,9 @@ class Session:
             co_ub = np.full(self.E, np.nan)
         was = self.term.done.copy()
         idle = np.array([a.idle_since for a in self.agents], float)
+        for e, a in enumerate(self.agents):
+            if a.stopped:
+                self.term.force(e, t)
         self.term.update(t, cs_obs, idle)
         for e in range(self.E):
             if was[e]:

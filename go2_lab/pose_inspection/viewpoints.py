@@ -144,12 +144,20 @@ class ViewpointScorer:
         b = torch.tensor([xy[0], xy[1], self.cfg.robot.base_height], dtype=torch.float32, device=self.dev)
         return b + R @ self.mount_pos, R @ self.mount_R
 
+    def sensor_origins(self, poses) -> tuple[torch.Tensor, torch.Tensor]:
+        """Batched ``sensor_origin`` for poses [N, 5] (x, y, yaw, pitch, roll): one host-to-device copy."""
+        P = torch.as_tensor(np.asarray(poses, np.float32).reshape(-1, 5))
+        R = rot_ypr(P[:, 2], P[:, 3], P[:, 4]).to(self.dev)
+        b = torch.stack([P[:, 0], P[:, 1], torch.full_like(P[:, 0], self.cfg.robot.base_height)], -1).to(self.dev)
+        return b + R @ self.mount_pos, R @ self.mount_R
+
     # ---------------------------------------------------------------------------------------------------------------
     def visibility(self, e: int, cand_xy_yaw: np.ndarray, obj_voxels: torch.Tensor) -> np.ndarray:
         """S(v) [deg^2] for each candidate (level posture) over the object's mapped voxels."""
         if len(cand_xy_yaw) == 0 or len(obj_voxels) == 0:
             return np.zeros(len(cand_xy_yaw))
-        o = torch.stack([self.sensor_origin(c[:2], c[2])[0] for c in cand_xy_yaw])
+        c = np.asarray(cand_xy_yaw, np.float32)
+        o, _ = self.sensor_origins(np.c_[c[:, :3], np.zeros((len(c), 2), np.float32)])
         t = obj_voxels.contiguous().float()
         nx, ny, nz = self.w.vg.shape
         out = torch.empty(len(o) * len(t), dtype=torch.int32, device=self.dev)
@@ -196,8 +204,7 @@ class ViewpointScorer:
             return self._fine_gains(e, poses, region)
         b0, size, mask = region
         rho = self.cfg.planner.posture.rho_max
-        o, R = zip(*(self.sensor_origin(p[:2], p[2], p[3], p[4]) for p in poses))
-        o, R = torch.stack(o), torch.stack(R)
+        o, R = self.sensor_origins(poses)
         nb = int(np.prod(size))
         scratch = torch.zeros(len(poses) * nb, dtype=torch.uint8, device=self.dev)
         nx, ny, nz = self.w.vg.shape
@@ -214,8 +221,7 @@ class ViewpointScorer:
     def _fine_gains(self, e: int, poses, region) -> np.ndarray:
         missing = self.fine_missing(e, region)
         rho = self.cfg.planner.posture.rho_max
-        o, R = zip(*(self.sensor_origin(p[:2], p[2], p[3], p[4]) for p in poses))
-        o, R = torch.stack(o), torch.stack(R)
+        o, R = self.sensor_origins(poses)
         nb = int(np.prod(region["fs"]))
         scratch = torch.zeros(len(poses) * nb, dtype=torch.uint8, device=self.dev)
         nx, ny, nz = self.w.vg.shape

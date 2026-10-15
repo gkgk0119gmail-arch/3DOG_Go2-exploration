@@ -1,0 +1,35 @@
+# RL head for the inspection planner (go2_lab/pose_inspection/rl, scripts/pose_inspection/rl_train.py).
+# The policy picks the next target among the planner's candidates (frontier viewpoints + per-sector object
+# viewpoints with their best posture) or STOP; motion, posture tracking and scanning are unchanged.
+_base_: base.yaml
+
+termination:
+  time_limit_s: 1200.0
+
+rl:
+  envs: 12                       # robots per rollout (same procedural scene, different starts)
+  iterations: 400                # rollouts (one fresh scene each)
+  scene_kinds: [warehouse, yard] # alternated
+  scene_dir: /dev/shm/pose_rl    # procedural scenes are written here and replaced every rollout
+  parts: assets/pose_inspection/rl_parts
+  seed: 0
+  # reward per decision k (privileged: GT surface coverage, training only)
+  #   r_k = w_co * (Co_{k+1} - Co_k) - w_time * (t_{k+1} - t_k) / 100 s
+  w_co: 10.0
+  w_time: 0.5
+  gamma: 0.99                    # per 10 s of sim time (SMDP discount gamma^(dt / 10 s))
+  gae_lambda: 0.95
+  # PPO
+  lr: 3.0e-4
+  epochs: 4
+  minibatch: 256
+  clip: 0.2
+  entropy: 0.01
+  value_coef: 0.5
+  max_grad_norm: 0.5
+  # network
+  d_model: 128
+  heads: 4
+  layers: 2
+  checkpoint_every: 10
+  out: results/pose_inspection/rl

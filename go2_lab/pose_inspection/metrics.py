@@ -94,6 +94,11 @@ class Termination:
         self.timeout = np.zeros(n_envs, bool)
         self.stalled = np.zeros(n_envs, bool)  # stopped below cs_threshold: planner idle and Cs flat
 
+    def force(self, e: int, t: float):
+        """End run ``e`` now (the RL policy chose to stop): t_eff = t."""
+        if not self.done[e]:
+            self.done[e], self.t_eff[e] = True, t
+
     def update(self, t: float, cs: np.ndarray, idle_since: np.ndarray | None = None):
         """``idle_since`` [E]: time the planner ran out of targets (nan while it still has some); with
         ``require_planner_idle`` the run also needs that, and t_eff = max(window start, idle start)."""

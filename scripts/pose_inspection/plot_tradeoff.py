@@ -21,8 +21,8 @@ sys.path.insert(0, SIM)
 from go2_lab.pose_inspection.metrics import auc  # noqa: E402
 
 METHODS = [("box", "box + unknown voxels (POSE)", "pose", "#7f7f7f"),
-           ("template", "class template + missing surface (ours)", "prior_template", "#1b9e77"),
-           ("cad", "exact CAD + missing surface (upper bound)", "prior_cad", "#7570b3")]
+           ("template", "class template + missing surface", "prior_template", "#1b9e77")
+]
 
 
 def load(d):

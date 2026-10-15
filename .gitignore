@@ -18,3 +18,7 @@ ariadne3d/eval/
 ariadne3d/pretrained/
 assets/pose_inspection/
 media/pose_inspection/*.mp4
+
+# RL: per-episode outputs and intermediate checkpoints (a chosen checkpoint is committed explicitly)
+results/pose_inspection/rl/*/episodes/
+results/pose_inspection/rl/*/ckpt_*.pt

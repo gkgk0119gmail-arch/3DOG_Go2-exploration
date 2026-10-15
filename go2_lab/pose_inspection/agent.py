@@ -49,7 +49,7 @@ def wrap(a):
 
 class InspectionAgent:
     def __init__(self, env_id: int, world, scorer, cfg, scene_meta: dict, region_fn=None, pruner=None,
-                 center_fn=None):
+                 center_fn=None, selector=None):
         self.e, self.w, self.sc, self.cfg = env_id, world, scorer, cfg
         self.p = cfg.planner
         self.meta = scene_meta
@@ -70,6 +70,12 @@ class InspectionAgent:
         self.last_targets: list[Target] = []
         self.nav = None
         self.idle_since = float("nan")    # time the planner last ran out of targets (nan while it has some)
+        # RL head (rl/): (agent, targets, travel times [s], t) -> index of the next target, or -1 = stop. With a
+        # selector the agent commits to the chosen target until it is reached / fails (no receding-horizon re-pick)
+        # and skips the TSP ordering.
+        self.selector = selector
+        self.stopped = False
+        self.last_times = np.zeros(0)
 
     # ---------------------------------------------------------------------------------------------------------------
     def _event(self, t, ev, **kw):
@@ -143,6 +149,7 @@ class InspectionAgent:
 
     def replan(self, t: float, pose):
         x, y, yaw = pose[:3]
+        self.last_pose = (float(x), float(y), float(yaw))
         nav_map = self.w.nav_map(self.e)
         origin, cell = self.w.nav_origin()
         nav = NavPlanner(nav_map, origin, cell, self.p.nav, self.cfg.robot.radius, (x, y))
@@ -170,6 +177,14 @@ class InspectionAgent:
         xys = [tg.xy for tg in targets]
         start = np.array([nav.path_length(xy) / u + abs(wrap(math.atan2(xy[1] - y, xy[0] - x) - yaw)) / w
                           for xy in xys])
+        self.last_times = start
+        if self.selector is not None:
+            k = int(self.selector(self, targets, start, t))
+            if k < 0:
+                self.stopped = True
+                self._event(t, "stop")
+                return None
+            return targets[k]
         pair = nav.pairwise(xys, self.p.nav.coarse) / u
         order = tour(start, pair, self.p.tour.two_opt_iters)
         # keep the current target while it is still offered (receding horizon without dithering)
@@ -197,7 +212,18 @@ class InspectionAgent:
         """pose = (x, y, yaw), posture_meas = (pitch, roll) [rad] -> command dict."""
         x, y, yaw = pose[:3]
         p = self.p
-        if self.mode == "plan" or (self.mode in ("idle", "goto") and t - self.t_plan >= p.replan_period_s):
+        if self.stopped:
+            return {"mode": "hold", "posture": (0.0, 0.0)}
+        if self.selector is not None and self.mode == "goto" and t - self.t_plan >= p.replan_period_s:
+            # committed target: only refresh the path on the current map
+            nav_map = self.w.nav_map(self.e)
+            origin, cell = self.w.nav_origin()
+            self.nav = NavPlanner(nav_map, origin, cell, p.nav, self.cfg.robot.radius, (x, y))
+            self.t_plan = t
+            path = self.nav.path(self.target.xy)
+            if path is not None:
+                self.path, self.wp_i = path, (1 if len(path) > 1 else 0)
+        elif self.mode == "plan" or (self.mode in ("idle", "goto") and t - self.t_plan >= p.replan_period_s):
             tgt = self.replan(t, pose)
             if tgt is None:
                 self.target = None
