@@ -84,6 +84,9 @@ perception:
     max_height: {forklift: 4.5, excavator: 4.0, dump_truck: 4.5}   # class size prior: returns above are not it [m]
     max_base_z: 0.8              # a machine stands on the floor: hypotheses whose lowest voxel is higher are skipped
     merge_gap: 0.3               # fragments whose footprints touch merge (union within the class size cap) [m]
+    # v4 (warehouse v3: 37 of 48 hypotheses on shelf rows): returns farther than this from the mask's median depth
+    # are background seen through the object's holes (forklift mast) [m]
+    depth_gate: {forklift: 2.0, excavator: 3.0, dump_truck: 4.5}
     max_objects: 64
   cameras:                       # ring of pinhole cameras on the base (stage 4)
     n: 4

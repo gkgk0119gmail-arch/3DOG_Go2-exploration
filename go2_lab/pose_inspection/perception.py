@@ -116,9 +116,11 @@ def _box_iou(a, b):
 
 
 def project_labels(points_w: torch.Tensor, cams: list[dict], seg: list[list], class_ids: dict, H: int, W: int,
-                   depth_tol: float, erode_px: int = 0) -> torch.Tensor:
+                   depth_tol: float, erode_px: int = 0, depth_gate: dict | None = None) -> torch.Tensor:
     """Class id per point (-1 none). points_w [N, 3]; cams: dicts with 'R_wc' (3x3 world->cam, OpenCV: z forward,
-    x right, y down), 't_wc' [3], 'K' [3, 3], 'depth' [H, W] (distance to image plane, for occlusion)."""
+    x right, y down), 't_wc' [3], 'K' [3, 3], 'depth' [H, W] (distance to image plane, for occlusion).
+    ``depth_gate`` {class: m}: a return deeper or shallower than the mask's median depth by more than this is not the
+    object (SAM fills the holes of open structures such as a forklift mast; the shelf behind would take the label)."""
     dev = points_w.device
     lab = torch.full((len(points_w),), -1, dtype=torch.long, device=dev)
     best_z = torch.full((len(points_w),), float("inf"), device=dev)
@@ -144,6 +146,11 @@ def project_labels(points_w: torch.Tensor, cams: list[dict], seg: list[list], cl
                 k = 2 * erode_px + 1
                 mt = -torch.nn.functional.max_pool2d(-mt[None, None].float(), k, 1, erode_px)[0, 0] > 0.5
             inm = mt[vv, uu]
+            if depth_gate and c in depth_gate and cam.get("depth") is not None:
+                dm = cam["depth"][mt]
+                dm = dm[torch.isfinite(dm)]
+                if len(dm):
+                    inm &= (zz - dm.median()).abs() <= float(depth_gate[c])
             take = inm & (zz < best_z[idx])
             sel = idx[take]
             lab[sel] = class_ids[c]
@@ -310,7 +317,8 @@ class Gsam2Perception:
                 seg = seg_all[k:k + len(cams)]
                 k += len(cams)
                 sel = torch.nonzero(hit[i]).flatten()
-                cls = project_labels(pts[i, sel], cams, seg, self.class_ids, H, W, self.g.depth_tol, self.g.erode_px)
+                cls = project_labels(pts[i, sel], cams, seg, self.class_ids, H, W, self.g.depth_tol, self.g.erode_px,
+                                     self.g.get("depth_gate"))
                 high = (cls >= 0) & (pts[i, sel, 2] > self.max_height[cls.clamp(min=0)])
                 cls[high] = -1
                 got = cls >= 0
