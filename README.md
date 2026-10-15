@@ -282,6 +282,13 @@ v0–v3의 실패(전부 방문 / 한 번 보고 종료)는 **VLM에게 보여 �
 
 <img src="results/pose_inspection/stage7_B_isaac.png" width="49%"> <img src="results/pose_inspection/stage7_A_isaac.png" width="49%">
 
+<img src="media/pose_inspection/construction_pose_vs_rl.gif" width="100%">
+
+<img src="media/pose_inspection/warehouse_pose_vs_rl.gif" width="100%">
+
+*Isaac Go2, 같은 시작점(seed 1). 왼쪽 POSE(규칙), 가운데 RL 정책. 파란 선 = 걸은 경로, 주황 별 = 몸을 기울인 곳, 장비 색 =
+그 장비의 표면 커버리지. 오른쪽 위 Co 곡선에서 RL(주황)이 같은 시각에 더 높고 먼저 끝난다.*
+
 - **두 장면 모두 AUCo 1위.** 공사장은 POSE와 거의 같은 Co(0.62 vs 0.63)를 **36 % 짧은 시간**에 낸다. 같은 시간대의 가지치기·VLM은
   Co를 7–8 %p 잃었는데 RL은 1 %p. 창고는 17 % 빠르고 Co는 3 %p 낮다.
 - 키네마틱에서 학습한 정책이 Isaac Go2(실제 보행 정책, 자세 추종 오차)로 그대로 옮겨졌다. 충돌·넘어짐 없음.
