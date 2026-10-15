@@ -222,10 +222,52 @@ def layout_yard(rng, parts):
     return b, (0.0, 7.0), prims, placed, start
 
 
+def layout_site(rng, parts):
+    """Large site (45-60 m) split by container walls and fences: most machines are not visible from the start area,
+    so the robot has to explore to find them (tests whether a policy only ever goes to machines it already sees)."""
+    W, L = rng.uniform(45, 60), rng.uniform(45, 60)
+    b = (0.0, 0.0, W, L)
+    prims = [floor(b)] + walls(b, 2.0, 0.05)
+    start = (W / 2 - 4, 1.0, W / 2 + 4, 3.5)
+    blocked = [_rect((start[0] - 1, 0), (start[2] + 1, start[3] + 1.5))]
+    # 2-3 long partition walls (2.6 m, like container rows / site hoarding) with 4 m gaps
+    for k in range(int(rng.integers(2, 4))):
+        y = L * (k + 1) / 4 + rng.uniform(-3, 3)
+        gap = rng.uniform(4, W - 8)
+        for x0, x1 in ((0.0, gap), (gap + 4.0, W)):
+            if x1 - x0 > 1.0:
+                prims.append(box((x0, y - 0.15, 0), (x1, y + 0.15, 2.6)))
+                blocked.append(_rect((x0, y - 1.2), (x1, y + 1.2)))
+    placed = []
+    machines = ["excavator_stock", "excavator_swung", "dump_truck", "forklift"]
+    clutter = ["container", "gravel_pile", "brick_pallets", "pipe_bundle"]
+    want = [machines[int(rng.integers(4))] for _ in range(int(rng.integers(3, 7)))]
+    want += [clutter[int(rng.integers(4))] for _ in range(int(rng.integers(3, 7)))]
+    for name in want:
+        p = parts[name]
+        for _ in range(200):
+            yaw = rng.uniform(-math.pi, math.pi)
+            # machines mostly beyond the first partition (out of sight from the start)
+            ymin = L / 4 + 3 if name in machines and rng.random() < 0.8 else 6
+            px, py = rng.uniform(3, W - 3), rng.uniform(ymin, L - 3)
+            fp = _footprint(p, px, py, yaw, 0.2)
+            if fp.min() < 0.8 or fp[:, 0].max() > W - 0.8 or fp[:, 1].max() > L - 0.8:
+                continue
+            if any(_overlap(fp, q) for q in blocked):
+                continue
+            blocked.append(_footprint(p, px, py, yaw, 1.6))
+            placed.append((name, px, py, yaw))
+            break
+    return b, (0.0, 7.0), prims, placed, start
+
+
+LAYOUTS = {"warehouse": layout_warehouse, "yard": layout_yard, "site": layout_site}
+
+
 # --------------------------------------------------------------------------------------------------------------------
 def make_scene(rng, parts, kind: str, out_dir: str, name: str) -> dict:
     """Generate one scene and write gt.npz / surface.npz / grid.npz / scene.json into ``out_dir``."""
-    b, zr, prims, placed, start = (layout_warehouse if kind == "warehouse" else layout_yard)(rng, parts)
+    b, zr, prims, placed, start = LAYOUTS[kind](rng, parts)
     V, T, O, off = [], [], [], 0
     for v, t in prims:
         V.append(v)

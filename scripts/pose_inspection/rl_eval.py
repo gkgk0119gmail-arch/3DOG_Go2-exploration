@@ -53,6 +53,7 @@ def main():
     ap.add_argument("--val", type=int, default=20)
     ap.add_argument("--envs", type=int, default=4)
     ap.add_argument("--handmade", action="store_true")
+    ap.add_argument("--pool", default="val", help="procedural split under assets/pose_inspection/rl_scenes")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     cfg = load_config(args.config)
@@ -63,7 +64,7 @@ def main():
     out = args.out or os.path.splitext(args.ckpt)[0] + "_eval"
     cache_f = os.path.join(os.path.dirname(args.ckpt), "..", "pose_cache.json")
     cache = json.load(open(cache_f)) if os.path.exists(cache_f) else {}
-    scenes = sorted(glob.glob(os.path.join(SIM, "assets/pose_inspection/rl_scenes/val/*")))[:args.val]
+    scenes = sorted(glob.glob(os.path.join(SIM, "assets/pose_inspection/rl_scenes", args.pool, "*")))[:args.val]
     jobs = [(d, list(range(args.envs))) for d in scenes]
     if args.handmade:
         jobs += [(os.path.join(SIM, "assets/pose_inspection", n), list(range(6))) for n in ("A_warehouse",

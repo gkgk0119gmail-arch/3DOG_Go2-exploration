@@ -57,6 +57,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--train", type=int, default=200)
     ap.add_argument("--val", type=int, default=20)
+    ap.add_argument("--kinds", nargs="+", default=["warehouse", "yard"], help="layouts, alternated")
+    ap.add_argument("--split", default=None, help="write only this split name (e.g. test_site) with --val scenes")
     ap.add_argument("--out", default="assets/pose_inspection/rl_scenes")
     ap.add_argument("--parts", default="assets/pose_inspection/rl_parts")
     ap.add_argument("--preview", default="results/pose_inspection/rl_scenes_preview.png")
@@ -65,14 +67,17 @@ def main():
     parts = load_parts(os.path.join(SIM, args.parts))
     shown = []
     t0 = time.time()
-    for split, n, base in (("train", args.train, 1000), ("val", args.val, 900000)):
+    splits = (("train", args.train, 1000), ("val", args.val, 900000))
+    if args.split:
+        splits = ((args.split, args.val, 700000),)
+    for split, n, base in splits:
         k = 0
         made = 0
         while made < n:
             seed = base + k
             k += 1
             rng = np.random.default_rng(seed)
-            kind = "warehouse" if made % 2 == 0 else "yard"
+            kind = args.kinds[made % len(args.kinds)]
             name = f"{split}_{made:04d}"
             m = make_scene(rng, parts, kind, os.path.join(SIM, args.out, split, name), name)
             # usable: at least one machine, robots can start in the start region
@@ -89,7 +94,7 @@ def main():
             with open(os.path.join(m["dir"], "scene.json"), "w") as f:
                 json.dump({k_: v for k_, v in m.items() if k_ != "dir"}, f, indent=1)
             made += 1
-            if split == "train" and len(shown) < 6:
+            if split != "val" and len(shown) < 6:
                 shown.append(m)
         print(f"{split}: {n} scenes ({k} tried), {time.time() - t0:.0f} s")
     if shown:
