@@ -1,0 +1,24 @@
+# stage7_A (isaac engine)
+
+
+## A_warehouse  (T = 548 s)
+
+| method | AUCo ↑ | t_eff [s] ↓ | L_eff [m] ↓ | N_post | Co ↑ | Co / upper bound ↑ | Cs ↑ | runs (timeouts) |
+|---|---|---|---|---|---|---|---|---|
+| POSE (rule-based, all sectors) | 0.43 ± 0.01 | 520 ± 20 | 205 ± 14 | 12.7 ± 2.3 | 0.78 ± 0.02 | 0.83 ± 0.02 | 1.00 ± 0.00 | 6 (0) |
+| POSE + geometric prune G*<5 | 0.47 ± 0.07 | 326 ± 53 | 150 ± 27 | 12.3 ± 3.8 | 0.65 ± 0.12 | 0.70 ± 0.13 | 0.99 ± 0.01 | 6 (0) |
+| POSE + VLM v5 | 0.45 ± 0.01 | 498 ± 29 | 221 ± 19 | 10.8 ± 2.9 | 0.75 ± 0.03 | 0.80 ± 0.03 | 1.00 ± 0.00 | 6 (0) |
+| RL head (run1 it120) | 0.50 ± 0.03 | 431 ± 45 | 201 ± 16 | 12.7 ± 3.1 | 0.75 ± 0.04 | 0.81 ± 0.04 | 0.99 ± 0.00 | 6 (0) |
+
+per-object Co (mean ± std):
+
+| method | forklift_0 | forklift_1 | forklift_2 | forklift_3 | forklift_4 | forklift_5 | forklift_6 |
+|---|---|---|---|---|---|---|---|
+| POSE (rule-based, all sectors) | 0.74 ± 0.07 | 0.81 ± 0.06 | 0.79 ± 0.05 | 0.62 ± 0.02 | 0.85 ± 0.05 | 0.79 ± 0.10 | 0.83 ± 0.02 |
+| POSE + geometric prune G*<5 | 0.57 ± 0.29 | 0.67 ± 0.26 | 0.47 ± 0.38 | 0.59 ± 0.13 | 0.79 ± 0.12 | 0.70 ± 0.18 | 0.76 ± 0.04 |
+| POSE + VLM v5 | 0.74 ± 0.05 | 0.70 ± 0.09 | 0.76 ± 0.07 | 0.71 ± 0.08 | 0.76 ± 0.09 | 0.80 ± 0.09 | 0.78 ± 0.09 |
+| RL head (run1 it120) | 0.69 ± 0.10 | 0.83 ± 0.04 | 0.77 ± 0.11 | 0.65 ± 0.09 | 0.85 ± 0.06 | 0.73 ± 0.09 | 0.75 ± 0.05 |
+
+| method | module | load | quality |
+|---|---|---|---|
+| POSE + VLM v5 | VLM | 135 calls (0 errors), latency 2.0 s mean / 2.7 s max, tokens 22.3 k per run | accepted verdicts 135, planning ticks on a verdict 93% |

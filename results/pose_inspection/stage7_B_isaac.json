@@ -1,0 +1,867 @@
+{
+ "engine": "isaac",
+ "scenes": {
+  "B_construction": {
+   "T": 323.3399999999959,
+   "conditions": {
+    "pose": {
+     "label": "POSE (rule-based, all sectors)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.4174761018553794,
+      "std": 0.08811600633514396
+     },
+     "t_eff": {
+      "mean": 299.96000000001715,
+      "std": 19.12986774651969
+     },
+     "L_eff": {
+      "mean": 111.855,
+      "std": 13.781731023351165
+     },
+     "N_post": {
+      "mean": 6.666666666666667,
+      "std": 2.9439202887759492
+     },
+     "Co": {
+      "mean": 0.6310015817483267,
+      "std": 0.021347907517675443
+     },
+     "Co_vs_ub": {
+      "mean": 0.7830674052238464,
+      "std": 0.02634580421275649
+     },
+     "Cs": {
+      "mean": 0.9993083576361338,
+      "std": 0.00018106113221884673
+     },
+     "Co_per_object": {
+      "excavator_a": {
+       "mean": 0.8537500000000001,
+       "std": 0.0023364502990648236
+      },
+      "excavator_b": {
+       "mean": 0.86045,
+       "std": 0.005904828532650198
+      },
+      "dump_truck": {
+       "mean": 0.5399333333333333,
+       "std": 0.02977950077933926
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 323.3399999999959,
+       "L_eff": 128.13,
+       "N_post": 5,
+       "Co": 0.6463321447372437,
+       "Co_n26": 0.8651036620140076,
+       "Cs_raw": 0.9911301732063293,
+       "Cs": 0.9993392825126648,
+       "Co_vs_ub": 0.8017855286598206,
+       "Co_per_object": {
+        "excavator_a": 0.8537,
+        "excavator_b": 0.862,
+        "dump_truck": 0.5611,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4115200139948043
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 315.3200000000032,
+       "L_eff": 119.92,
+       "N_post": 8,
+       "Co": 0.6562380790710449,
+       "Co_n26": 0.8758127689361572,
+       "Cs_raw": 0.9907529950141907,
+       "Cs": 0.9989590048789978,
+       "Co_vs_ub": 0.8141798973083496,
+       "Co_per_object": {
+        "excavator_a": 0.8511,
+        "excavator_b": 0.8575,
+        "dump_truck": 0.5765,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4673355348045739
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 306.20000000001147,
+       "L_eff": 116.34,
+       "N_post": 6,
+       "Co": 0.6056376099586487,
+       "Co_n26": 0.8292282223701477,
+       "Cs_raw": 0.9911720752716064,
+       "Cs": 0.9993764162063599,
+       "Co_vs_ub": 0.7517333030700684,
+       "Co_per_object": {
+        "excavator_a": 0.8551,
+        "excavator_b": 0.85,
+        "dump_truck": 0.5062,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.4172733804676917
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 299.40000000001766,
+       "L_eff": 116.9,
+       "N_post": 2,
+       "Co": 0.6045666933059692,
+       "Co_n26": 0.8308345675468445,
+       "Cs_raw": 0.9912863373756409,
+       "Cs": 0.9994648098945618,
+       "Co_vs_ub": 0.750403642654419,
+       "Co_per_object": {
+        "excavator_a": 0.8508,
+        "excavator_b": 0.8663,
+        "dump_truck": 0.5023,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.24871440962963745
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 281.0200000000344,
+       "L_eff": 95.47,
+       "N_post": 10,
+       "Co": 0.6374971866607666,
+       "Co_n26": 0.8612407445907593,
+       "Cs_raw": 0.9912406206130981,
+       "Cs": 0.9994161128997803,
+       "Co_vs_ub": 0.7913857102394104,
+       "Co_per_object": {
+        "excavator_a": 0.8564,
+        "excavator_b": 0.8644,
+        "dump_truck": 0.5477,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.48012816084116233
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "finished": true,
+       "t_eff": 274.4800000000403,
+       "L_eff": 94.37,
+       "N_post": 9,
+       "Co": 0.6357377767562866,
+       "Co_n26": 0.8710319399833679,
+       "Cs_raw": 0.9910895228385925,
+       "Cs": 0.9992945194244385,
+       "Co_vs_ub": 0.7889163494110107,
+       "Co_per_object": {
+        "excavator_a": 0.8554,
+        "excavator_b": 0.8625,
+        "dump_truck": 0.5458,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 24,
+       "AUCo": 0.47988511139440704
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    },
+    "pose_geoprune5": {
+     "label": "POSE + geometric prune G*<5",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.43497898207041646,
+      "std": 0.02822207411051731
+     },
+     "t_eff": {
+      "mean": 178.18000000001734,
+      "std": 15.735330946638946
+     },
+     "L_eff": {
+      "mean": 83.29333333333334,
+      "std": 7.945896215447737
+     },
+     "N_post": {
+      "mean": 5.833333333333333,
+      "std": 2.9268868558020253
+     },
+     "Co": {
+      "mean": 0.5524108409881592,
+      "std": 0.034907698488130606
+     },
+     "Co_vs_ub": {
+      "mean": 0.6857409775257111,
+      "std": 0.04339526501996461
+     },
+     "Cs": {
+      "mean": 0.9990862111250559,
+      "std": 0.000775273808278991
+     },
+     "Co_per_object": {
+      "excavator_a": {
+       "mean": 0.6589666666666667,
+       "std": 0.11824942565047268
+      },
+      "excavator_b": {
+       "mean": 0.6534000000000001,
+       "std": 0.15036957138995907
+      },
+      "dump_truck": {
+       "mean": 0.5106166666666666,
+       "std": 0.03004852187157743
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 182.12000000001936,
+       "L_eff": 96.78,
+       "N_post": 3,
+       "Co": 0.5439072847366333,
+       "Co_n26": 0.7985925674438477,
+       "Cs_raw": 0.9893180727958679,
+       "Cs": 0.9975185394287109,
+       "Co_vs_ub": 0.6752303242683411,
+       "Co_per_object": {
+        "excavator_a": 0.7766,
+        "excavator_b": 0.7059,
+        "dump_truck": 0.4644,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 7,
+       "AUCo": 0.4034932509740725
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 173.12000000001476,
+       "L_eff": 73.22,
+       "N_post": 8,
+       "Co": 0.520003080368042,
+       "Co_n26": 0.7941559553146362,
+       "Cs_raw": 0.9911174774169922,
+       "Cs": 0.9992919564247131,
+       "Co_vs_ub": 0.6454554200172424,
+       "Co_per_object": {
+        "excavator_a": 0.6517,
+        "excavator_b": 0.4148,
+        "dump_truck": 0.5148,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 9,
+       "AUCo": 0.43078498658961645
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 153.4800000000047,
+       "L_eff": 78.92,
+       "N_post": 2,
+       "Co": 0.5401591062545776,
+       "Co_n26": 0.80788654088974,
+       "Cs_raw": 0.9911479353904724,
+       "Cs": 0.9993508458137512,
+       "Co_vs_ub": 0.6705765128135681,
+       "Co_per_object": {
+        "excavator_a": 0.5759,
+        "excavator_b": 0.7245,
+        "dump_truck": 0.4958,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 5,
+       "AUCo": 0.4234016671018627
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 174.22000000001532,
+       "L_eff": 82.49,
+       "N_post": 5,
+       "Co": 0.5361049771308899,
+       "Co_n26": 0.7889543771743774,
+       "Cs_raw": 0.991104781627655,
+       "Cs": 0.9993315935134888,
+       "Co_vs_ub": 0.6653528213500977,
+       "Co_per_object": {
+        "excavator_a": 0.4908,
+        "excavator_b": 0.745,
+        "dump_truck": 0.5031,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 6,
+       "AUCo": 0.42384217653220396
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 185.08000000002087,
+       "L_eff": 81.83,
+       "N_post": 9,
+       "Co": 0.5544251799583435,
+       "Co_n26": 0.8300696611404419,
+       "Cs_raw": 0.9914107918739319,
+       "Cs": 0.999590277671814,
+       "Co_vs_ub": 0.6882420182228088,
+       "Co_per_object": {
+        "excavator_a": 0.6555,
+        "excavator_b": 0.5243,
+        "dump_truck": 0.5402,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 9,
+       "AUCo": 0.4416981040447495
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 201.06000000002905,
+       "L_eff": 86.52,
+       "N_post": 8,
+       "Co": 0.6198654174804688,
+       "Co_n26": 0.8665953278541565,
+       "Cs_raw": 0.9912622570991516,
+       "Cs": 0.9994340538978577,
+       "Co_vs_ub": 0.7695887684822083,
+       "Co_per_object": {
+        "excavator_a": 0.8033,
+        "excavator_b": 0.8059,
+        "dump_truck": 0.5454,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 10,
+       "AUCo": 0.4866537071799938
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    },
+    "pose_vlm": {
+     "label": "POSE + VLM v5",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.41168459203223845,
+      "std": 0.040182745659853566
+     },
+     "t_eff": {
+      "mean": 214.72000000003288,
+      "std": 31.580966419674432
+     },
+     "L_eff": {
+      "mean": 95.50833333333334,
+      "std": 20.151227671451352
+     },
+     "N_post": {
+      "mean": 3.5,
+      "std": 1.0488088481701516
+     },
+     "Co": {
+      "mean": 0.5572618047396342,
+      "std": 0.05808709051498343
+     },
+     "Co_vs_ub": {
+      "mean": 0.691566159327825,
+      "std": 0.0719836535801892
+     },
+     "Cs": {
+      "mean": 0.9991845885912577,
+      "std": 0.0003020094139019067
+     },
+     "Co_per_object": {
+      "excavator_a": {
+       "mean": 0.8051333333333334,
+       "std": 0.04459079127652556
+      },
+      "excavator_b": {
+       "mean": 0.8119333333333333,
+       "std": 0.040417999290745056
+      },
+      "dump_truck": {
+       "mean": 0.4560666666666667,
+       "std": 0.08181290036825897
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 233.74000000004577,
+       "L_eff": 109.04,
+       "N_post": 3,
+       "Co": 0.5708330273628235,
+       "Co_n26": 0.8095693588256836,
+       "Cs_raw": 0.9911720752716064,
+       "Cs": 0.9993700385093689,
+       "Co_vs_ub": 0.7087092995643616,
+       "Co_per_object": {
+        "excavator_a": 0.8036,
+        "excavator_b": 0.7684,
+        "dump_truck": 0.4842,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 12,
+       "AUCo": 0.43057110222412226
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 186.58000000002164,
+       "L_eff": 75.48,
+       "N_post": 4,
+       "Co": 0.5666258931159973,
+       "Co_n26": 0.7962595224380493,
+       "Cs_raw": 0.9905574917793274,
+       "Cs": 0.9987592697143555,
+       "Co_vs_ub": 0.7033431529998779,
+       "Co_per_object": {
+        "excavator_a": 0.8207,
+        "excavator_b": 0.8461,
+        "dump_truck": 0.4592,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 10,
+       "AUCo": 0.46969125628632086
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 208.92000000003307,
+       "L_eff": 91.57,
+       "N_post": 2,
+       "Co": 0.5422626733779907,
+       "Co_n26": 0.7855886220932007,
+       "Cs_raw": 0.990678071975708,
+       "Cs": 0.9989180564880371,
+       "Co_vs_ub": 0.6725710034370422,
+       "Co_per_object": {
+        "excavator_a": 0.7171,
+        "excavator_b": 0.7564,
+        "dump_truck": 0.4639,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 10,
+       "AUCo": 0.37830216915146525
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 191.52000000002417,
+       "L_eff": 79.47,
+       "N_post": 3,
+       "Co": 0.5559933185577393,
+       "Co_n26": 0.7986307740211487,
+       "Cs_raw": 0.9910387396812439,
+       "Cs": 0.9992406964302063,
+       "Co_vs_ub": 0.6899990439414978,
+       "Co_per_object": {
+        "excavator_a": 0.8249,
+        "excavator_b": 0.8155,
+        "dump_truck": 0.4496,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 12,
+       "AUCo": 0.43533346277090573
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 198.18000000002758,
+       "L_eff": 88.46,
+       "N_post": 4,
+       "Co": 0.4635125994682312,
+       "Co_n26": 0.6949055790901184,
+       "Cs_raw": 0.9910286068916321,
+       "Cs": 0.9992291927337646,
+       "Co_vs_ub": 0.575410783290863,
+       "Co_per_object": {
+        "excavator_a": 0.8388,
+        "excavator_b": 0.8346,
+        "dump_truck": 0.3132,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 11,
+       "AUCo": 0.3635629584342588
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 269.38000000004496,
+       "L_eff": 129.03,
+       "N_post": 5,
+       "Co": 0.6443433165550232,
+       "Co_n26": 0.8735179901123047,
+       "Cs_raw": 0.9913600087165833,
+       "Cs": 0.999590277671814,
+       "Co_vs_ub": 0.7993636727333069,
+       "Co_per_object": {
+        "excavator_a": 0.8257,
+        "excavator_b": 0.8506,
+        "dump_truck": 0.5663,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 13,
+       "AUCo": 0.3926466033263572
+      }
+     ],
+     "perception": null,
+     "vlm": {
+      "client": {
+       "calls": 41,
+       "errors": 0,
+       "latency_mean_s": 1.8826829268292682,
+       "latency_max_s": 2.47,
+       "tokens_in": 38006,
+       "tokens_out": 2240
+      },
+      "per_robot": {
+       "0": {
+        "consults": 7,
+        "accepted": 7,
+        "fallback_ticks": 17,
+        "verdict_ticks": 160,
+        "failures": 0,
+        "closed": 3
+       },
+       "1": {
+        "consults": 6,
+        "accepted": 6,
+        "fallback_ticks": 13,
+        "verdict_ticks": 117,
+        "failures": 0,
+        "closed": 3
+       },
+       "2": {
+        "consults": 7,
+        "accepted": 7,
+        "fallback_ticks": 18,
+        "verdict_ticks": 151,
+        "failures": 0,
+        "closed": 3
+       },
+       "3": {
+        "consults": 7,
+        "accepted": 7,
+        "fallback_ticks": 21,
+        "verdict_ticks": 119,
+        "failures": 0,
+        "closed": 3
+       },
+       "4": {
+        "consults": 6,
+        "accepted": 6,
+        "fallback_ticks": 18,
+        "verdict_ticks": 130,
+        "failures": 0,
+        "closed": 3
+       },
+       "5": {
+        "consults": 8,
+        "accepted": 8,
+        "fallback_ticks": 23,
+        "verdict_ticks": 221,
+        "failures": 0,
+        "closed": 3
+       }
+      }
+     }
+    },
+    "rl_run1_it120": {
+     "label": "RL head (run1 it120)",
+     "n": 6,
+     "timeouts": 0,
+     "AUCo": {
+      "mean": 0.5007670965110361,
+      "std": 0.016831360428678558
+     },
+     "t_eff": {
+      "mean": 192.6666666666914,
+      "std": 20.441787266946452
+     },
+     "L_eff": {
+      "mean": 82.90333333333332,
+      "std": 9.332930229390266
+     },
+     "N_post": {
+      "mean": 3.5,
+      "std": 0.8366600265340756
+     },
+     "Co": {
+      "mean": 0.6201267540454865,
+      "std": 0.020148983052238917
+     },
+     "Co_vs_ub": {
+      "mean": 0.769644151131312,
+      "std": 0.025023714757856485
+     },
+     "Cs": {
+      "mean": 0.9937903980414072,
+      "std": 0.0008201092166333766
+     },
+     "Co_per_object": {
+      "excavator_a": {
+       "mean": 0.8210333333333333,
+       "std": 0.020120603039339227
+      },
+      "excavator_b": {
+       "mean": 0.8194833333333333,
+       "std": 0.03735271966894333
+      },
+      "dump_truck": {
+       "mean": 0.5395166666666666,
+       "std": 0.028860313003615624
+      }
+     },
+     "runs": [
+      {
+       "seed": 0,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 152.00000000000395,
+       "L_eff": 68.2,
+       "N_post": 2,
+       "Co": 0.5938575863838196,
+       "Co_n26": 0.8316760063171387,
+       "Cs_raw": 0.9862882494926453,
+       "Cs": 0.9944852590560913,
+       "Co_vs_ub": 0.7370595335960388,
+       "Co_per_object": {
+        "excavator_a": 0.8367,
+        "excavator_b": 0.8227,
+        "dump_truck": 0.4989,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 12,
+       "AUCo": 0.5056300252123439
+      },
+      {
+       "seed": 1,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 207.0000000000321,
+       "L_eff": 92.53,
+       "N_post": 4,
+       "Co": 0.6279354691505432,
+       "Co_n26": 0.8587164878845215,
+       "Cs_raw": 0.9854069948196411,
+       "Cs": 0.9935851097106934,
+       "Co_vs_ub": 0.7793237566947937,
+       "Co_per_object": {
+        "excavator_a": 0.8375,
+        "excavator_b": 0.7868,
+        "dump_truck": 0.5538,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 13,
+       "AUCo": 0.5243000163873371
+      },
+      {
+       "seed": 2,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 195.00000000002595,
+       "L_eff": 82.45,
+       "N_post": 3,
+       "Co": 0.6068232655525208,
+       "Co_n26": 0.842805802822113,
+       "Cs_raw": 0.9859885573387146,
+       "Cs": 0.9941843152046204,
+       "Co_vs_ub": 0.7531579732894897,
+       "Co_per_object": {
+        "excavator_a": 0.8097,
+        "excavator_b": 0.8256,
+        "dump_truck": 0.5219,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 14,
+       "AUCo": 0.4741889140717569
+      },
+      {
+       "seed": 3,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 200.0000000000285,
+       "L_eff": 75.95,
+       "N_post": 4,
+       "Co": 0.6119100451469421,
+       "Co_n26": 0.8429588079452515,
+       "Cs_raw": 0.9863238334655762,
+       "Cs": 0.9945133924484253,
+       "Co_vs_ub": 0.7595213055610657,
+       "Co_per_object": {
+        "excavator_a": 0.7884,
+        "excavator_b": 0.8628,
+        "dump_truck": 0.5258,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 17,
+       "AUCo": 0.4913287613929795
+      },
+      {
+       "seed": 4,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 205.00000000003106,
+       "L_eff": 89.45,
+       "N_post": 4,
+       "Co": 0.6292741298675537,
+       "Co_n26": 0.8670160174369812,
+       "Cs_raw": 0.9841625690460205,
+       "Cs": 0.9923277497291565,
+       "Co_vs_ub": 0.7807009220123291,
+       "Co_per_object": {
+        "excavator_a": 0.838,
+        "excavator_b": 0.766,
+        "dump_truck": 0.5597,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 14,
+       "AUCo": 0.5018841220215596
+      },
+      {
+       "seed": 5,
+       "timeout": false,
+       "stalled": false,
+       "finished": true,
+       "t_eff": 197.00000000002697,
+       "L_eff": 88.84,
+       "N_post": 4,
+       "Co": 0.6509600281715393,
+       "Co_n26": 0.8806701302528381,
+       "Cs_raw": 0.9854539632797241,
+       "Cs": 0.9936465620994568,
+       "Co_vs_ub": 0.8081014156341553,
+       "Co_per_object": {
+        "excavator_a": 0.8159,
+        "excavator_b": 0.853,
+        "dump_truck": 0.577,
+        "container": 0.0,
+        "gravel_pile": 0.0,
+        "brick_pallets": 0.0,
+        "pipe_bundle": 0.0
+       },
+       "semantic_visits": 11,
+       "AUCo": 0.5072707399802396
+      }
+     ],
+     "perception": null,
+     "vlm": null
+    }
+   }
+  }
+ }
+}
