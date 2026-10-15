@@ -1,0 +1,3 @@
+# stage 7: the RL head (run2, time weight 0.2, iteration 300) picks the targets greedily; everything else as exp/pose.yaml
+_base_: ../rl.yaml
+rl_policy: results/pose_inspection/rl/policies/run2_it300.pt
