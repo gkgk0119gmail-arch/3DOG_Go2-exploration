@@ -92,6 +92,7 @@ def main():
     ap.add_argument("--name", default="run1")
     ap.add_argument("--set", nargs="*", default=[])
     ap.add_argument("--resume", default=None)
+    ap.add_argument("--init", default=None, help="start from these policy weights (fresh optimizer, iteration 0)")
     args = ap.parse_args()
     import yaml
 
@@ -107,6 +108,8 @@ def main():
     net = InspectionPolicy(rl.d_model, rl.heads, rl.layers).to(dev)
     opt = torch.optim.Adam(net.parameters(), lr=rl.lr)
     it0 = 0
+    if args.init:
+        net.load_state_dict(torch.load(args.init, map_location=dev)["net"])
     if args.resume:
         ck = torch.load(args.resume, map_location=dev)
         net.load_state_dict(ck["net"])
