@@ -81,22 +81,34 @@ def main():
             row[name] = {k: float(np.mean([r[k] for r in rr])) for k in ("Co", "t_eff", "L", "N_post")}
             row[name]["AUCo"] = float(np.mean([auc(r["curve"], T, r["t_eff"]) for r in rr]))
             row[name]["timeouts"] = int(sum(r["timeout"] for r in rr))
+        # matched comparisons (same seed = same start): POSE coverage at the time RL stopped, and the time POSE
+        # needs to reach RL's final coverage
+        from go2_lab.pose_inspection.metrics import value_at  # noqa: PLC0415
+
+        co_at, t_to = [], []
+        for rp, rr_ in zip(cache[key], pol):
+            co_at.append(value_at(rp["curve"], rr_["t_eff"]))
+            reach = [c[0] for c in rp["curve"] if c[1] >= rr_["Co"] - 1e-9]
+            t_to.append(reach[0] if reach else float("nan"))
+        row["pose"]["Co_at_rl_t"] = float(np.mean(co_at))
+        row["pose"]["t_to_rl_Co"] = float(np.nanmean(t_to)) if not all(np.isnan(t_to)) else float("nan")
         row["kind"] = meta.get("kind", "handmade")
         res[meta["name"]] = row
         print(f"{meta['name']:>16} ({row['kind']}):  POSE Co {row['pose']['Co']:.3f} t {row['pose']['t_eff']:5.0f} "
               f"AUCo {row['pose']['AUCo']:.3f}  |  RL Co {row['rl']['Co']:.3f} t {row['rl']['t_eff']:5.0f} "
-              f"AUCo {row['rl']['AUCo']:.3f}", flush=True)
+              f"AUCo {row['rl']['AUCo']:.3f}  ||  POSE Co at RL stop {row['pose']['Co_at_rl_t']:.3f}, POSE time "
+              f"to RL Co {row['pose']['t_to_rl_Co']:.0f}", flush=True)
     json.dump(res, open(out + ".json", "w"), indent=1)
-    md = ["| scene | kind | POSE AUCo | RL AUCo | POSE Co | RL Co | POSE t_eff | RL t_eff |", "|---|---|---|---|---|---|---|---|"]
+    md = ["| scene | kind | POSE AUCo | RL AUCo | POSE Co | RL Co | POSE t_eff | RL t_eff | POSE Co at RL stop | "
+          "POSE time to RL Co |", "|---|---|---|---|---|---|---|---|---|---|"]
+    keys = [("pose", "AUCo", 3), ("rl", "AUCo", 3), ("pose", "Co", 3), ("rl", "Co", 3), ("pose", "t_eff", 0),
+            ("rl", "t_eff", 0), ("pose", "Co_at_rl_t", 3), ("pose", "t_to_rl_Co", 0)]
     for n, r in res.items():
-        md.append(f"| {n} | {r['kind']} | {r['pose']['AUCo']:.3f} | {r['rl']['AUCo']:.3f} | {r['pose']['Co']:.3f} | "
-                  f"{r['rl']['Co']:.3f} | {r['pose']['t_eff']:.0f} | {r['rl']['t_eff']:.0f} |")
+        md.append(f"| {n} | {r['kind']} | " + " | ".join(f"{r[a][b]:.{d}f}" for a, b, d in keys) + " |")
     for kind in sorted({r["kind"] for r in res.values()}):
         rr = [r for r in res.values() if r["kind"] == kind]
-        md.append(f"| **mean ({kind}, {len(rr)})** | | {np.mean([r['pose']['AUCo'] for r in rr]):.3f} | "
-                  f"{np.mean([r['rl']['AUCo'] for r in rr]):.3f} | {np.mean([r['pose']['Co'] for r in rr]):.3f} | "
-                  f"{np.mean([r['rl']['Co'] for r in rr]):.3f} | {np.mean([r['pose']['t_eff'] for r in rr]):.0f} | "
-                  f"{np.mean([r['rl']['t_eff'] for r in rr]):.0f} |")
+        md.append(f"| **mean ({kind}, {len(rr)})** | | " + " | ".join(
+            f"{np.nanmean([r[a][b] for r in rr]):.{d}f}" for a, b, d in keys) + " |")
     open(out + ".md", "w").write("\n".join(md) + "\n")
     print("\n".join(md))
 
