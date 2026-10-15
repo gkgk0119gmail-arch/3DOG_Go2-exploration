@@ -23,7 +23,8 @@ sys.path.insert(0, SIM)
 from go2_lab.pose_inspection.config import load_config, sim_path  # noqa: E402
 from go2_lab.pose_inspection.kinematic import KinematicEngine  # noqa: E402
 from go2_lab.pose_inspection.navgrid import NavGrid  # noqa: E402
-from go2_lab.pose_inspection.rl.features import observe, to_batch  # noqa: E402
+from go2_lab.pose_inspection.rl.collector import Collector  # noqa: E402
+from go2_lab.pose_inspection.rl.features import to_batch  # noqa: E402
 from go2_lab.pose_inspection.rl.policy import InspectionPolicy  # noqa: E402
 from go2_lab.pose_inspection.rl.procgen import load_parts, make_scene  # noqa: E402
 from go2_lab.pose_inspection.session import Session  # noqa: E402
@@ -34,32 +35,6 @@ def starts(cfg, meta, seeds):
         meta["robot_start"]["region"])
     return np.array([nav.sample_starts(meta["robot_start"]["region"], 1, s, meta["robot_start"]["min_clearance"])[0]
                      for s in seeds])
-
-
-class Collector:
-    """Selector hook for every robot of one session: samples actions and records the decisions."""
-
-    def __init__(self, net, device, greedy=False):
-        self.net, self.dev, self.greedy = net, device, greedy
-        self.session = None
-        self.dec = {}   # env -> list of dicts
-
-    def factory(self, e):
-        self.dec[e] = []
-
-        def select(agent, targets, times, t):
-            obs = observe(agent, targets, times, t)
-            cand, mask, glob = to_batch([obs], self.dev)
-            with torch.no_grad():
-                logits, v = self.net(cand, mask, glob)
-            dist = torch.distributions.Categorical(logits=logits[0])
-            a = int(logits[0].argmax()) if self.greedy else int(dist.sample())
-            co = float(self.session.surf.co()[e])
-            self.dec[e].append({"obs": obs, "a": a, "logp": float(dist.log_prob(torch.tensor(a, device=self.dev))),
-                                "v": float(v[0]), "t": t, "co": co, "n": len(targets)})
-            return a if a < len(targets) else -1
-
-        return select
 
 
 def episode_returns(dec, t_end, co_end, rl):

@@ -33,7 +33,7 @@ from isaaclab.utils.math import matrix_from_quat, wrap_to_pi
 from ..factory import Go2WarehouseDemoEnvCfg, _go2_vlp16_usd
 from ..posture import ScriptedPostureCommandCfg
 from ..waypoint_command import WaypointTurnThenGoCommand, WaypointTurnThenGoCommandCfg
-from .config import load_config
+from .config import load_config, sim_path
 from .navgrid import NavGrid
 from .scene_builder import load_scene
 
@@ -96,8 +96,18 @@ class PoseInspectionCommand(WaypointTurnThenGoCommand):
                 factory = self.pruners.__getitem__   # else the pruners only keep photos (template hints)
         self.hints: dict[tuple[int, int], dict] = {}
         hint_fn = self._vlm_hint if exp.priors.method == "template_vlm" else None
+        # stage 7: the RL head picks the targets (greedy) when the experiment names a trained policy
+        self.rl_col = None
+        if exp.get("rl_policy"):
+            from .rl.collector import Collector, load_policy  # noqa: PLC0415
+
+            self.rl_col = Collector(load_policy(sim_path(exp.rl_policy), exp, str(self.device)), str(self.device),
+                                    greedy=True)
         self.session = Session(exp, self.meta, seeds, out, device=str(self.device), perception=self.perc,
-                               pruner_factory=factory, tag=os.environ.get("GO2_PI_TAG", ""), vlm_hint_fn=hint_fn)
+                               pruner_factory=factory, tag=os.environ.get("GO2_PI_TAG", ""), vlm_hint_fn=hint_fn,
+                               selector_factory=self.rl_col.factory if self.rl_col else None)
+        if self.rl_col is not None:
+            self.rl_col.session = self.session
         rs = self.meta["robot_start"]
         self.nav_gt = NavGrid(os.path.join(self.meta["dir"], "grid.npz"), exp.robot.radius).restrict_to_region(rs["region"])
         self.starts = np.array([self.nav_gt.sample_starts(rs["region"], 1, s, rs["min_clearance"])[0] for s in seeds])

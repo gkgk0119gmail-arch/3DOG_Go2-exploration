@@ -26,7 +26,8 @@ from go2_lab.pose_inspection.metrics import auc  # noqa: E402
 from go2_lab.pose_inspection.rl.policy import InspectionPolicy  # noqa: E402
 from go2_lab.pose_inspection.scene_builder import load_scene  # noqa: E402
 from go2_lab.pose_inspection.session import Session  # noqa: E402
-from rl_train import Collector, starts  # noqa: E402
+from go2_lab.pose_inspection.rl.collector import Collector  # noqa: E402
+from rl_train import starts  # noqa: E402
 
 
 def run(cfg, meta, seeds, net=None):
