@@ -36,6 +36,7 @@ def main():
     ap.add_argument("--seeds", nargs="*", type=int, default=None)
     ap.add_argument("--set", nargs="*", default=[], help="dotted overrides key=value (YAML values)")
     ap.add_argument("--name", default=None)
+    ap.add_argument("--device", default="cuda:0")
     args = ap.parse_args()
     import yaml
 
@@ -46,7 +47,14 @@ def main():
                                                                  cfg.experiment.seed_base + cfg.experiment.n_seeds))
     name = args.name or os.path.splitext(os.path.basename(args.exp))[0]
     out = sim_path(os.path.join(cfg.experiment.results_dir, "kinematic", args.scene, name))
-    s = Session(cfg, meta, seeds, out, tag=name)
+    col = None
+    if cfg.get("rl_policy"):   # RL head (greedy), as in the Isaac runs
+        from go2_lab.pose_inspection.rl.collector import Collector, load_policy  # noqa: PLC0415
+
+        col = Collector(load_policy(sim_path(cfg.rl_policy), cfg, args.device), args.device, greedy=True)
+    s = Session(cfg, meta, seeds, out, device=args.device, tag=name, selector_factory=col.factory if col else None)
+    if col:
+        col.session = s
     eng = KinematicEngine(s, starts_for(cfg, meta, seeds))
     t0 = time.time()
     print(f"[{name} / {args.scene}] seeds {seeds}")

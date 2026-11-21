@@ -1,0 +1,3 @@
+# selector ablation: greedy unknown cells per second + geometric pruning (hand-written selective rule)
+_base_: sel_gain.yaml
+planner: {semantic: {prune: geometric}}

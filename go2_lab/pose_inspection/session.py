@@ -46,6 +46,16 @@ class Session:
         li = cfg.lidar
         self.mesh = SceneMesh(os.path.join(d, "gt.npz"), device)
         n_hyp = cfg.perception.gsam2.max_objects if cfg.perception.mode != "gt" else None
+        if perception is None and cfg.perception.get("false_detections"):
+            # controlled false detections on top of the GT labels (ablation.py)
+            from .ablation import FalseDetections  # noqa: PLC0415
+
+            perception = FalseDetections(cfg, scene_meta, device)
+            n_hyp = perception.n_obj
+        if selector_factory is None and cfg.get("selector"):
+            from .ablation import heuristic_selector  # noqa: PLC0415
+
+            selector_factory = lambda e: heuristic_selector(cfg.selector)  # noqa: E731
         self.world = WorldModel(cfg, scene_meta, self.E, device, n_obj=n_hyp)
         targets = [o["target"] for o in scene_meta["objects"]]
         # only target-class objects are perceived as objects (POSE: targets O of known semantic classes); clutter
@@ -216,5 +226,7 @@ class Session:
                    "object_names": [o["name"] for o in self.meta["objects"]],
                    "targets": self.target_names, "wall_s": round(time.time() - self.t_wall0, 1),
                    "config": {k: v for k, v in self.cfg.items() if k != "_source_"}, **(extra or {})}
+            if hasattr(self.perception, "info"):
+                run["false_detections"] = self.perception.info
             with open(os.path.join(self.out_dir, f"seed{self.seeds[e]}.json"), "w") as f:
                 json.dump(run, f, default=_json_default)

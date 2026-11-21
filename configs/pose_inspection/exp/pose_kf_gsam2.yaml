@@ -1,0 +1,3 @@
+# fair zero-shot baseline: POSE with Grounding DINO + SAM 2 AND the known-free viewpoint restriction of the RL configs
+_base_: pose_kf.yaml
+perception: {mode: gsam2}

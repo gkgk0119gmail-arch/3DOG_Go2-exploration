@@ -1,0 +1,3 @@
+# selector ablation (ablation.py): nearest-first on the RL head's hook (commit to the target, no tour, known-free)
+_base_: ../rl.yaml
+selector: nearest

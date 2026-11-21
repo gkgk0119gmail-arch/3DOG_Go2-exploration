@@ -1,0 +1,3 @@
+# fine-tuned RL head with the zero-shot perception (Isaac)
+_base_: rl_run4_fd.yaml
+perception: {mode: gsam2}

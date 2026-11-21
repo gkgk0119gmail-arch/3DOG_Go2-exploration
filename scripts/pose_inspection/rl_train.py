@@ -93,13 +93,14 @@ def main():
     ap.add_argument("--set", nargs="*", default=[])
     ap.add_argument("--resume", default=None)
     ap.add_argument("--init", default=None, help="start from these policy weights (fresh optimizer, iteration 0)")
+    ap.add_argument("--device", default="cuda:0")
     args = ap.parse_args()
     import yaml
 
     over = {k: yaml.safe_load(v) for k, v in (s.split("=", 1) for s in args.set)}
     cfg = load_config(args.config, over)
     rl = cfg.rl
-    dev = "cuda:0"
+    dev = args.device
     out = sim_path(os.path.join(rl.out, args.name))
     os.makedirs(out, exist_ok=True)
     torch.manual_seed(rl.seed)
@@ -136,7 +137,8 @@ def main():
             print(f"it {it}: no start ({ex}); skipped")
             continue
         col = Collector(net, dev)
-        s = Session(cfg, meta, seeds, os.path.join(out, "episodes"), tag="rl", selector_factory=col.factory)
+        s = Session(cfg, meta, seeds, os.path.join(out, "episodes"), device=dev, tag="rl",
+                    selector_factory=col.factory)
         col.session = s
         net.eval()
         eng = KinematicEngine(s, st)

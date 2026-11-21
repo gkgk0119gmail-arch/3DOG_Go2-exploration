@@ -1,0 +1,13 @@
+# Fine-tuning of the RL head with synthetic false detections (go2_lab/pose_inspection/ablation.py): in every
+# training scene a random number of clutter objects and of rack / wall segments is reported as machines. Visiting
+# them costs time and returns no coverage, so the policy can learn to drop them and to stop.
+#   python scripts/pose_inspection/rl_train.py --config rl_fd.yaml --name run4_fd \
+#       --init results/pose_inspection/rl/policies/run3_it250.pt
+_base_: rl.yaml
+perception:
+  false_detections: {clutter: [0, 4], boxes: [0, 10], seed: 0}
+rl:
+  seed: 4
+  iterations: 200
+  scene_kinds: [warehouse, yard, site]
+  w_time: 0.2

@@ -1,0 +1,3 @@
+# selector ablation: greedy unknown cells per second on the RL head's hook
+_base_: ../rl.yaml
+selector: gain_rate

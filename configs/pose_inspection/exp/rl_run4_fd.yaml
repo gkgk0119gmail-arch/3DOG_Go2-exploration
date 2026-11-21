@@ -1,0 +1,3 @@
+# RL head fine-tuned with synthetic false detections (rl_fd.yaml); copy the chosen checkpoint to this path
+_base_: ../rl.yaml
+rl_policy: results/pose_inspection/rl/policies/run4_fd.pt

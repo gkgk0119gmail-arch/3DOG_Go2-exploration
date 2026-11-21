@@ -1,0 +1,3 @@
+# hand-written selective rule with the zero-shot perception (optional Isaac run)
+_base_: sel_gain_prune.yaml
+perception: {mode: gsam2}
